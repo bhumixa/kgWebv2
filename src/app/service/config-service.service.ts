@@ -1,32 +1,42 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import {
+  HttpClient,
+  HttpEventType,
+  HttpHeaders,
+  HttpResponse,
+} from '@angular/common/http';
+import { Router, NavigationExtras } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+
+import {
   NavController,
   ToastController,
   LoadingController,
   Platform,
 } from '@ionic/angular';
-import { Router, NavigationExtras } from '@angular/router';
-import { Storage } from '@ionic/storage-angular';
-import { Title } from '@angular/platform-browser';
-import { environment } from './../../environments/environment';
-//import * as XLSX from "xlsx";
-import * as FileSaver from 'file-saver';
+import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/file/ngx';
+import { PreviewAnyFile } from '@ionic-native/preview-any-file/ngx';
 import {
   FileTransfer,
   FileTransferObject,
 } from '@ionic-native/file-transfer/ngx';
-import { PreviewAnyFile } from '@ionic-native/preview-any-file/ngx';
+import {
+  InAppBrowser,
+  InAppBrowserOptions,
+} from '@ionic-native/in-app-browser/ngx';
+
+import { Observable } from 'rxjs';
+
+import { environment } from './../../environments/environment';
+//import * as XLSX from "xlsx";
+import * as FileSaver from 'file-saver';
 // import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 //import { DocumentViewer, DocumentViewerOptions } from '@awesome-cordova-plugins/document-viewer/ngx';
 import * as S3 from 'aws-sdk/clients/s3';
 
 import * as XLSX from 'xlsx-js-style';
 import defaultValue from '../pages/diamond-search/default';
-import {
-  InAppBrowser,
-  InAppBrowserOptions,
-} from '@ionic-native/in-app-browser/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +63,8 @@ export class ConfigServiceService {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   public EXCEL_EXTENSION = '.xlsx';
   public isAndroid: boolean = true;
+  public headers;
+  public refCompanyId: any = environment.refCompanyId;
   // public options: DocumentViewerOptions = {
   //   title: 'KG-stones'
   // }
@@ -104,11 +116,9 @@ export class ConfigServiceService {
     public loadingCtrl: LoadingController,
     public platform: Platform,
     public navCtrl: NavController,
-    public router: Router
+    public router: Router,
+    public http: HttpClient
   ) {
-    (async () => {
-      await this.storage.create();
-    })();
     this.platform.ready().then(() => {
       // console.log("this.platform", this.platform);
       if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
@@ -631,32 +641,121 @@ export class ConfigServiceService {
     }
   }
 
-  async uploadFile(file: any) {
-    return new Promise((resolve, reject) => {
-      const contentType = file.type;
-      const bucket = new S3(environment.companyDetails.config.s3bucket);
-      const params = {
-        Bucket: 'kg-diamonds-profile',
-        Key: file.name,
-        Body: file,
-        ACL: 'public-read',
-        ContentEncoding: 'base64',
-        ContentType: contentType,
-      };
-      bucket.upload(params, async (err, data) => {
-        console.log(err, data);
-        if (err) {
-          alert(err);
-        }
-        if (!!data) {
-          resolve(data.Location);
-        }
-      });
+  uploadFileToS3(url: string, file: any): Observable<any> {
+    return this.http.put(url, file, {
+      headers: {
+        'Content-Type': file.type,
+      },
+      reportProgress: true,
+      observe: 'events',
     });
   }
 
+  async getPresignedUrlForUploadFile(fileName, fileType, action) {
+    try {
+      this.headers = await this.getAPIHeader();
+      const responce = await this.http
+        .post(
+          ConfigServiceService.getBaseNewUrl() +
+            `/users/getPresignedUrlForUploadFile`,
+          {
+            fileName: fileName,
+            fileType: fileType,
+            refCompanyId: this.refCompanyId,
+            action: action,
+          },
+          { headers: new HttpHeaders(this.headers) }
+        )
+        .toPromise();
+
+      return responce;
+    } catch (error) {
+      return await error;
+    }
+  }
+  async uploadFile(file: any, action: any = '') {
+    try {
+      // Fetch the presigned URL for file upload
+      let res = await this.getPresignedUrlForUploadFile(
+        file.name,
+        file.type,
+        action
+      );
+
+      // Check if the URL generation was successful
+      if (res.isSuccess) {
+        let presignedUrl = res.data;
+
+        // Return a new promise for the file upload process
+        return new Promise((resolve, reject) => {
+          this.uploadFileToS3(presignedUrl, file).subscribe(
+            (event) => {
+              if (event.type === HttpEventType.UploadProgress) {
+                if (event.total) {
+                  let progress = Math.round((100 * event.loaded) / event.total);
+                  console.log(progress);
+                }
+              } else if (event instanceof HttpResponse) {
+                let uploadedFileUrl = presignedUrl.split('?')[0];
+                resolve(uploadedFileUrl);
+                console.log('File successfully uploaded!', uploadedFileUrl);
+              }
+            },
+            (error) => {
+              console.error('File upload error:', error);
+              reject(error);
+            }
+          );
+        });
+      } else {
+        // Handle the error case where the presigned URL could not be generated
+        this.presentToast('Link Generation Error', 'error');
+        throw new Error('Presigned URL generation failed');
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error('Error in uploadFile:', error);
+      throw error;
+    }
+
+    // return new Promise((resolve, reject) => {
+    //   let res: any = this.dataService.getPresignedUrlForUploadFile(
+    //     'myfile.jpg',
+    //     'image/jpeg'
+    //   );
+    //   if (res.isSuccess) {
+    //     let data = res.data;
+    //     console.log(data);
+
+    //   } else {
+    //     this.presentToast('Link Generation Error', 'error');
+    //   }
+    // });
+    // return new Promise((resolve, reject) => {
+    //   const contentType = file.type;
+    //   const bucket = new S3(environment.companyDetails.config.s3bucket);
+    //   const params = {
+    //     Bucket: 'kg-diamonds-profile',
+    //     Key: file.name,
+    //     Body: file,
+    //     ACL: 'public-read',
+    //     ContentEncoding: 'base64',
+    //     ContentType: contentType,
+    //   };
+    //   bucket.upload(params, async (err, data) => {
+    //     console.log(err, data);
+    //     if (err) {
+    //       alert(err);
+    //     }
+    //     if (!!data) {
+    //       resolve(data.Location);
+    //     }
+    //   });
+    // });
+  }
+
   async uploadImage(imageData, contentType) {
-    const bucket = new S3(environment.companyDetails.config.s3bucket);
+    const bucket = new S3({});
     const params = {
       Bucket: 'kg-diamonds-profile',
       Key:

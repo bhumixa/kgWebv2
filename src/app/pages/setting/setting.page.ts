@@ -340,44 +340,46 @@ export class SettingPage implements OnInit {
 
   async fromweb(event) {
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const contentType = file.type;
-      const bucket = new S3(environment.companyDetails.config.s3bucket);
-      console.log(bucket);
-      const params = {
-        Bucket: 'kg-diamonds-profile',
-        Key:
-          'profiles/' +
-          new Date().getTime() +
-          '-' +
-          'file-' +
-          new Date().getMilliseconds(),
-        Body: file,
-        ACL: 'public-read',
-        ContentType: contentType,
-      };
-      bucket.upload(params, async (err, data) => {
-        return new Promise((resolve, reject) => {
-          console.log(err, data);
-          if (err) {
-            resolve();
-          }
-          if (!!data) {
-            this.imageURL = data.Location;
-            this.updateUserImage();
-            resolve();
-          }
-        });
+      const formData: FormData = new FormData();
+      let fileToUpload: any = <File>event.target.files[0];
+      formData.append('file', fileToUpload);
+      await this._configService.showLoading();
+      // formData.append("ID", this.userId);
+      // formData.append("path", fileToUpload.name);
+      //let res: any = await this.databaseServiceService.commonFileUpload(formData);
+      this._configService.uploadFile(fileToUpload, 'Profile').then((path) => {
+        this.imageURL = path;
+        this._configService.hideLoading();
       });
-    } else {
-      //this.isFileSelected = true;
+      // const bucket = new S3(environment.companyDetails.config.s3bucket);
+      // const params = {
+      //   Bucket: 'kg-diamonds-profile',
+      //   Key:
+      //     'profiles/' +
+      //     new Date().getTime() +
+      //     '-' +
+      //     'file-' +
+      //     new Date().getMilliseconds(),
+      //   Body: file,
+      //   ACL: 'public-read',
+      //   ContentType: contentType,
+      // };
+      // bucket.upload(params, async (err, data) => {
+      //   if (err) {
+      //     return false;
+      //   }
+      //   if (!!data) {
+      //     this.imageURL = data.Location;
+      //     this.updateUserImage();
+      //   }
+      // });
     }
   }
 
   async uploadToS3(imageData) {
     await this.databaseServiceService.showLoading();
     let buf = Buffer.from(imageData, 'base64');
-    const bucket = new S3(environment.companyDetails.config.s3bucket);
+    const bucket = new S3({});
     const params = {
       Bucket: 'kg-diamonds-profile',
       Key:
