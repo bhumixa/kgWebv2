@@ -1,0 +1,121 @@
+<app-header showBackButton="true"></app-header>
+
+<ion-content>
+  <div class="contentDiv">
+    <ion-row>
+      <ion-col class="onPageTitle"> My Favorites </ion-col>
+    </ion-row>
+    <div class="noDataMsg" *ngIf="favorites?.length == 0">
+      You can add items to your favorites by clicking on the heart icon!
+    </div>
+
+    <!-- skeleton for grid-->
+    <div
+      *ngIf="((favorites == null || favorites == undefined) && _companyService.productListing == 'grid')"
+    >
+      <ion-grid>
+        <ion-row *ngFor="let data of configService.arrayOne(15)">
+          <ion-col size="1" *ngFor="let data of configService.arrayOne(12)">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <!-- skeleton -->
+    <ion-row
+      class="pageMinHt"
+      *ngIf="((favorites == null || favorites == undefined) && _companyService.productListing != 'grid')"
+    >
+      <ion-col size="12" size-md="10" offset-md="1" size-lg="10" offset-lg="1">
+        <ion-card
+          [ngClass]="!onMobile ? 'ionCardForDeskTop' : ''"
+          *ngFor="let data of configService.arrayOne(6)"
+        >
+          <ion-card-header class="marPad0">
+            <ion-row class="ion-justify-content-between">
+              <ion-col size="3">
+                <ion-skeleton-text
+                  animated
+                  class="product-image-skel"
+                ></ion-skeleton-text>
+              </ion-col>
+              <ion-col>
+                <h6 class="marPad0">
+                  <ion-skeleton-text
+                    animated
+                    class="h55-skel"
+                  ></ion-skeleton-text>
+                </h6>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <!-- end -->
+    <ion-row class="pageMinHt" *ngIf="_companyService.productListing != 'grid'">
+      <ion-col size="12" size-md="10" offset-md="1" size-lg="10" offset-lg="1">
+        <ion-card
+          [ngClass]="!onMobile ? 'ionCardForDeskTop' : ''"
+          *ngFor="let item of favorites"
+          (click)="singleProduct(item)"
+        >
+          <ion-card-header class="marPad0" *ngIf="favorites.length != 0">
+            <ion-row class="ion-justify-content-between">
+              <ion-col size="3" (click)="openProductSummaryPage(item)">
+                <div class="cartImg">
+                  <!-- <cl-image secure="true" [public-id]="item.listOfImages[0].image" format="jpg"
+                    *ngIf="item.listOfImages?.length > 0 && item.listOfImages[0].image.includes('/')" class="mAuto">
+                    <cl-transformation width="180" height="255" gravity="auto" crop="fill"></cl-transformation>
+                  </cl-image>
+                  <cl-image secure="true" public-id="/logo/noimage" format="png"
+                    *ngIf="item.listOfImages?.length == 0 && !_companyService.defaultImage.defaultLogo" class="mAuto">
+                    <cl-transformation width="180" height="255" gravity="auto" crop="fill"></cl-transformation>
+                  </cl-image>
+                  <cl-image secure="true" public-id="/logo/{{_companyService.refCompanyId}}" format="png"
+                    *ngIf="item.listOfImages?.length == 0 && !!_companyService.defaultImage.defaultLogo" class="mAuto">
+                    <cl-transformation width="180" height="255" gravity="auto" crop="fill_pad"></cl-transformation>
+                  </cl-image> -->
+                </div>
+              </ion-col>
+              <ion-col (click)="openProductSummaryPage(item)">
+                <h6 class="marPad0 cartTitle">{{ item.name }}</h6>
+              </ion-col>
+              <ion-col>
+                <ion-fab
+                  vertical="top"
+                  horizontal="end"
+                  (click)="removeFromFavorites(item.id)"
+                >
+                  <ion-fab-button color="medium" size="small" class="marPad0">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-fab-button>
+                </ion-fab>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- if grid -->
+    <ion-row
+      *ngIf="_companyService.productListing == 'grid' && favorites?.length > 0 && searchResultColumns"
+    >
+      <ion-col size="12" *ngIf="favorites?.length != 0">
+        <app-dx-data-grid
+          [columns]="searchResultColumns"
+          [rowData]="favorites"
+          mode="multiple"
+          [totalSummary]="totalSummary"
+          (callFunction)="selected = $event.selectedRowsData"
+          [allowDeleting]="allowDeleting"
+          (deleteFunction)="removeFromFavorites($event.id)"
+        >
+        </app-dx-data-grid>
+      </ion-col>
+    </ion-row>
+    <!-- end -->
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>

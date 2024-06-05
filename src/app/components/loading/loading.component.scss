@@ -1,0 +1,17 @@
+.spinner-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background: var(--ion-background-color, rgba(173, 200, 236, 0.2));
+  z-index: 20000;
+}
+
+ion-spinner {
+  transform: scale(3) !important;
+  --color: var(--ion-color-inverse);
+}

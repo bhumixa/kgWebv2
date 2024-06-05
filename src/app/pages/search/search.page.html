@@ -1,0 +1,79 @@
+<app-header
+  [class.hide]="showFilterMenu"
+  [pageTitle]="pTitle"
+  showBackButton="true"
+  [searchPage]="searchPage"
+></app-header>
+<ion-header [class.hide]="!showFilterMenu">
+  <ion-toolbar>
+    <ion-label class="filter ffWhitney">FILTERS</ion-label>
+  </ion-toolbar>
+</ion-header>
+<ion-content
+  [scrollEvents]="true"
+  (ionScroll)="logScrolling($event)"
+  class="bg-search"
+  [ngClass]="currView === 'grid' ? 'ion_content' : ''"
+>
+  <ng-container *ngIf="!postQuery && dataLoaded">
+    <app-elastic-search
+      *ngIf="_companyService.productListing != 'grid'"
+      [query]="query"
+      (currView)="changeCurrView($event)"
+    ></app-elastic-search>
+    <app-elastic-search
+      *ngIf="_companyService.productListing == 'grid'"
+      [query]="query"
+      (currView)="changeCurrView($event)"
+    ></app-elastic-search>
+  </ng-container>
+
+  <ng-container *ngIf="postQuery && dataLoaded">
+    <app-elastic-search
+      *ngIf="_companyService.productListing != 'grid'"
+      [postQueryObj]="postQueryObj"
+      (currView)="changeCurrView($event)"
+    ></app-elastic-search>
+    <app-elastic-search
+      *ngIf="_companyService.productListing == 'grid'"
+      [postQueryObj]="postQueryObj"
+      (currView)="changeCurrView($event)"
+    ></app-elastic-search>
+  </ng-container>
+
+  <!-- <app-elastic-search [query]="query" [filters]="filters"></app-elastic-search> -->
+
+  <ng-container *ngIf="postQuery && dataLoaded">
+    <app-footer class="toHideInSmallScreen" *ngIf="!hideFooter"></app-footer>
+  </ng-container>
+</ion-content>
+<!--<ion-footer class="mh50p smallFilters">
+ <ion-toolbar class="tac">
+   <ion-row *ngIf="!showFilterMenu">
+     <ion-col *ngIf="!!collectionOrderOptions && collectionOrderOptions.length>0">
+        <ion-button fill="clear" class="w100 h100" (click)="showSortBy()">
+          <ion-icon name="swap-vertical"></ion-icon>
+          Sort By
+        </ion-button>
+      </ion-col>
+    <ion-col>
+        <ion-button fill="clear" class="w100 h100" (click)="openDiamondSearch()">
+          <ion-icon name="list" class="mr5p"></ion-icon>
+          Filter
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="showFilterMenu">
+      <ion-col>
+        <ion-button fill="clear" class="w100 h100" (click)="showFilterForSmallScreen()"> CLOSE </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button fill="clear" class="w100 h100" (click)="apply()"> APPLY </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>-->
+
+<!--<ion-button (click)="scrollContent()" class="top" [style.display]="display">
+  <ion-icon name="caret-up-outline"></ion-icon>
+</ion-button>-->

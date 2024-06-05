@@ -1,0 +1,779 @@
+<div *ngIf="!viewDetail">
+  <div id="datagrid-demo" *ngIf="!showPivotGrid && !mobileView">
+    <!-- <ion-row *ngIf="mode == 'multiple'" class="margin-botton-5 rawHeight">
+      <ion-col size="6">
+        <a
+          class="clear-selection"
+          (click)="refresh()"
+          *ngIf="selected?.length && !hideClearSelection"
+        >
+          Clear Selection
+        </a>
+      </ion-col>
+
+      <ion-col size="6" class="tar">
+        <ng-container *ngIf="selected?.length">
+          <span class="summaryCapsules">
+            Cts: {{ totalSelectedSummary['cts'] | number : '1.2-2' }}
+          </span>
+          <span class="summaryCapsules">
+            Pcs: {{ totalSelectedSummary['pcs'] }}</span
+          >
+          <span class="summaryCapsules">
+            Amount:{{ totalSelectedSummary['amount'] | number : '1.2-2' }}
+          </span>
+        </ng-container>
+      </ion-col>
+    </ion-row> -->
+    <!-- <span *ngIf="selectedRows>1; else elsePart">
+          <div class="selected-txt">
+            cts: {{ totalSelectedSummary['cts'] | number : '1.2-2'}}           
+          </div>
+        </span>
+        <ng-template #elsePart>
+          <div class="selected-txt">cts: {{ totalSelectedSummary['cts'] | number : '1.2-2'}}</div>
+        </ng-template> -->
+    <dx-data-grid
+      [id]="tableId"
+      [dataSource]="rowData"
+      [showBorders]="true"
+      [allowColumnReordering]="allowColumnReordering"
+      [rowAlternationEnabled]="true"
+      [allowColumnResizing]="allowColumnResizing"
+      columnResizingMode="widget"
+      [columnAutoWidth]="true"
+      class="mw100"
+      (onSelectionChanged)="onSelectionChanged($event)"
+      (onCellClick)="onCellClick($event)"
+      (onRowRemoved)="delete($event)"
+      ShowTotalSummary="True"
+      [height]="gridHeight"
+      [remoteOperations]="remoteOperations"
+      (onInitialized)="saveGridInstance($event)"
+      (onOptionChanged)="handlePropertyChange($event)"
+      [scrolling]="scrollingConfig"
+      (onCellPrepared)="onCellPreparedFn($event)"
+    >
+      <!-- [allowHorizontalScrolling]="true" -->
+      <!-- <dxo-scrolling
+        mode="virtual"
+        [scrollByContent]="true"
+        [scrollByThumb]="true"
+        [speed]="100"
+        [useNative]="true"
+      ></dxo-scrolling> -->
+      <dxo-selection [mode]="mode" [selectAllMode]="'page'"></dxo-selection>
+      <dxo-paging [pageSize]="pageSize"></dxo-paging>
+      <!-- <dxo-paging [pageSize]="pageSize" *ngIf="remoteOperations"></dxo-paging> -->
+      <dxo-pager
+        [showNavigationButtons]="true"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        [infoText]="'Page #{0}. Total: {1} ({2} items)' | translate"
+        [allowedPageSizes]="[10, 20, 50, 100, 500]"
+        [visible]="true"
+      >
+      </dxo-pager>
+
+      <!-- <dxo-header-filter [visible]="showHeaderFilter" ></dxo-header-filter> -->
+      <dxi-sort-by-group-summary-info
+        summaryItem="count"
+      ></dxi-sort-by-group-summary-info>
+      <!-- <dxo-scrolling mode="virtual" rowRenderingMode="virtual" ></dxo-scrolling> -->
+      <dxo-scrolling
+        columnRenderingMode="virtual"
+        showScrollbar="always"
+        [scrollByContent]="true"
+        [scrollByThumb]="true"
+      ></dxo-scrolling>
+
+      <dxo-remote-operations
+        [sorting]="true"
+        [paging]="true"
+        [sorting]="true"
+        [groupPaging]="true"
+        *ngIf="totalSummary.length == 0"
+      >
+      </dxo-remote-operations>
+
+      <dxo-editing
+        mode="cell"
+        [allowDeleting]="allowDeleting"
+        [allowUpdating]="allowUpdating"
+        [confirmDelete]="false"
+      >
+      </dxo-editing>
+      <dxi-column
+        type="selection"
+        [width]="30"
+        *ngIf="mode == 'multiple'"
+      ></dxi-column>
+      <!-- <dxo-filter-row [visible]="showFilterRow" applyFilter="auto"></dxo-filter-row> -->
+      <dxo-filter-row [visible]="true"> </dxo-filter-row>
+      <dxi-column
+        *ngFor="let col of columns"
+        [allowEditing]="col.allowDeleting"
+        [dataField]="col.fieldName"
+        [cellTemplate]="
+          col.redirectToDetailPage ||
+          col.redirectToOrderPage ||
+          col.showStoneTemplate
+            ? 'cellTemplate'
+            : col.allowUpdating
+            ? 'cellTemplateInput'
+            : col.showAddToCart
+            ? 'showCartTemplate'
+            : col.showViewTemplate
+            ? 'viewTemplate'
+            : col.showRemarks
+            ? 'showRemarksTemplate'
+            : col.showLocationTemplate
+            ? 'locationTemplate'
+            : col.showCutShortCodeTemplate
+            ? 'cutCodeTemplate'
+            : col.showReportTemplate
+            ? 'reportTemplate'
+            : ''
+        "
+        [caption]="col.name | translate"
+        [fixed]="col.name == 'STONE ID'"
+        alignment="center"
+        [dataType]="col.type"
+        [groupIndex]="col.groupIndex"
+      >
+        <dxo-format
+          type="fixedPoint"
+          [precision]="2"
+          *ngIf="col.type == 'number'"
+          filterValue="Scope"
+        >
+        </dxo-format>
+
+        <!-- <span *ngIf="col.name=='Location'">
+          sdfsdf
+          <dxi-column [width]="180" [dataField]="col.prop" alignment="center" caption="" cellTemplate="locationTemplate">
+          </dxi-column>
+        </span> -->
+
+        <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+      </dxi-column>
+
+      <!-- <dxi-column *ngIf="orderBook == 'Offer'" [width]="110" [cellTemplate]="viewTemplate">
+        <dxi-button text="Add to Cart" [onClick]="addToCart"></dxi-button>
+      </dxi-column> -->
+
+      <div *dxTemplate="let data of 'cutCodeTemplate'">
+        {{ data.value?.shortCode | translate }}
+      </div>
+
+      <div *dxTemplate="let data of 'cellTemplateInput'">
+        <input
+          type="number"
+          [(ngModel)]="data.value"
+          class="cellTemplateInput"
+          (change)="onFocusedCellChanged(data)"
+          [disabled]="listOfferApplied || disableOffer"
+        />
+      </div>
+
+      <div *dxTemplate="let data of 'showRemarksTemplate'">
+        <span
+          *ngIf="
+            data.value && data.value.indexOf('have been cancelled ') !== -1
+          "
+          >{{ "Cancelled" | translate }}</span
+        >
+      </div>
+
+      <div *dxTemplate="let data of 'viewTemplate'">
+        <a
+          href="javascript:void(0);"
+          class="colorPrimary"
+          (click)="viewOffer(data)"
+        >
+          {{ "View" | translate }}
+        </a>
+      </div>
+
+      <div *dxTemplate="let data of 'reportTemplate'">
+        <a
+          href="javascript:void(0);"
+          class="addCart"
+          (click)="viewCertificate(data)"
+        >
+          {{ data.value }}
+        </a>
+      </div>
+
+      <div *dxTemplate="let data of 'locationTemplate'">
+        <div *ngIf="locationImages[data.value]">
+          <img [src]="locationImages[data.value]" class="flag" />
+        </div>
+      </div>
+
+      <div *dxTemplate="let data of 'showCartTemplate'">
+        <a href="javascript:void(0);" class="addCart" (click)="addToCart(data)">
+          {{ "Add to Cart" | translate }}
+        </a>
+      </div>
+
+      <div *dxTemplate="let data of 'cellTemplate'">
+        <span *ngIf="data.value">
+          <a
+            href="javascript:void(0);"
+            class="addCart"
+            (click)="singleProduct(data)"
+            [ngClass]="
+              data.data['externalStatus']?.toLowerCase() === 'on memo'
+                ? 'stoneIdColor'
+                : ''
+            "
+          >
+            {{ data.value }}
+          </a>
+        </span>
+
+        <span *ngIf="!data.value" class="error">
+          {{ data.data.sku | translate }} ({{
+            "Stone not Available" | translate
+          }})
+        </span>
+      </div>
+
+      <dxo-summary
+        [recalculateWhileEditing]="true"
+        [calculateCustomSummary]="calculateCustomSummary"
+      >
+        <!-- <dxi-group-item *ngFor="let col of groupTotalSummary"  [calculateCustomSummary]="calculateCSummary" [column]="col.fieldName" [summaryType]="col.summaryType"
+          [displayFormat]="col.displayFormat" [showInGroupFooter]="col.showInGroupFooter"
+          [customizeText]="col.summaryType == 'sum' ? customizeSum : ''">
+        </dxi-group-item> -->
+
+        <dxi-total-item
+          *ngFor="let col of totalSummary"
+          [column]="col.fieldName != 'Req Price' ? col.fieldName : ''"
+          [summaryType]="col.summaryType"
+          [showInColumn]="col.fieldName == 'Req Price' ? col.fieldName : ''"
+          [name]="col.fieldName"
+          [customizeText]="
+            col.summaryType == 'sum' || col.summaryType == 'avg'
+              ? customizeSumAvg
+              : undefined
+          "
+        >
+        </dxi-total-item>
+      </dxo-summary>
+
+      <tbody class="dx-row" *dxTemplate="let item of 'offerTemplate'">
+        <tr>
+          <td class="tac">{{ item.data | json }}</td>
+          <td class="tac">{{ item.data.addedOn }}</td>
+          <td class="tac">{{ item.data.serialNumber }}</td>
+          <td class="tac">{{ item.data.bookName }}</td>
+          <td class="tac">{{ item.data.listOfOrderProducts }}</td>
+          <td class="tac">{{ item.data.totalOrderQty }}</td>
+          <td class="tac">{{ item.data.total }}</td>
+          <td class="tac">{{ item.data.orderStatus }}</td>
+        </tr>
+      </tbody>
+    </dx-data-grid>
+  </div>
+  <!-- {{columns | json}} -->
+  <div id="datagrid-demo" *ngIf="!showPivotGrid && mobileView">
+    <!-- <ion-row *ngIf="mode == 'multiple'">
+      <ion-col size="5">
+        <a
+          class="clear-selection"
+          (click)="refreshMobileView()"
+          *ngIf="selected?.length"
+        >
+          Clear Selection
+        </a>
+      </ion-col>
+      <ion-col size="7" class="tar">
+        <ion-row class="fr">
+          <span class="summaryCapsulesxs" *ngIf="selected?.length">
+            Cts: {{ totalSelectedSummary['cts'] | number : '1.2-2' }}
+          </span>
+          <span class="summaryCapsulesxs" *ngIf="selected?.length">
+            Pcs: {{ totalSelectedSummary['pcs'] }}</span
+          >
+          <span class="summaryCapsulesxs" *ngIf="selected?.length">
+            Amount:{{ totalSelectedSummary['amount'] | number : '1.2-2' }}
+          </span>
+        </ion-row>
+      </ion-col>
+    </ion-row> -->
+    <!-- <span *ngIf="selectedRows>1; else elsePart">
+          <div class="selected-txt">{{ selectedRows }} Records Selected</div>
+        </span>
+        <ng-template #elsePart>
+          <div class="selected-txt">{{ selectedRows }} Record Selected</div>
+        </ng-template> -->
+
+    <dx-data-grid
+      [id]="page == 'cart' ? 'gridContainer-cart-mobile' : tableMobileId"
+      [dataSource]="rowData"
+      [showBorders]="true"
+      [allowColumnReordering]="allowColumnReordering"
+      [rowAlternationEnabled]="true"
+      [allowColumnResizing]="allowColumnResizing"
+      columnResizingMode="widget"
+      [columnAutoWidth]="true"
+      (onSelectionChanged)="onSelectionChanged($event)"
+      (onFocusedCellChanged)="onFocusedCellChanged($event)"
+      (onCellClick)="onCellClick($event)"
+      (onRowRemoved)="delete($event)"
+      [columnHidingEnabled]="true"
+      [remoteOperations]="remoteOperations"
+      ShowTotalSummary="True"
+      (onInitialized)="saveMobileGridInstance($event)"
+      [height]="gridHeightMobile"
+    >
+      <!-- <dxo-scrolling mode="infinite" [scrollByContent]="true" [scrollByThumb]="true"></dxo-scrolling> -->
+      <dxo-scrolling
+        mode="virtual"
+        rowRenderingMode="virtual"
+        *ngIf="totalSummary.length == 0"
+        [useNative]="true"
+      >
+      </dxo-scrolling>
+
+      <dxo-remote-operations
+        [sorting]="true"
+        [paging]="true"
+        [sorting]="true"
+        [groupPaging]="true"
+        *ngIf="totalSummary.length == 0"
+      >
+      </dxo-remote-operations>
+
+      <dxo-selection
+        *ngIf="showCheckBox"
+        [mode]="mode"
+        [selectAllMode]="'page'"
+        [showCheckBoxesMode]="'always'"
+      ></dxo-selection>
+      <dxo-paging [pageSize]="pageSize"></dxo-paging>
+      <dxo-pager
+        [showNavigationButtons]="true"
+        [showPageSizeSelector]="true"
+        [showInfo]="true"
+        infoText="Page #{0}. Total: {1} ({2} items)"
+        [allowedPageSizes]="[10, 20, 50, 100]"
+      ></dxo-pager>
+
+      <dxi-sort-by-group-summary-info
+        summaryItem="count"
+      ></dxi-sort-by-group-summary-info>
+      <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+      <dxi-column
+        *ngIf="showCheckBox"
+        type="selection"
+        [width]="26"
+      ></dxi-column>
+      <dxo-editing
+        mode="cell"
+        [allowDeleting]="allowDeleting"
+        [allowUpdating]="allowUpdating"
+        [useIcons]="true"
+        [confirmDelete]="false"
+      >
+      </dxo-editing>
+      <dxi-column
+        *ngFor="let col of columns"
+        [allowEditing]="col.allowDeleting"
+        [dataField]="col.fieldName"
+        [cellTemplate]="
+          col.redirectToDetailPage || col.redirectToOrderPage
+            ? 'cellTemplate'
+            : col.allowUpdating
+            ? 'cellTemplateInput'
+            : col.showAddToCart
+            ? 'showCartTemplate'
+            : col.showViewTemplate
+            ? 'viewTemplate'
+            : col.showStoneTemplate
+            ? 'stoneTemplate'
+            : ''
+        "
+        [caption]="col.name"
+        alignment="left"
+        [dataType]="col.type"
+        [groupIndex]="col.groupIndex"
+        [fixed]="col.fixed"
+      >
+        <!-- <dxo-format type="fixedPoint" [precision]="2" *ngIf="col.type == 'number'">
+        </dxo-format> -->
+
+        <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
+        <dxo-filter-row
+          [visible]="true"
+          [applyFilter]="currentFilter"
+        ></dxo-filter-row>
+
+        <dxi-column
+          [dataField]="col.prop"
+          caption=""
+          *ngIf="col.name == 'Price'"
+          [calculateDisplayValue]="customPrice"
+        >
+        </dxi-column>
+
+        <!-- <dxi-column [dataField]="col.prop" caption="Disc" *ngIf="col.name == 'Discount'">
+        </dxi-column> -->
+
+        <dxi-column
+          [dataField]="col.prop"
+          caption=""
+          *ngIf="col.name == 'Amount'"
+          [calculateDisplayValue]="customAmount"
+        >
+        </dxi-column>
+      </dxi-column>
+
+      <dxi-column
+        type="buttons"
+        [width]="40"
+        caption=""
+        *ngIf="allowDeleting && !disableOffer"
+      >
+        <dxi-button
+          hint="view"
+          [onClick]="viewOffer"
+          *ngIf="orderBook == 'Offer' && !listOfferApplied"
+          icon="edit"
+        >
+        </dxi-button>
+        <dxi-button
+          hint="Delete"
+          [onClick]="deleteItem"
+          icon="trash"
+        ></dxi-button>
+      </dxi-column>
+
+      <!-- <div *dxTemplate="let data of 'stoneTemplate'">
+        show data
+      </div> -->
+
+      <div *dxTemplate="let data of 'showRemarksTemplate'">
+        <span
+          *ngIf="
+            data.value && data.value.indexOf('have been cancelled ') !== -1
+          "
+          >{{ "Cancelled" | translate }}</span
+        >
+      </div>
+      <div *dxTemplate="let data of 'showCartTemplate'">
+        <a
+          href="javascript:void(0);"
+          class="colorPrimary"
+          (click)="addToCart(data)"
+        >
+          {{ "Add to Cart" | translate }}
+        </a>
+      </div>
+
+      <!-- <div *dxTemplate="let data of 'viewTemplate'">
+        <a href="javascript:void(0);" class="colorPrimary" (click)="viewOffer(data)">
+          <ion-icon  name="edit"> </ion-icon>
+        </a>
+      </div> -->
+
+      <div *dxTemplate="let data of 'cellTemplate'">
+        <a
+          href="javascript:void(0);"
+          class="colorPrimary"
+          (click)="singleProduct(data)"
+        >
+          {{ data.value | translate }}
+        </a>
+      </div>
+
+      <div *dxTemplate="let data of 'reportTemplate'">
+        <a
+          href="javascript:void(0);"
+          class="addCart"
+          (click)="viewCertificate(data)"
+        >
+          {{ data.value | translate }}
+        </a>
+      </div>
+
+      <div *dxTemplate="let data of 'cellTemplateInput'">
+        <input
+          type="number"
+          [(ngModel)]="data.value"
+          class="cellTemplateInput"
+          (change)="onFocusedCellChanged(data)"
+          [disabled]="listOfferApplied"
+        />
+      </div>
+
+      <div *dxTemplate="let item of 'stoneTemplate'">
+        <span *ngIf="item.data.stoneName" class="stoneName">
+          <!-- <a
+            href="javascript:void(0);"
+            class="colorPrimary mar2"
+            (click)="singleProduct(item)"
+            style="font-size: 12px"
+            [ngClass]="
+              item.data['externalStatus']?.toLowerCase() === 'on memo'
+                ? 'stoneIdColor_mobile'
+                : ''
+            "
+            *ngIf="10 > item.data.ShapeCode.length"
+          >
+            {{ item.data.ShapeCode | translate }},
+            {{ item.data.cts | number : '1.2-2' }} Ct,
+            {{ item.data.ColorCode }}, {{ item.data.ClarityCode }}
+          </a> -->
+          <!-- *ngIf="item.data.ShapeCode.length >= 10" -->
+          <a
+            href="javascript:void(0);"
+            class="colorPrimary mar2"
+            (click)="singleProduct(item)"
+            style="font-size: 12px"
+            [ngClass]="
+              item.data['externalStatus']?.toLowerCase() === 'on memo'
+                ? 'stoneIdColor_mobile'
+                : ''
+            "
+          >
+            {{ item.data.ShapeCode }}
+          </a>
+          <!-- *ngIf="item.data.ShapeCode.length >= 10" -->
+          <p style="color: #4d5258; font-size: 10px" class="mar2">
+            {{ item.data.cts | number : "1.2-2" }} Ct,
+            {{ item.data.ColorCode }}, {{ item.data.ClarityCode }}
+          </p>
+          <p style="color: #4d5258; font-size: 10px" class="mar2">
+            {{ getCodes(item.data, "cutCode") }},
+            {{ getCodes(item.data, "polishCode") }},
+            {{ getCodes(item.data, "symmetryCode") }},
+            {{ getCodes(item.data, "fluorescenceCode") }}
+          </p>
+          <p style="color: #4d5258; font-size: 10px" class="mar2">
+            {{ item.data.Length }} * {{ item.data.Width }}
+            <span *ngIf="item.data.TotDepthMm"
+              >* {{ item.data.TotDepthMm | translate }}
+            </span>
+          </p>
+          <p style="font-weight: bold; font-size: 10px" class="mar2">
+            {{ item.data.lab | translate }} {{ item.data.ReportNo | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!item.data.stoneName" class="error">
+          <p>
+            {{ item.data.sku | translate }}
+          </p>
+          <p>({{ "Stone not Available" | translate }})</p>
+        </span>
+      </div>
+
+      <tbody
+        class="item dx-row"
+        [ngClass]="{ 'dx-row-alt': item.rowIndex % 2 }"
+        *dxTemplate="let item of 'mobileViewTemplate'"
+      >
+        <tr class="dx-row dx-data-row dx-column-lines">
+          <td class="small-checkbox" style="padding-left: 0px">
+            <dx-check-box
+              class="selectionBox"
+              (onValueChanged)="checkBoxValueCHanged($event, item)"
+            ></dx-check-box>
+          </td>
+          <td class="stoneName">
+            <a
+              href="javascript:void(0);"
+              class="colorPrimary"
+              (click)="singleProduct(item)"
+            >
+              {{ item.data.ShapeCode | translate }},
+              {{ item.data.cts | translate }} Ct
+            </a>
+            <p style="color: #4d5258; font-size: 10px">
+              {{ item.data.ColorCode | translate }},
+              {{ item.data.ClarityCode | translate }},
+              {{ item.data.CutCode | translate }}
+            </p>
+            <p style="color: #4d5258; font-size: 10px">
+              {{ item.data.PolishCode | translate }},
+              {{ item.data.SymmetryCode | translate }},
+              {{ item.data.FluorescenceCode | translate }}
+            </p>
+            <p style="font-weight: bold; font-size: 10px">
+              {{ item.data.lab | translate }}
+              {{ item.data.ReportNo | translate }}
+            </p>
+          </td>
+          <td class="cell">{{ item.data.RAPAPORT | translate }}</td>
+          <td class="cell">
+            {{ item.data.Rapnet_plusDiscountPercent | translate }}
+          </td>
+          <td class="cell">{{ item.data.Rapnet_pluspercarat | translate }}</td>
+          <td class="cell">{{ item.data.Rapnet_plus | translate }}</td>
+          <td class="cell">{{ item.data.lab | translate }}</td>
+          <td class="cell">{{ item.data.ShapeCode | translate }}</td>
+          <td class="cell">{{ item.data.cts | translate }}</td>
+          <td class="cell">{{ item.data.ColorCode | translate }}</td>
+          <td class="cell">{{ item.data.ClarityCode | translate }}</td>
+          <td class="cell">{{ item.data.CutCode | translate }}</td>
+          <td class="cell">{{ item.data.SymmetryCode | translate }}</td>
+          <td class="cell">{{ item.data.PolishCode | translate }}</td>
+          <td class="cell">{{ item.data.externalStatus | translate }}</td>
+        </tr>
+      </tbody>
+
+      <tbody class="dx-row" *dxTemplate="let item of 'offerTemplate'">
+        <tr class="main-row">
+          <td class="tac"></td>
+          <td class="tac">{{ item.data.srNumber | translate }}</td>
+          <td class="tac">{{ item.data.addedOn | translate }}</td>
+          <td class="tac">{{ item.data.serialNumber | translate }}</td>
+          <td class="tac">{{ item.data.bookName | translate }}</td>
+          <td class="tac">{{ item.data.listOfOrderProducts | translate }}</td>
+          <td class="tac">{{ item.data.totalOrderQty | translate }}</td>
+          <td class="tac">{{ item.data.total | translate }}</td>
+          <td class="tac">{{ item.data.orderStatus | translate }}</td>
+          <td class="tac">
+            <a
+              href="javascript:void(0);"
+              class="colorPrimary"
+              (click)="action(item, true)"
+              *ngIf="!item.data.viewData"
+            >
+              {{ "View" | translate }}
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="colorPrimary"
+              (click)="action(item, false)"
+              *ngIf="item.data.viewData"
+            >
+              {{ "Close" | translate }}
+            </a>
+          </td>
+        </tr>
+        <tr class="main-row" *ngIf="item.data.viewData">
+          {{
+            "view data" | translate
+          }}
+        </tr>
+      </tbody>
+
+      <dxo-summary [recalculateWhileEditing]="true">
+        <dxi-group-item
+          *ngFor="let col of groupTotalSummary"
+          [column]="col.fieldName"
+          [summaryType]="col.summaryType"
+          [displayFormat]="col.displayFormat"
+          [showInGroupFooter]="col.showInGroupFooter"
+          [customizeText]="col.summaryType == 'sum' ? customizeSum : undefined"
+        >
+        </dxi-group-item>
+        <dxi-total-item
+          *ngFor="let col of totalSummary"
+          [column]="col.fieldName"
+          [summaryType]="col.summaryType"
+          [customizeText]="
+            col.summaryType == 'sum' || col.summaryType == 'avg'
+              ? customizeSumAvg
+              : undefined
+          "
+        >
+        </dxi-total-item>
+      </dxo-summary>
+    </dx-data-grid>
+  </div>
+</div>
+
+<div *ngIf="viewDetail">
+  <!-- <div id="pivotgrid-demo" *ngIf="showPivotGrid">
+    <dx-pivot-grid id="pivotgrid" [allowSortingBySummary]="true" [allowFiltering]="true" [showBorders]="true"
+      [allowSorting]="true" [showColumnGrandTotals]="true" [showRowGrandTotals]="true" [showRowTotals]="true"
+      [showColumnTotals]="true" [dataSource]="pivotGridDataSource" class="mw100">
+      <dxo-header-filter [allowSearch]="true" [showRelevantValues]="true" [width]="300" [height]="400">
+      </dxo-header-filter>
+      <dxo-field-chooser [enabled]="true" [height]="400"></dxo-field-chooser>
+      <dxo-field-panel [visible]="true">
+      </dxo-field-panel>
+      <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+      <dxo-paging [pageSize]="500"></dxo-paging>
+      <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[100, 200, 500, 1000]"></dxo-pager>
+      <dxo-scrolling mode="virtual"></dxo-scrolling>
+      <dxo-export [enabled]="true" [fileName]="fileName"></dxo-export>
+    </dx-pivot-grid>
+  </div> -->
+  <div id="datagrid-demo" *ngIf="!showPivotGrid">
+    <dx-data-grid
+      [id]="tableId"
+      [dataSource]="detailRowData"
+      [showBorders]="true"
+      [allowColumnReordering]="true"
+      [rowAlternationEnabled]="true"
+      [showBorders]="true"
+      [allowColumnResizing]="true"
+      [columnWidth]="100"
+      [columnAutoWidth]="true"
+      columnResizingMode="widget"
+      class="mw100"
+    >
+      <dxo-selection mode="single"></dxo-selection>
+      <dxo-paging [pageSize]="500"></dxo-paging>
+      <dxo-pager
+        [showPageSizeSelector]="true"
+        [allowedPageSizes]="[100, 200, 500, 1000]"
+      ></dxo-pager>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+      <dxo-export [enabled]="true"></dxo-export>
+      <dxi-sort-by-group-summary-info
+        summaryItem="count"
+      ></dxi-sort-by-group-summary-info>
+      <dxo-filter-row
+        [visible]="true"
+        [applyFilter]="currentFilter"
+      ></dxo-filter-row>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-search-panel
+        [visible]="true"
+        [width]="240"
+        placeholder="Search..."
+      ></dxo-search-panel>
+      <dxo-scrolling
+        columnRenderingMode="virtual"
+        showScrollbar="always"
+      ></dxo-scrolling>
+      <dxi-column
+        *ngFor="let col of detailColumns"
+        [dataField]="col.fieldName"
+        [caption]="col.name"
+        alignment="center"
+        [customizeText]="
+          col.summaryType == 'sum'
+            ? customizeSum
+            : col.summaryType == 'stoneId'
+            ? showStoneId
+            : ''
+        "
+      >
+        <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
+        <dxo-filter-row
+          [visible]="true"
+          [applyFilter]="currentFilter"
+        ></dxo-filter-row>
+      </dxi-column>
+      <!-- <dxo-summary>
+        <dxi-group-item *ngFor="let col of detailGroupTotalSummary" [column]="col.fieldName"
+          [summaryType]="col.summaryType" [displayFormat]="col.displayFormat"
+          [showInGroupFooter]="col.showInGroupFooter" [customizeText]="col.summaryType=='sum'? customizeSum:''">
+        </dxi-group-item>
+        <dxi-total-item *ngFor="let col of detailTotalSummary" [column]="col.fieldName" [summaryType]="col.summaryType"
+          [displayFormat]="col.displayFormat" [customizeText]="col.summaryType=='sum'? customizeSum:''">
+        </dxi-total-item>
+      </dxo-summary> -->
+    </dx-data-grid>
+  </div>
+</div>

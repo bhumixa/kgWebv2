@@ -1,0 +1,225 @@
+::ng-deep .dx-datagrid .dx-data-row > td.bullet {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+::ng-deep #gridContainer .dx-datagrid-rowsview .dx-select-checkbox {
+  display: contents !important;
+}
+
+::ng-deep #manage-order-detail-grid .dx-datagrid-rowsview .dx-select-checkbox {
+  display: contents !important;
+}
+
+::ng-deep #orders-grid .dx-datagrid-rowsview .dx-select-checkbox {
+  display: contents !important;
+}
+
+::ng-deep #cart-grid .dx-datagrid-rowsview .dx-select-checkbox {
+  display: contents !important;
+}
+
+// ::ng-deep .dx-datagrid-rowsview .dx-select-checkboxes-hidden > tbody > tr > td > .dx-select-checkbox{
+//   display: contents !important;
+// }
+.addCart {
+  color: var(--ion-color-inverse);
+}
+.cellTemplateInput {
+  width: 100%;
+}
+
+::ng-deep #gridContainer {
+  min-height: 30vh;
+  margin: auto;
+  //height: 75vh;
+}
+
+#gridContainer-mobile {
+  height: 74vh;
+  margin: auto;
+}
+
+::ng-deep .dx-widget {
+  font-family: 'Roboto Regular' !important;
+}
+
+::ng-deep .dx-checkbox-container {
+  width: auto !important;
+}
+
+::ng-deep .dx-datagrid-checkbox-size .dx-checkbox-icon {
+  color: var(--ion-color-dx-data-grid-checkbox) !important;
+}
+// ::ng-deep #gridContainer-cart-mobile {
+//   height: 50vh !important;
+//   margin: auto;
+// }
+
+::ng-deep #manage-order-detail-grid {
+  height: 40vh !important;
+  margin: auto;
+  // height: calc(100vh - 550px) !important;
+  // height: -moz-calc(100vh - 550px)!important;
+  // height: -webkit-calc(100vh - 550px)!important;
+  // height: calc(100vh - 550px)!important;
+}
+
+::ng-deep #orders-grid {
+  height: 65vh !important;
+  margin: auto;
+}
+
+::ng-deep #cart-grid {
+  // height: 50vh !important;
+  // margin: auto;
+  max-height: calc(100vh - 400px) !important;
+  max-height: -moz-calc(100vh - 400px) !important;
+  max-height: -webkit-calc(100vh - 400px) !important;
+  max-height: calc(100vh - 400px) !important;
+  margin: auto;
+}
+
+::ng-deep .dx-datagrid-headers {
+  color: var(--ion-color-dx-data-grid-header-fields) !important;
+  font-weight: 600;
+  background: var(--ion-color-dx-data-grid-header);
+  font-size: 14px;
+}
+
+::ng-deep .dx-datagrid-headers .dx-datagrid-table .dx-row > td {
+  background: var(--ion-color-dx-data-grid-header) !important;
+}
+::ng-deep .dx-pager .dx-page-sizes .dx-selection,
+.dx-pager .dx-pages .dx-selection {
+  color: var(--ion-color-dx-data-grid-pagination-color) !important;
+  background: var(--ion-color-dx-data-grid-pagination-bg) !important;
+}
+.stoneName {
+  width: 180px;
+  font-size: 12px;
+  //text-align: center;
+}
+
+.cell {
+  width: 100px;
+  //text-align: center;
+}
+
+.padding0 {
+  padding-left: 0;
+}
+
+.stoneName {
+  font-size: 10px;
+}
+
+.flag {
+  /* by ypgesh*/
+  height: 14px;
+  /*from 10px*/
+  width: 20px;
+  /*added*/
+}
+
+.summaryCapsulesxs {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 80px;
+  // please give variable color here (not able to find where it is)
+  background: #dcf5fa;
+  // background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(0, 165, 200, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  opacity: 0.6;
+  padding: 3px;
+  margin-left: 6px;
+  color: var(--ion-color-primary);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.summaryCapsules {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 80px;
+  // please give variable color here (not able to find where it is)
+  background: #dcf5fa;
+  // background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(0, 165, 200, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  opacity: 0.6;
+  padding: 5px;
+  margin-left: 6px;
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.margin-botton-10 {
+  margin-bottom: 10px;
+}
+
+.margin-botton-5 {
+  margin-bottom: 5px;
+}
+
+.rawHeight {
+  height: 30px;
+}
+
+.stoneIdColor {
+  color: #000 !important;
+}
+
+.stoneIdColor_mobile {
+  color: #ff69b4 !important;
+}
+
+::ng-deep.dx-datagrid-content
+  .dx-datagrid-table
+  [class*='column']
+  + [class*='column']:last-child {
+  height: 0px !important;
+}
+
+// @media only screen and (max-height: 576px) {
+//   #gridContainer-mobile {
+//     height: 60vh !important;
+//   }
+// }
+
+// @media only screen and (max-height: 659px)  {
+//   ::ng-deep #gridContainer-mobile {
+//     height: 63vh !important;
+//     margin: auto;
+//   }
+// }
+
+// @media only screen and (min-height: 660px) and (max-height: 699px)   {
+//   ::ng-deep #gridContainer-mobile {
+//     height: 65vh !important;
+//     margin: auto;
+//   }
+// }
+
+// @media only screen and (min-height: 700px) and (max-height: 730px)  {
+//   ::ng-deep #gridContainer-mobile {
+//     height: 72vh !important;
+//     margin: auto;
+//   }
+// }
+// @media only screen and (min-height: 681px) and (max-height: 740px) {
+//   ::ng-deep #gridContainer-mobile {
+//     height: 70vh;
+//   }
+// }
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+  /* Your styles for landscape iPad mode here */
+  ::ng-deep #gridContainer {
+    height: 50vh;
+    margin: auto;
+    //height: 75vh;
+  }
+}
+
+@media (min-width: 0px) and (max-width: 575px) {
+  ::ng-deep tr.dx-row.dx-column-lines.dx-header-row td:last-child {
+    background: #b0daec !important;
+  }
+}

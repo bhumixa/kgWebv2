@@ -1,0 +1,68 @@
+.slide-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+
+.logo {
+  width: 50%;
+  height: auto;
+  max-width: 14em;
+  margin: auto;
+  // margin-bottom: 50px;
+}
+.no-border {
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+.login {
+  margin: auto;
+  max-width: 500px;
+}
+.border {
+  border: 1px solid  #26317e !important ;
+  border-radius: 5px !important;
+  width: 100%;
+}
+.label{
+  font-variant: small-caps;
+  text-align: right;
+  min-width: 150px;
+  margin-right: 10px !important;
+  font-weight: 700;
+}
+// .ionItem{
+  ion-item {
+    // border-radius: 30px !important;
+    // padding-left: 10px !important;
+    margin-bottom: 10px;
+    // background-color: #f6f6f6;
+    opacity: 0.7;
+    font-size: 0.9em;
+    --highlight-color-focused: transparent !important;
+    --highlight-color-valid: transparent;
+  --highlight-color-invalid: transparent;
+  // --highlight-color-focused: var(--ion-color-light);
+  }
+  ion-row {
+    align-items: center;
+    text-align: center;
+  }
+  ion-content {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }  
+  .mar10{
+    margin-top: 50px
+  }
+  :host(.item-interactive), :host(.item-lines-full){
+    border: none !important
+  }
+  .signUp{
+    color: #4747aa;
+    border-bottom: 1px solid #4747aa;
+    cursor: pointer;
+  }
+// }

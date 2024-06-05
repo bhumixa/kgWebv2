@@ -1,0 +1,111 @@
+<ion-row class="">
+  <ion-col>
+    <ion-row class="flexCenter">
+      <ion-col>
+        <ion-row >
+          <ion-col class="titleOfCategory">
+            <ion-label class="">{{
+              selectedMenuItem['title']
+            }}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="mg_tp_40 justConCentre">
+      <ng-container *ngFor="let item of items">
+        <ng-container *ngIf="item.isActive === 1" class="mainGrid">
+          <ion-col size="4" class="container">
+            <ion-row class="mg_bt_22 ">
+
+              <ion-col size="12" class="posRel">
+                <div class="img_div">     
+                  <img class="image" src="{{ item.imageUrl }}" alt="" />
+                </div>
+              </ion-col>
+
+              <ion-col size="12" class="posRel">   
+                <!-- <div class="img_div"> -->
+                  <div class="bg_img"></div>
+                <!-- </div> -->
+              </ion-col>
+            </ion-row>
+            <ion-row >
+              <ion-col class="main_col">
+                <ion-row *ngIf="!!item.title">
+                  <ion-col>
+                    <ion-label class="title">{{ item.title }}</ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="!!item.shortDescription" class="label_black">
+                  <ion-col>
+                    <ion-label>{{ item.shortDescription }} </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="mar0pad0 mg_tp6">
+                    <ion-row>
+                      <ion-col class="itemFont desc_col mar0pad0 rangesCol">
+
+                        <ion-col *ngIf="!!item.colorRange" class="mar0pad0">
+                          <ion-label >
+                            Color:
+                          </ion-label>
+                        <ion-label>{{ item.colorRange }} </ion-label>
+                        </ion-col>
+
+                        <ion-col *ngIf="!!item.sizeRange" class="mar0pad0">
+                          <ion-label >
+                            Size:
+                          </ion-label>
+                        <ion-label>{{ item.sizeRange }} </ion-label>
+                        </ion-col>
+
+                      <ion-col  *ngIf="!!item.clarityRange" class="mar0pad0">
+                          <ion-label>
+                            Clarity:
+                          </ion-label>
+                        <ion-label>{{ item.clarityRange }} </ion-label>
+                      </ion-col>
+                      <ion-col *ngIf="!!item.carats" class="mar0pad0">
+                        <ion-label >
+                          Carat:
+                        </ion-label>
+                      <ion-label>{{ item.carats }} </ion-label>
+                    </ion-col>
+                      </ion-col>
+                    </ion-row>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="price_row">
+                  <ion-col class="flexCenter">
+                    <ion-label class="text_label">
+                      Pcs: {{ item.pcs }} | Amt: {{ item.Amount }}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-button (click)="handleEnquire(item)">
+                      Inquire
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ng-container>
+      </ng-container>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row class="w100">
+          <img
+            src="../../../assets/images/Vector 42.svg"
+            class="endLine"
+            alt=""
+          />
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+</ion-row>

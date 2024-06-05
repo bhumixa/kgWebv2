@@ -1,0 +1,121 @@
+.clsRemoveIcon {
+  font-size: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+  color: red;
+}
+
+.summaryText {
+  margin-right: 20px;
+}
+
+.top-button-row {
+  padding-right: 20px;
+}
+
+.toppingsCollapsedView {
+  font-size: 12px;
+  font-weight: lighter;
+}
+.clsActionImage {
+  margin-right: 10px;
+  width: 26px;
+  margin-top: 3px;
+}
+.pt10 {
+  padding-top: 10px;
+}
+
+@media only screen and (max-width: 500.98px) {
+  .largeFilters {
+    display: none;
+    visibility: hidden;
+  }
+
+  .smallFilters {
+    display: inline-block;
+    visibility: visible;
+  }
+
+  .contentDiv {
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 501px) {
+  .smallFilters {
+    display: none;
+    visibility: hidden;
+  }
+
+  .largeFilters {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+
+.mr {
+  margin-right: 8px;
+}
+
+.empty-cart {
+  //padding-top: 150px;
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.empty-cart-sub {
+  color: #747474;
+  font-size: 16px;
+  line-height: 28px;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.main-empty-div {
+  // width: 420px;
+  margin: auto;
+  padding-top: 80px;
+}
+
+/*CSS datagrid selected Value start*/
+.summaryCapsules {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 80px;
+  // please give variable color here (not able to find where it is)
+  background: #dcf5fa;
+  // background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(0, 165, 200, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  opacity: 0.6;
+  padding: 5px;
+  margin-left: 6px;
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+  top: 15px;
+}
+
+.summary_span {
+  display: inline-block;
+  height: 38px;
+}
+/*CSS datagrid selected Value start*/
+
+@media (min-width: 0px) and (max-width: 575px) {
+  .summaryCapsules {
+    padding: 3px;
+    margin-left: 0px;
+    font-size: 10px;
+    display: inline-block;
+    width: max-content;
+    position: static;
+  }
+
+  .summary_span {
+    display: flex;
+    align-items: flex-start;
+    height: 42px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}

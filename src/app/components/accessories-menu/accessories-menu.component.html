@@ -1,0 +1,39 @@
+<ion-grid class="main_grid">
+  <ion-row>
+    <ion-col class="main_container">
+      <ion-list lines="none" class="bg_color">
+        <ng-container *ngFor="let item of items">
+          <div *ngIf="item.isActive === 1" (click)="selectItem(item)">
+            <!-- <ion-icon slot="start" [name]="item.icon"></ion-icon> -->
+            <ion-col class="flexDirCol item_col mg_bt_24">
+              <ion-row class="mg_bt_8 mg_lt_20">
+                <ion-col
+                  [class.selected]="selectedItem.id == item.id"
+                  class="backgroundImg"
+                >
+                  <div class="imgDiv">
+                    <img
+                      src="{{ item.image }}"
+                      alt="{{ item.title }}"
+                      class="menu_images"
+                    />
+                    <ion-label
+                      class="label_color"
+                      *ngIf="selectedItem.id == item.id"
+                      >{{ item.title }}</ion-label
+                    >
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="flexCenter">
+                  <!-- <ion-label [class.selectedLabel]="selectedItem == item.name" class="menu_label">{{ item.name }}</ion-label> -->
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </div>
+        </ng-container>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>

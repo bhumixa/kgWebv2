@@ -1,0 +1,271 @@
+<ion-content>
+  <ng-container *ngIf="showException">
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-row class="ion-justify-content-between">
+          <ion-col sizeMd="auto" sizeXs="12">
+            <span class="fs20 fw600 book_appointment_title ml10Imp">
+              {{"Book Appointment" | translate}}
+            </span>
+            <!-- <ion-title class="fs20 fw600 book_appointment_title">
+              Book Appointment
+            </ion-title> -->
+          </ion-col>
+
+          <ion-col
+            sizeMd="auto"
+            sizeXs="12"
+            class="close-icon-container close-icon-container_ba"
+          >
+            <ion-icon
+              name="close-outline"
+              (click)="onClose()"
+              class="close-icon cursor"
+            ></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" class="tac">
+         {{" A few requested stones are unavailable in India. We'll process your view request with India location stones only." | translate}}
+        </ion-col>
+
+        <ion-col size="12" class="tac btn_container">
+          <ion-button (click)="onClose()" class="excel_btn mx10_i mt10Imp"
+            >OK
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+  <ng-container *ngIf="!showException">
+    <ng-container *ngIf="!isExcel && !isMail">
+      <ion-header class="ion-no-border">
+        <!-- <ion-toolbar> -->
+        <ion-row class="ion-justify-content-between popup_header_ba">
+          <ion-col sizeMd="auto" sizeXs="12">
+            <span class="fs20 fw600 book_appointment_title ml10Imp">
+             {{"Book Appointment" | translate}}
+            </span>
+            <!-- <ion-title class="fs20 fw600 book_appointment_title">
+                Book Appointment
+              </ion-title> -->
+          </ion-col>
+
+          <ion-col
+            sizeMd="auto"
+            sizeXs="12"
+            class="close-icon-container close-icon-container_ba"
+          >
+            <span class="icon-text fs14 fw400"
+              >*{{"Select Date & Time(as per IST)" | translate}}</span
+            >
+            <ion-icon
+              name="close-outline"
+              (click)="onClose()"
+              class="close-icon cursor"
+            ></ion-icon>
+          </ion-col>
+
+          <!-- <ion-col>
+              <ion-icon name="close-outline" (click)="onClose()"></ion-icon>
+            </ion-col> -->
+        </ion-row>
+        <!-- </ion-toolbar> -->
+      </ion-header>
+
+      <ion-grid>
+        <div class="stone-id-container fs12">
+          <span class="stone-id" *ngFor="let stoneId of stoneIdArr">{{
+            stoneId
+          }}</span>
+        </div>
+        <ion-row class="main-container mb16">
+          <ion-col sizeXs="12" sizeMd="6" class="date-container">
+            <p class="date-header fs14 fw600">{{"Select Date" | translate}}</p>
+            <div class="date-time-div">
+              <span
+                class="date-time fs14 fw500 cursor"
+                (click)="selectDate($event)"
+                >{{ dateToday }}</span
+              >
+              <span
+                class="date-time fs14 fw500 cursor"
+                (click)="selectDate($event)"
+                >{{ dateTommorow }}</span
+              >
+            </div>
+            <p class="note-header fs14 fw600">{{"Note" | translate}}</p>
+            <ion-textarea
+              class="note-text fs14 fw400"
+              [rows]="textareaRows"
+              (ionBlur)="onNoteChange($event)"
+            ></ion-textarea>
+          </ion-col>
+          <ion-col sizeXs="12" sizeMd="6" class="time-container">
+            <p class="fs14 fw600 time_header">{{"Select Timing"| translate}}</p>
+            <div class="time_container_div">
+              <div
+                class="date-time-div mb8"
+                *ngFor="let timeArr of timeRangeArr"
+              >
+                <span
+                  class="date-time fs14 fw500 cursor"
+                  *ngFor="let slot of timeArr; let i = index"
+                  [ngClass]="!slot.canBook ? 'disable_slot' : ''"
+                  (click)="selectTime($event, slot)"
+                  >{{ slot.slot }}</span
+                >
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row class="mb16">
+          <ion-col size="12">
+            <p class="note-header fs14 fw600">Note</p>
+          </ion-col>
+          <ion-col size="12">
+            <ion-textarea
+              class="note-text fs14 fw400"
+              rows="3"
+              (ionBlur)="onNoteChange($event)"
+            ></ion-textarea>
+          </ion-col>
+        </ion-row> -->
+        <ion-row class="ion-justify-content-center">
+          <ion-button
+            class="confirm-btn fs16 fw600"
+            (click)="onBooking()"
+            [disabled]="!!finalData.date && !!finalData.timeSlot ? false : true"
+            >{{"Confirm Booking"| translate}}</ion-button
+          >
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+    <ng-container *ngIf="isExcel || isMail">
+      <ion-header class="ion-no-border">
+        <!-- <ion-toolbar> -->
+        <ion-row class="ion-justify-content-between popup_header">
+          <ion-col class="header">
+            <span class="fs16 fw600 ml10Imp export" *ngIf="isExcel"
+              >{{"Export"| translate}}</span
+            >
+            <span class="fs16 fw600 ml10Imp email_details" *ngIf="isMail">
+              {{"Enter Email Details"| translate}}!
+            </span>
+            <!-- <ion-title class="fs16 fw600" *ngIf="isExcel"> Export </ion-title>
+              <ion-title class="fs16 fw600" *ngIf="isMail">
+                Enter Email Details!
+              </ion-title> -->
+          </ion-col>
+          <ion-col class="close-icon-container">
+            <ion-icon
+              name="close-outline"
+              (click)="onClose()"
+              class="close-icon cursor"
+            ></ion-icon>
+          </ion-col>
+        </ion-row>
+        <!-- </ion-toolbar> -->
+      </ion-header>
+      <ion-grid>
+        <ion-row class="" *ngIf="isExcel">
+          <ion-col
+            sizeXs="12"
+            sizeSm="6"
+            class="tac pr12"
+            *ngIf="isStoneSelected"
+            [ngClass]="isStoneSelected && isMobileView ? 'mb16' : ''"
+          >
+            <span class="excel_model_img_container mb12">
+              <ion-img
+                src="assets/images/excel.png"
+                alt="right_check"
+              ></ion-img>
+            </span>
+            <div class="excel_content_container">
+              <p class="fs14 fw500 m0 excel_content">
+                {{"Export"| translate}} {{ numOfSelectedStone }} {{"Selected Stones"| translate}}
+              </p>
+            </div>
+            <ion-button (click)="onExport()" class="excel_btn"
+              >{{"Export"| translate}}</ion-button
+            >
+          </ion-col>
+
+          <ion-col sizeXs="12" sizeSm="6" class="tac pl12">
+            <span class="excel_model_img_container mb12">
+              <ion-img src="assets/images/email.png" alt="excel_img"></ion-img>
+            </span>
+            <div class="excel_content_container">
+              <p class="fs14 fw500 m0 excel_content">
+                {{"Export all"| translate}} {{ totalNumOfStones }} {{"stones via email"| translate}}
+              </p>
+              <ion-label class="fs12 fw400 excel_email">{{
+                userEmail
+              }}</ion-label>
+            </div>
+            <ion-button
+              (click)="onSendNow()"
+              class="excel_btn excel_btn_sendnow"
+              >{{"Send Now"| translate}}</ion-button
+            >
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="isMail">
+          <ion-col class="tac pr12_i">
+            <span class="mail_model_img_container">
+              <ion-img
+                src="assets/images/email.png"
+                alt="right_check"
+              ></ion-img>
+            </span>
+            <ion-item class="tac">
+              <ion-input
+                placeholder="Enter email"
+                [value]="salesPersonEmail"
+                #mailInput
+              ></ion-input>
+            </ion-item>
+            <ion-item class="tac">
+              <ion-textarea
+                [placeholder]="'Enter message' | translate"
+                rows="3"
+                #mailTextarea
+              ></ion-textarea>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" class="tac btn_container" *ngIf="!sendBtn">
+            <ion-button
+              (click)="onSendEmail()"
+              class="excel_btn mx10_i mt10Imp"
+              *ngIf="isStoneSelected"
+              >{{"Send"| translate}} {{ numOfSelectedStone }} {{"Selected Stones"| translate}}</ion-button
+            >
+            <ion-button
+              (click)="onSendEmailAll()"
+              class="excel_btn mx10_i mt10Imp"
+              *ngIf="
+                !isStoneSelected ||
+                (isStoneSelected && numOfSelectedStone >= pageSize)
+              "
+              >{{"Send all" | translate}} {{ totalNumOfStones }} {{"stones via email" | translate}}</ion-button
+            >
+          </ion-col>
+          <ion-col size="12" class="tac btn_container" *ngIf="sendBtn">
+            <ion-button (click)="onSendEmail()" class="excel_btn mx10_i mt10Imp"
+              >{{"Send" | translate}}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+  </ng-container>
+</ion-content>

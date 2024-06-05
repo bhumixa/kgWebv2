@@ -1,0 +1,301 @@
+<div class="ffWhitney">
+  <ion-segment
+    scrollable
+    [(ngModel)]="selectedSegment"
+    *ngIf="onMobile && showSegment == 'true'"
+    color="primary"
+    (ionChange)="segmentChanged($event)"
+  >
+    <ion-segment-button
+      class="segmentBtn"
+      *ngFor="let sg of segments; let i = index"
+      [value]="sg.redirectTo"
+    >
+      {{ sg.title }}
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid>
+    <ion-row
+      class="mainDiv"
+      *ngIf="
+        !!_companyService.productListing &&
+        _companyService.productListing == 'card'
+      "
+    >
+      <ion-col
+        size="6"
+        size-sm="4"
+        size-xl="2"
+        size-md="3"
+        size-lg="3"
+        size-xs="6"
+        class="dy-col"
+        *ngFor="let single_product of products; let i = index"
+      >
+        <!-- <ion-row>
+      <ion-col>
+        <div *ngIf="!!single_product && single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice!=single_product.maxPrice">
+            From
+            {{single_product.minPrice}} To
+            {{single_product.maxPrice}} {{ _companyService.currency }}
+        </div>
+        <div  *ngIf="!!single_product && single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice==single_product.maxPrice">
+            {{single_product.minPrice}} {{ _companyService.currency }}
+        </div>
+      </ion-col>
+    </ion-row> -->
+        <!-- <div class="favoriteButton" (click)="addToFavorite(single_product)">
+    
+    
+        <ion-icon name="heart" *ngIf="single_product.favorite" color="danger"></ion-icon>
+        <ion-icon name="heart" *ngIf="!single_product.favorite" color="medium"></ion-icon>
+      </div> -->
+      </ion-col>
+    </ion-row>
+    <ion-row
+      class="mainDiv"
+      *ngIf="
+        !!_companyService.productListing &&
+        _companyService.productListing == 'MobileList'
+      "
+    >
+      <ion-col
+        size="12"
+        size-sm="6"
+        size-xl="4"
+        size-md="6"
+        size-lg="6"
+        size-xs="12"
+        class="dy-col"
+        *ngFor="let single_product of products; let i = index"
+      >
+        <ion-card
+          tappable
+          class="priceCardContent"
+          button="true"
+          type="button"
+          (click)="singleProduct(single_product)"
+        >
+          <!-- <div> -->
+          <script>
+            ga('create', 'UA-XXXXX-Y');
+            ga('require', 'ec');
+            ga('ec:addProduct', {
+              id: single_product.id,
+              name: single_product.name,
+              // 'category': 'Apparel',
+              // 'brand': 'Google',
+              // 'variant': 'black',
+              position: i,
+            });
+            ga('ec:setAction', 'click', { list: 'Search Results' });
+
+            // Send click with an event, then send user to product page.
+            ga('send', 'event', 'UX', 'click', 'Results');
+          </script>
+
+          <ion-card-content class="priceCardContent bgWhite">
+            <div class="outofStock" *ngIf="single_product.outOfStock == 1">
+              <img src="assets/images/sold-out.png" />
+            </div>
+            <ion-row class="product-name">
+              {{ productTitle(single_product.name) }}
+            </ion-row>
+            <!-- <ion-row class="product-name" (click)="singleProduct(single_product)"> #{{ single_product.sku }} </ion-row> -->
+            <ion-row
+              class="priceTag"
+              *ngIf="
+                !!single_product &&
+                single_product.maxPrice != null &&
+                single_product.minPrice != null &&
+                single_product?.minPrice != single_product.maxPrice
+              "
+            >
+              <ion-col class="noPadding">
+                From
+                {{ single_product.minPrice }} To {{ single_product.maxPrice }}
+                {{ _companyService.currency }}
+              </ion-col>
+              <ion-col class="fr tar">
+                <ion-col
+                  class="ion-align-self-end"
+                  size="2"
+                  tappable
+                  (click)="
+                    addToFavorite(single_product); $event.stopPropagation()
+                  "
+                  *ngIf="!hideFavourites"
+                >
+                  <ion-icon
+                    name="heart"
+                    *ngIf="single_product.favorite"
+                    color="danger"
+                  ></ion-icon>
+                  <ion-icon
+                    name="heart"
+                    *ngIf="!single_product.favorite"
+                    color="medium"
+                  ></ion-icon>
+                </ion-col>
+                <!-- <ion-col class="ion-align-self-end" size="2" (click)="addToCart(single_product);$event.stopPropagation()"> -->
+                <!-- <ion-icon class="cursor fs20" color="primary" name="cart"></ion-icon> -->
+                <!-- </ion-col> -->
+              </ion-col>
+            </ion-row>
+            <ion-row
+              class="priceTag"
+              *ngIf="
+                !!single_product &&
+                single_product.maxPrice != null &&
+                single_product.minPrice != null &&
+                single_product?.minPrice == single_product.maxPrice &&
+                single_product.minPrice != 0
+              "
+            >
+              <ion-col class="noPadding">
+                {{ single_product.minPrice }} {{ _companyService.currency }}
+              </ion-col>
+              <ion-col class="fr tar">
+                <ion-col
+                  class="ion-align-self-end"
+                  size="2"
+                  tappable
+                  (click)="
+                    addToFavorite(single_product); $event.stopPropagation()
+                  "
+                  *ngIf="!hideFavourites"
+                >
+                  <ion-icon
+                    name="heart"
+                    *ngIf="single_product.favorite"
+                    color="danger"
+                  ></ion-icon>
+                  <ion-icon
+                    name="heart"
+                    *ngIf="!single_product.favorite"
+                    color="medium"
+                  ></ion-icon>
+                </ion-col>
+                <!-- <ion-col class="ion-align-self-end" size="2" (click)="addToCart(single_product);$event.stopPropagation()"> -->
+                <!-- <ion-icon class="cursor fs20" color="primary" name="cart"></ion-icon> -->
+                <!-- </ion-col> -->
+              </ion-col>
+            </ion-row>
+            <ion-row
+              class="priceTag"
+              *ngIf="
+                !!single_product &&
+                single_product.maxPrice != null &&
+                single_product.minPrice != null &&
+                single_product?.minPrice == single_product.maxPrice &&
+                single_product.minPrice == 0
+              "
+            >
+              <ion-col class="noPadding"> TBD </ion-col>
+              <ion-col class="fr tar">
+                <ion-col
+                  class="ion-align-self-end"
+                  size="2"
+                  tappable
+                  (click)="
+                    addToFavorite(single_product); $event.stopPropagation()
+                  "
+                  *ngIf="!hideFavourites"
+                >
+                  <ion-icon
+                    name="heart"
+                    *ngIf="single_product.favorite"
+                    color="danger"
+                  ></ion-icon>
+                  <ion-icon
+                    name="heart"
+                    *ngIf="!single_product.favorite"
+                    color="medium"
+                  ></ion-icon>
+                </ion-col>
+                <!-- <ion-col class="ion-align-self-end" size="2" (click)="addToCart(single_product);$event.stopPropagation()"> -->
+                <!-- <ion-icon class="cursor fs20" color="primary" name="cart"></ion-icon> -->
+                <!-- </ion-col> -->
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <ion-row *ngIf="!!single_product">
+          <!-- <ion-col size="12">
+        <div class="productTitle mainTitle">
+            {{productTitle(single_product.name)}}
+        </div>
+      </ion-col> -->
+        </ion-row>
+        <!-- <ion-row>
+      <ion-col>
+        <div *ngIf="!!single_product && single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice!=single_product.maxPrice">
+            From
+            {{single_product.minPrice}} To
+            {{single_product.maxPrice}} {{ _companyService.currency }}
+        </div>
+        <div  *ngIf="!!single_product && single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice==single_product.maxPrice">
+            {{single_product.minPrice}} {{ _companyService.currency }}
+        </div>
+      </ion-col>
+    </ion-row> -->
+        <!-- <div class="favoriteButton" (click)="addToFavorite(single_product)">
+    
+    
+        <ion-icon name="heart" *ngIf="single_product.favorite" color="danger"></ion-icon>
+        <ion-icon name="heart" *ngIf="!single_product.favorite" color="medium"></ion-icon>
+      </div> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div *ngIf="products.length == 0 && !showSkeleton" class="ffWhitney tac">
+  No Products Found
+</div>
+<div
+  class="ffWhitney"
+  *ngIf="
+    showSkeleton &&
+    !!_companyService.productListing &&
+    _companyService.productListing == 'card'
+  "
+>
+  <ion-row class="mainDiv">
+    <ion-col
+      size="6"
+      size-sm="4"
+      size-xl="2"
+      size-md="3"
+      size-lg="3"
+      size-xs="6"
+      *ngFor="let data of configService.arrayOne(18); let idx = index"
+    >
+      <ion-skeleton-text animated class="h333-skel"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+</div>
+
+<div
+  class="ffWhitney"
+  *ngIf="
+    showSkeleton &&
+    !!_companyService.productListing &&
+    _companyService.productListing == 'MobileList'
+  "
+>
+  <ion-row class="mainDiv">
+    <ion-col
+      size="12"
+      size-sm="6"
+      size-xl="4"
+      size-md="6"
+      size-lg="6"
+      size-xs="12"
+      *ngFor="let data of configService.arrayOne(18); let idx = index"
+    >
+      <ion-skeleton-text animated class="h333-skel"></ion-skeleton-text>
+    </ion-col>
+  </ion-row>
+</div>

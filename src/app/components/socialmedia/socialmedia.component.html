@@ -1,0 +1,181 @@
+<ion-grid>
+  <ng-container *ngIf="type == 'Instagram'">
+    <ion-row *ngIf="!!postPhotos && postPhotos.length > 0 && !showSkeleton">
+      <ion-col
+        id="fadeshow-1"
+        *ngFor="let p of postPhotos"
+        size="2"
+        size-xs="6"
+        size-sm="6"
+        size-md="6"
+        size-lg="2"
+        size-xl="2"
+      >
+        <ion-card (click)="openInstagram(p)" class="instagram-photo">
+          <ion-card-header class="marPad0">
+            <img
+              *ngIf="!p.thumbnail_url"
+              [src]="p.thumbnail_url"
+              class="instagramFixHgt imgLoadingBg"
+              [ngStyle]="{ 'background-image': 'url(assets/icon/loading.gif)' }"
+            />
+            <img [src]="p.thumbnail_url" class="instagramFixHgt imgLoadingBg" />
+          </ion-card-header>
+          <ion-card-content>
+            <!-- <ion-title class="instaUsername" *ngIf="!!p.author_name">{{ p.author_name }}</ion-title> -->
+            <ion-card-subtitle>{{ p.author_name }}</ion-card-subtitle>
+            <ion-card-title class="instagramCaption">{{
+              p.title
+            }}</ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        id="fadeshow-2"
+        *ngFor="let p of postPhotos"
+        size="12"
+        size-xs="12"
+        size-sm="6"
+        size-md="6"
+        size-lg="2"
+        size-xl="2"
+      >
+        <ion-card (click)="openInstagram(p)" class="instagram-photo">
+          <ion-card-header class="marPad0">
+            <img
+              *ngIf="!p.thumbnail_url"
+              [src]="p.thumbnail_url"
+              class="instagramFixHgt imgLoadingBg"
+              [ngStyle]="{ 'background-image': 'url(assets/icon/loading.gif)' }"
+            />
+            <img [src]="p.thumbnail_url" class="instagramFixHgt imgLoadingBg" />
+          </ion-card-header>
+          <ion-card-content>
+            <!-- <ion-title class="instaUsername" *ngIf="!!p.author_name">{{ p.author_name }}</ion-title> -->
+            <ion-card-subtitle>{{ p.author_name }}</ion-card-subtitle>
+            <ion-card-title class="instagramCaption">{{
+              p.title
+            }}</ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ng-container *ngIf="type == 'Facebook'">
+    <ion-row *ngIf="!!postPhotos && postPhotos.length > 0 && !showSkeleton">
+      <ion-col
+        id="fadeshow-1"
+        *ngFor="let p of postPhotos"
+        size="2"
+        size-sm="6"
+        size-md="6"
+        size-lg="2"
+        size-xl="2"
+      >
+        <ion-card>
+          <ion-card-content>
+            <iframe
+              *ngIf="!!p.link"
+              width="100%"
+              height="200"
+              [src]="p.link"
+              allowTransparency="true"
+              allow="encrypted-media"
+            ></iframe>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col id="fadeshow-2">
+        <!-- <ion-slides pager="true" [options]="slideOptsForInstagram" class="product marPad0">
+          <ion-slide *ngFor="let p of postPhotos; let i = index" class="slider" (click)="openInstagram(p)">
+            <ion-card>
+              <ion-card-content>
+                <iframe *ngIf="!!p.link" width="100%" height="200" [src]="p.link" allowTransparency="true"
+                  allow="encrypted-media"></iframe>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides> -->
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ng-container *ngIf="type == 'Twitter'">
+    <ion-row *ngIf="!!postPhotos && postPhotos.length > 0 && !showSkeleton">
+      <ion-col
+        id="fadeshow-1"
+        *ngFor="let p of postPhotos"
+        size="3"
+        size-sm="8"
+        size-md="8"
+        size-lg="4"
+        size-xl="4"
+      >
+        <ion-card>
+          <ion-card-content class="twitterCard">
+            <!-- <blockquote class="twitter-tweet" width="100%">
+            <iframe  *ngIf="!!p.link"  [src]="p.link" allowTransparency="true"
+              allow="encrypted-media"></iframe>
+            </blockquote> -->
+            <!-- {{p.link}} -->
+            <!-- <iframe *ngIf="!!p.link" width="100%" height="200" [src]="p.link" allowTransparency="true"
+                  allow="encrypted-media"></iframe> -->
+            <!-- https://twitter.com/dominos_india/status/1279691797027909634?ref_src=twsrc%5Etfw
+            https://twitter.com/kevalkevadiya44/status/1280117905485512705?ref_src=twsrc%5Etfw -->
+            <a class="twitter-timeline" [href]="p.link"></a>
+            <!-- <a class="twitter-timeline" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw">Tweets by TwitterDev</a> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col id="fadeshow-2">
+        <!-- <ion-slides
+          pager="true"
+          [options]="slideOptsForInstagram"
+          class="product marPad0"
+        >
+          <ion-slide
+            *ngFor="let p of postPhotos; let i = index"
+            class="slider"
+            (click)="openInstagram(p)"
+          >
+            <ion-card>
+              <ion-card-content>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides> -->
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ion-row *ngIf="showSkeleton && (type == 'Facebook' || type == 'Instagram')">
+    <ion-col
+      id="fadeshow-1"
+      *ngFor="let data of _configService.arrayOne(12)"
+      size="2"
+      size-sm="6"
+      size-md="6"
+      size-lg="2"
+      size-xl="2"
+    >
+      <ion-card class="instagram-photo">
+        <ion-card-header>
+          <ion-skeleton-text
+            animated
+            class="instagramFixHgt imgLoadingBg"
+          ></ion-skeleton-text>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-card-subtitle>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-card-subtitle>
+          <ion-card-title class="instagramCaption">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-card-title>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col id="fadeshow-2"> </ion-col>
+  </ion-row>
+</ion-grid>

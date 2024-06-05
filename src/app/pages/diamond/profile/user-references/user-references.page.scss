@@ -1,0 +1,41 @@
+.error-message
+{
+  color: red;
+  font-size: 14px;
+  margin-left: 10px;
+  margin-top: 10px;
+  text-align:left;
+}
+
+.submit-btn {
+  margin-top: 40px;
+}
+
+.width{
+    min-width: 400px;
+    max-width: 600px;
+}
+.frm
+{
+	text-align:-webkit-center;
+}
+.srchBox
+{
+	border: 1px solid var(--ion-color-primary);
+    padding: 15px;
+	min-width:60px;
+	cursor:pointer;
+	text-align:center;
+}
+.srchBoxSelected
+{
+	border: 1px solid var(--ion-color-primary);
+	border-left-color: white;
+	border-right-color: white;
+    padding: 15px;
+	min-width: 60px;
+	cursor: pointer;
+	background: var(--ion-color-primary);
+	color: white;	
+	text-align:center;
+}

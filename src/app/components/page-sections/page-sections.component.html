@@ -1,0 +1,1194 @@
+<ion-row class="clsFooterRow" *ngIf="!!header && !hideHeader">
+  <ion-col>
+    <div [innerHtml]="header" class="ffWhitney clsMainData"></div>
+  </ion-col>
+</ion-row>
+<div *ngIf="data">
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePage && isUserExists"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <div class="crown">
+        <img
+          [class.margintop_15]="!isCustomerExists"
+          src="https://img.mobioffice.io/api/containers/1/download/2baa12e6-3773-4859-866b-d5ae9bb43473.png"
+        />
+      </div>
+      <div *ngIf="isCustomerExists" class="display_grid">
+        <ion-card-title>
+          {{ schema.userRes[0].customerDetails[0].companyName }}
+        </ion-card-title>
+        <ion-card-subtitle>
+          {{ schema.userRes[0].fullName }},
+          {{ schema.userRes[0].customerDetails[0].city }}
+        </ion-card-subtitle>
+      </div>
+      <div *ngIf="!isCustomerExists">
+        <ion-card-title> {{ schema.userRes[0].fullName }}</ion-card-title>
+      </div>
+    </ion-card-header>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePage && isUserExists"
+    (click)="orderPage('pending')"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Pending Orders</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="schema.pendingOrders.count[0]['count(*)'] == 0">
+        <ion-col size="12">
+          <ion-row>
+            <ion-col class="pendingOrdersQty"> None </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="schema.pendingOrders.count[0]['count(*)'] != 0">
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-row>
+            <ion-col class="pendingOrdersQty">
+              {{ schema.pendingOrders.count[0]['count(*)'] }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-label>Pending Orders</ion-label>
+          <ion-row>
+            <ion-col>
+              <b>Order Id </b>
+            </ion-col>
+            <ion-col>
+              <b>Date</b>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngFor="let schema of schema.pendingOrders.latestPendingOrders"
+          >
+            <ion-col> #{{ schema.serialNumber }} </ion-col>
+            <ion-col>
+              {{ schema.addedOn }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePage && isUserExists && isDispatchExists"
+    (click)="dispatchRedirect()"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Dispatch Orders</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="!!schema.dispatch && schema.dispatch.length > 0">
+        <ion-col size="12">
+          <ion-label>Latest Dispatch</ion-label>
+          <ion-row>
+            <ion-col>
+              <b> Ship From </b>
+            </ion-col>
+            <ion-col>
+              <b> Tracking No </b>
+            </ion-col>
+            <ion-col>
+              <b> Ship Date </b>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let schema of schema.dispatch">
+            <ion-col>
+              {{ schema.shipVia }}
+            </ion-col>
+            <ion-col>
+              {{ schema.trackingNo }}
+            </ion-col>
+            <ion-col>
+              {{ schema.shipDate }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePage && isUserExists && isSchemaExists"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Schemes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-lg="0.5" size-md="1" size-sm="2" size-xs="2">
+          <ion-button class="h100" fill="clear" (click)="prev2()">
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col
+          size-lg="11"
+          size-md="10"
+          size-sm="8"
+          size-xs="8"
+          (click)="schemaRedirect()"
+        >
+          <!-- <ion-slides
+            #sliderScheme
+            class="w100"
+            [options]="
+              !!screenWidth &&
+              (screenWidth > 500
+                ? 'slideOptionsForSchemes'
+                : 'slideOptionsForSchemesSmallScreen')
+            "
+          >
+            <ion-slide
+              class="slider slideScheme"
+              *ngFor="let schema of schema.schemes"
+            >
+              <ion-col>
+                <ion-row>
+                  <img [src]="schema.image" class="hwauto mh200pImp" />
+                </ion-row>
+                <ion-row>
+                  <ion-label class="schemeText">{{ schema.name }}</ion-label>
+                </ion-row>
+              </ion-col>
+            </ion-slide>
+            <ion-slide class="slider slideScheme">
+              <ion-col>
+                <ion-row>
+                  <ion-button class="mauto">View All</ion-button>
+                </ion-row>
+              </ion-col>
+            </ion-slide>
+          </ion-slides> -->
+        </ion-col>
+        <ion-col size-lg="0.5" size-md="1" size-sm="2" size-xs="2">
+          <ion-button class="h100" fill="clear" (click)="next2()">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePage && isUserExists"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Outstanding</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-label *ngIf="!isOutStandingAmount.outstandingAmount"
+            >Total Outstanding Amount
+          </ion-label>
+          <ion-label *ngIf="!!isOutStandingAmount.outstandingAmount"
+            >Total Outstanding Amount as on
+            {{ isOutStandingAmount.creditUpdate }}</ion-label
+          >
+          <ion-row>
+            <ion-col>
+              <ion-label
+                class="amount colorRed"
+                *ngIf="isOutStandingAmount.outstandingAmount != 0"
+              >
+                {{ _companyService.currency }}
+                {{ isOutStandingAmount.outstandingAmount }}
+              </ion-label>
+              <ion-label
+                class="amount colorRed"
+                *ngIf="isOutStandingAmount.outstandingAmount == 0"
+              >
+                None
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isOutStandingAmount.outstandingAmount != 0">
+            <ion-col class="tar">
+              <ion-button
+                class="w100"
+                (click)="
+                  payWithRazorForMobile(isOutStandingAmount.outstandingAmount)
+                "
+                >Pay now
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-row>
+            <ion-col>
+              <ion-label>Credit Limit</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label
+                class="amount"
+                *ngIf="isOutStandingAmount.creditLimit != 0"
+                >Days {{ isOutStandingAmount.creditLimit }}
+              </ion-label>
+              <ion-label
+                class="amount"
+                *ngIf="isOutStandingAmount.creditLimit == 0"
+              >
+                None
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngFor="let card of data">
+    <ion-row *ngIf="card.showSectionName">
+      <ion-col
+        class="tac sectionName"
+        *ngIf="!card?.products || card?.products.length == 0"
+      >
+        <ion-label>{{ card.name }}</ion-label>
+      </ion-col>
+      <ion-col
+        class="tac sectionName"
+        *ngIf="
+          !!card?.products &&
+          card?.products.length > 0 &&
+          !card?.products[0]?.shortImage
+        "
+      >
+        <ion-label>{{ card.name }}</ion-label>
+        <ion-label
+          tappable
+          *ngIf="
+            card.shop_section[0].name == 'ProductNormal' &&
+            !!card?.products &&
+            card?.products.length > 0 &&
+            card.collectionName
+          "
+          (click)="viewAll(card.collectionName)"
+          class="viewCollection"
+          >See All</ion-label
+        >
+      </ion-col>
+      <ion-col
+        class="sectionName tac"
+        *ngIf="
+          !!card?.products &&
+          card?.products.length > 0 &&
+          !!card?.products[0]?.shortImage
+        "
+      >
+        <img
+          class="image"
+          *ngIf="card.products[0].shortImage.includes('img.mobioffice.io')"
+          [src]="card.products[0].shortImage"
+        />
+        <img
+          data-src="https://res.cloudinary.com/dealerclub/image/upload/w_auto,c_scale{{
+            card.products[0].shortImage
+          }}"
+          alt=""
+          class="height-50 cld-responsive"
+        />
+        &nbsp; &nbsp;
+        <ion-label
+          tappable
+          *ngIf="
+            card.shop_section[0].name == 'ProductNormal' &&
+            !!card?.products &&
+            card?.products.length > 0 &&
+            card.collectionName
+          "
+          (click)="viewAll(card.collectionName)"
+          class="viewCollection"
+          >See All</ion-label
+        >
+      </ion-col>
+    </ion-row>
+
+    <!-- for social media -->
+
+    <div
+      *ngIf="
+        card.shop_section[0].name == 'Instagram' ||
+        card.shop_section[0].name == 'Facebook' ||
+        card.shop_section[0].name == 'Twitter'
+      "
+    >
+      <app-socialmedia
+        [name]="card.collectionName"
+        [type]="card.shop_section[0].name"
+        [offset]="offset"
+        [limit]="
+          card.noOfProducts && card.noOfProducts > 0 ? card.noOfProducts : limit
+        "
+      ></app-socialmedia>
+    </div>
+
+    <ion-row *ngIf="card.shop_section[0].name == 'companyLogo'">
+      <ion-col size="4"> </ion-col>
+      <ion-col
+        size="4"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <img class="sectionLogo" [src]="listOfSectionImage.link" />
+      </ion-col>
+      <ion-col size="4"> </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="card.shop_section[0].name == 'inlinelistview'">
+      <ion-col size="12">
+        <ul class="kgLiNode tac">
+          <li
+            class="kgFooterLi"
+            *ngFor="let listOfSectionImage of card.shop_sectionImage"
+          >
+            <a [href]="listOfSectionImage.redirectTo">{{
+              listOfSectionImage.name
+            }}</a>
+          </li>
+        </ul>
+
+        <ul class="floatRight">
+          <li tappable class="kgFooterLi alignRight headerLi" (click)="login()">
+            <ion-icon
+              color="primary"
+              name="contact"
+              class="fontSize"
+            ></ion-icon>
+            Sign in / Register
+          </li>
+          <li
+            tappable
+            class="kgFooterLi alignRight headerLi"
+            (click)="openCart()"
+          >
+            <ion-icon color="primary" name="cart" class="fontSize"></ion-icon>
+          </li>
+        </ul>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="card.shop_section[0].name == 'headers'">
+      <ion-col size="12">
+        <ul class="headerHomeLink tac">
+          <li
+            class="kgFooterLi"
+            *ngFor="let dt of companyJson.homePageHeaderLinks"
+          >
+            <a [href]="dt.redirectTo">{{ dt.title }}</a>
+          </li>
+        </ul>
+
+        <ul class="floatRight">
+          <li
+            tappable
+            class="kgFooterLi alignRight headerLi"
+            (click)="login()"
+            *ngIf="!hideSignIn"
+          >
+            <ion-icon
+              color="primary"
+              name="contact"
+              class="fontSize"
+            ></ion-icon>
+            Sign in / Register
+          </li>
+          <li
+            class="kgFooterLi alignRight headerLi"
+            (click)="myProfile()"
+            *ngIf="!hideUser"
+          >
+            <ion-icon
+              color="primary"
+              name="contact"
+              class="fontSize"
+            ></ion-icon>
+          </li>
+          <li class="kgFooterLi alignRight headerLi" (click)="openCart()">
+            <ion-icon color="primary" name="cart" class="fontSize"></ion-icon>
+          </li>
+        </ul>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="card.shop_section[0].name == 'Image'">
+      <ion-col
+        size="12"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="img1Card vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            class="image"
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+            [src]="listOfSectionImage.link"
+          />
+          <img
+            data-src="https://res.cloudinary.com/dealerclub/image/upload/w_auto,c_scale{{
+              listOfSectionImage.link
+            }}"
+            alt=""
+            class="cld-responsive"
+          />
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image1'">
+      <ion-col
+        size="12"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="img1Card vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            class="image1"
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+            [src]="listOfSectionImage.link"
+          />
+          <!-- <cl-image [public-id]="listOfSectionImage.link" class="image1" fetch-format="auto" loading="lazy"
+            secure="true" *ngIf="!listOfSectionImage.link.includes('img.mobioffice.io')">
+            <cl-transformation responsive [attr.width]="!!screenWidth?screenWidth: 'auto'" dpr="auto" quality="auto"
+              fetch-format="auto" crop="scale"></cl-transformation>
+            <cl-placeholder type="predominant"></cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image2'">
+      <ion-col
+        size="6"
+        size-md="6"
+        size-sm="12"
+        size-xs="12"
+        size-lg="6"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+            [src]="listOfSectionImage.link"
+          />
+          <!-- <cl-image
+            [public-id]="listOfSectionImage.link"
+            fetch-format="auto"
+            loading="lazy"
+            responsive
+            dpr="auto"
+            secure="true"
+            quality="auto"
+            crop="scale"
+            *ngIf="!listOfSectionImage.link.includes('img.mobioffice.io')"
+          >
+            <cl-transformation
+              [attr.width]="!!screenWidth ? Math.ceil(screenWidth / 2) : 'auto'"
+            >
+            </cl-transformation>
+            <cl-placeholder type="predominant"> </cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image3'">
+      <ion-col
+        size="4"
+        size-md="6"
+        size-sm="12"
+        size-xs="12"
+        size-lg="4"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            [src]="changeImage(listOfSectionImage.link, 'large')"
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+          />
+          <!-- <cl-image
+            [public-id]="listOfSectionImage.link"
+            fetch-format="auto"
+            loading="lazy"
+            secure="true"
+            [attr.width]="!!screenWidth ? Math.ceil(screenWidth / 3) : 'auto'"
+            responsive
+            dpr="auto"
+            quality="auto"
+            crop="scale"
+            *ngIf="!listOfSectionImage.link.includes('img.mobioffice.io')"
+          >
+            <cl-transformation></cl-transformation>
+            <cl-placeholder type="predominant"></cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image4'">
+      <ion-col
+        size="3"
+        size-md="3"
+        size-sm="6"
+        size-xs="6"
+        size-lg="3"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            [src]="changeImage(listOfSectionImage.link, 'micro')"
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+          />
+          <!-- <cl-image
+            [public-id]="listOfSectionImage.link"
+            fetch-format="auto"
+            loading="lazy"
+            secure="true"
+            [attr.width]="!!screenWidth ? Math.ceil(screenWidth / 4) : 'auto'"
+            responsive
+            dpr="auto"
+            quality="auto"
+            crop="scale"
+            *ngIf="!listOfSectionImage.link.includes('img.mobioffice.io')"
+          >
+            <cl-transformation></cl-transformation>
+            <cl-placeholder type="predominant"></cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image6'">
+      <ion-col
+        size="2"
+        size-md="2"
+        size-sm="4"
+        size-xs="4"
+        size-lg="2"
+        *ngFor="let listOfSectionImage of card.shop_sectionImage"
+      >
+        <ion-card
+          tappable
+          class="vab"
+          (click)="openPage(listOfSectionImage, false)"
+        >
+          <img
+            [src]="changeImage(listOfSectionImage.link, 'mini')"
+            *ngIf="listOfSectionImage.link.includes('img.mobioffice.io')"
+          />
+          <!-- <cl-image
+            [public-id]="listOfSectionImage.link"
+            fetch-format="auto"
+            loading="lazy"
+            secure="true"
+            [attr.width]="!!screenWidth ? Math.ceil(screenWidth / 6) : 'auto'"
+            responsive
+            dpr="auto"
+            quality="auto"
+            crop="scale"
+            *ngIf="!listOfSectionImage.link.includes('img.mobioffice.io')"
+          >
+            <cl-transformation></cl-transformation>
+            <cl-placeholder type="predominant"></cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'ImageWithHtml'">
+      <ion-col size="6" size-md="6" size-sm="12" size-xs="12" size-lg="6">
+        <ion-card
+          tappable
+          class="vab"
+          (click)="openPage(card.shop_sectionImage[0], false)"
+        >
+          <img
+            [src]="changeImage(card.shop_sectionImage[0].link, 'large')"
+            *ngIf="card.shop_sectionImage[0].link.includes('img.mobioffice.io')"
+          />
+          <!-- <cl-image
+            [public-id]="card.shop_sectionImage[0].link"
+            fetch-format="auto"
+            loading="lazy"
+            secure="true"
+            [attr.width]="!!screenWidth ? Math.ceil(screenWidth / 2) : 'auto'"
+            responsive
+            dpr="auto"
+            quality="auto"
+            crop="scale"
+            *ngIf="
+              !card.shop_sectionImage[0].link.includes('img.mobioffice.io')
+            "
+          >
+            <cl-transformation></cl-transformation>
+            <cl-placeholder type="predominant"></cl-placeholder>
+          </cl-image> -->
+        </ion-card>
+      </ion-col>
+      <ion-col size="6" size-md="6" size-sm="12" size-xs="12" size-lg="6">
+        <ion-card tappable class="vab imgWithHTMLCard">
+          <div [innerHtml]="card.shop_sectionImage[0].customHTML"></div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Html'">
+      <ion-col
+        size="9"
+        size-md="9"
+        size-sm="12"
+        size-xs="12"
+        size-lg="9"
+        style="margin: 0 auto"
+      >
+        <ion-card tappable class="vab">
+          <div [innerHtml]="card.shop_sectionImage[0].customHTML"></div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="
+        card.shop_section[0].name == 'ProductNormal' &&
+        !!card?.products &&
+        card?.products.length > 0
+      "
+    >
+      <app-collection-component
+        showSegment="false"
+        class="w100"
+        [hideStorePrice]="!card?.showPrice"
+        [hideFavourites]="!card?.showPrice"
+        [products]="(card?.products)[0]?.listOfProducts"
+      >
+      </app-collection-component>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'ProductSmall'">
+      <!-- <ion-col size="0.5">
+        <ion-button class="h100" fill="clear" (click)="prev()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="11">
+        <ion-slides #slider [options]="!!screenWidth && screenWidth > 500 ? slideOpts : slideOptionsForSmallScreen">
+          <ion-slide *ngFor="let productImage of (card?.products)[0]?.listOfProducts; let i = index" tappable
+            class="slider mAuto" (click)="openPage(productImage, true)">
+            <img [src]="changeImage((productImage?.listOfImages)[0].image, 'nano')"
+              *ngIf="productImage?.listOfImages[0].image.includes('img.mobioffice.io')" />
+            <cl-image [public-id]="(productImage?.listOfImages)[0].image" fetch-format="auto" loading="lazy"
+              secure="true" [attr.width]="!!screenWidth ? screenWidth : 'auto'" responsive dpr="auto" quality="auto"
+              crop="scale" *ngIf="!productImage?.listOfImages[0].image.includes('img.mobioffice.io')">
+              <cl-transformation></cl-transformation>
+              <cl-placeholder type="predominant"></cl-placeholder>
+            </cl-image>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col size="0.5">
+        <ion-button class="h100" fill="clear" (click)="next()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-col> -->
+      <ion-col
+        size="3"
+        size-md="1"
+        size-sm="3"
+        size-xs="3"
+        size-lg="1"
+        class="dy-col"
+        *ngFor="
+          let single_product of (card?.products)[0]?.listOfProducts;
+          let i = index
+        "
+      >
+        <ion-card
+          *ngIf="i < card.noOfProducts"
+          tappable
+          class="marPad0 priceCardContent img-card tac"
+          (click)="openPage(single_product, true)"
+        >
+          <div class="imgInList imgHgt">
+            <img
+              [src]="
+                changeImage((single_product?.listOfImages)[0].image, 'nano')
+              "
+              *ngIf="
+                single_product?.listOfImages &&
+                single_product?.listOfImages[0]?.image?.includes(
+                  'img.mobioffice.io'
+                )
+              "
+            />
+            <!-- <cl-image
+              responsive
+              quality="auto"
+              [ngClass]="
+                !!single_product.transitionDelay ? 'transitionDelay' : ''
+              "
+              fetch_format="auto"
+              crop="fill"
+              [public-id]="single_product.listOfImages[0].image"
+              fetch-format="auto"
+              loading="lazy"
+              secure="true"
+              *ngIf="
+                single_product?.listOfImages?.length > 0 &&
+                single_product.listOfImages[0].image.includes('/')
+              "
+              class="mAuto"
+            >
+              <cl-transformation
+                width="180"
+                height="255"
+                gravity="auto"
+                crop="fill"
+              ></cl-transformation>
+              <cl-placeholder type="predominant"></cl-placeholder>
+            </cl-image> -->
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'Image1WithScroll'">
+      <ion-col size="0.5">
+        <ion-button class="h100" fill="clear" (click)="prevImage1WithScroll()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="11"> </ion-col>
+      <ion-col size="0.5">
+        <ion-button class="h100" fill="clear" (click)="nextImage1WithScroll()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'ProductReviews'">
+      <!-- <ion-col size="1">
+        <ion-button class="h100" fill="clear" (click)="prev1()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="10">
+        <ion-slides #slider1 [options]="!!screenWidth && screenWidth < 500 ? slideOpts1 : slideOptions1ForSmallScreen">
+          <ion-slide *ngFor="let productImage of (card?.products)[0]?.listOfProducts; let i = index" tappable
+            class="slider mAuto ffWhitney" (click)="openPage(productImage, true)">
+            <ion-row>
+              <ion-col>
+                <ion-row>
+                  <ion-col class="tac">
+                    <span *ngFor="let i of getNumbers((productImage?.listOfReview.listOfReviews)[0].review)">
+                      <ion-icon name="star"></ion-icon>
+                    </span>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="reviewTitle">
+                    {{ (productImage?.listOfReview.listOfReviews)[0].title }}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="reviewDescription">
+                    {{ (productImage?.listOfReview.listOfReviews)[0].description }} &nbsp;
+                    <b>-{{ (productImage?.listOfReview.listOfReviews)[0].name }}</b>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+              <ion-col>
+                <img [src]="changeImage((productImage?.listOfImages)[0].image, 'nano')"
+                  *ngIf="productImage?.listOfImages[0].image.includes('img.mobioffice.io')" />
+                <cl-image [public-id]="(productImage?.listOfImages)[0].image" fetch-format="auto" loading="lazy"
+                  secure="true" [attr.width]="!!screenWidth ? screenWidth/4 : 'auto'" responsive dpr="auto" quality="auto"
+                  crop="scale" *ngIf="!productImage?.listOfImages[0].image.includes('img.mobioffice.io')">
+                  <cl-transformation></cl-transformation>
+                  <cl-placeholder type="predominant"></cl-placeholder>
+                </cl-image>
+              </ion-col>
+            </ion-row>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col size="1">
+        <ion-button class="h100" fill="clear" (click)="next1()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-col> -->
+      <ion-col
+        *ngFor="
+          let productImage of (card?.products)[0]?.listOfProducts;
+          let i = index
+        "
+        tappable
+        (click)="openPage(productImage, true)"
+        size-xs="12"
+        size-sm="6"
+        size-md="4"
+        size="2"
+        size-lg="2"
+        size-xl="2"
+      >
+        <ion-row class="marPad0">
+          <ion-col
+            *ngFor="let review of productImage?.listOfReview?.listOfReviews"
+            class="marPad0"
+          >
+            <ion-row class="marPad0">
+              <ion-col class="marPad0" size="6">
+                <ion-row class="marPad0">
+                  <ion-col class="tac" size="12">
+                    <span *ngFor="let i of getNumbers(review.review)">
+                      <ion-icon name="star" class="ratingColor"></ion-icon>
+                    </span>
+                  </ion-col>
+                  <ion-col class="reviewTitle" size="12">
+                    {{ review.title }}
+                  </ion-col>
+                  <ion-col class="reviewDescription" size="12">
+                    {{ splits(review.description) }} &nbsp;
+                    <b>-{{ review.name }}</b>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+              <ion-col size="6" class="height100">
+                <img
+                  [src]="
+                    changeImage((productImage?.listOfImages)[0].image, 'nano')
+                  "
+                  *ngIf="
+                    productImage?.listOfImages[0].image.includes(
+                      'img.mobioffice.io'
+                    )
+                  "
+                />
+                <!-- <cl-image
+                  [public-id]="(productImage?.listOfImages)[0].image"
+                  fetch-format="auto"
+                  loading="lazy"
+                  secure="true"
+                  [attr.width]="
+                    !!screenWidth ? Math.ceil(screenWidth / 3) : 'auto'
+                  "
+                  responsive
+                  dpr="auto"
+                  quality="auto"
+                  crop="scale"
+                  *ngIf="
+                    !productImage?.listOfImages[0].image.includes(
+                      'img.mobioffice.io'
+                    )
+                  "
+                >
+                  <cl-transformation
+                    width="180"
+                    height="155"
+                    gravity="auto"
+                    crop="fill"
+                  ></cl-transformation>
+                  <cl-placeholder type="predominant"></cl-placeholder>
+                </cl-image> -->
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="card.shop_section[0].name == 'BySearch'">
+      <ion-col
+        size="2"
+        size-md="2"
+        size-sm="4"
+        size-xs="4"
+        size-lg="2"
+        *ngFor="let param of card.parameters"
+      >
+        <ion-card
+          tappable
+          class="sectionBackground ion_card_home"
+          (click)="openParam(param, card)"
+        >
+          <ion-row>
+            <ion-col class="tac mAuto">
+              {{ param.value }}
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePageBottom && isUserExists"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <div class="crown">
+        <img
+          [class.margintop_15]="!isCustomerExists"
+          src="https://img.mobioffice.io/api/containers/1/download/2baa12e6-3773-4859-866b-d5ae9bb43473.png"
+        />
+      </div>
+      <div *ngIf="isCustomerExists" class="display_grid">
+        <ion-card-title>
+          {{ schema.userRes[0].customerDetails[0].companyName }}
+        </ion-card-title>
+        <ion-card-subtitle>
+          {{ schema.userRes[0].fullName }},
+          {{ schema.userRes[0].customerDetails[0].city }}
+        </ion-card-subtitle>
+      </div>
+      <div *ngIf="!isCustomerExists">
+        <ion-card-title> {{ schema.userRes[0].fullName }}</ion-card-title>
+      </div>
+    </ion-card-header>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePageBottom && isUserExists"
+    (click)="orderPage('pending')"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Pending Orders</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="schema.pendingOrders.count[0]['count(*)'] == 0">
+        <ion-col size="12">
+          <ion-row>
+            <ion-col class="pendingOrdersQty"> None </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="schema.pendingOrders.count[0]['count(*)'] != 0">
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-row>
+            <ion-col class="pendingOrdersQty">
+              {{ schema.pendingOrders.count[0]['count(*)'] }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-label>Pending Orders</ion-label>
+          <ion-row>
+            <ion-col>
+              <b>Order Id </b>
+            </ion-col>
+            <ion-col>
+              <b>Date</b>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngFor="let schema of schema.pendingOrders.latestPendingOrders"
+          >
+            <ion-col> #{{ schema.serialNumber }} </ion-col>
+            <ion-col>
+              {{ schema.addedOn }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePageBottom && isUserExists && isDispatchExists"
+    (click)="dispatchRedirect()"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Dispatch Orders</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="!!schema.dispatch && schema.dispatch.length > 0">
+        <ion-col size="12">
+          <ion-label>Latest Dispatch</ion-label>
+          <ion-row>
+            <ion-col>
+              <b> Ship From </b>
+            </ion-col>
+            <ion-col>
+              <b> Tracking No </b>
+            </ion-col>
+            <ion-col>
+              <b> Ship Date </b>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let schema of schema.dispatch">
+            <ion-col>
+              {{ schema.shipVia }}
+            </ion-col>
+            <ion-col>
+              {{ schema.trackingNo }}
+            </ion-col>
+            <ion-col>
+              {{ schema.shipDate }}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="showUserDetailsOnHomePageBottom && isUserExists && isSchemaExists"
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Schemes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-lg="0.5" size-md="1" size-sm="2" size-xs="2">
+          <ion-button class="h100" fill="clear" (click)="prev2()">
+            <ion-icon name="arrow-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col
+          tappable
+          size-lg="11"
+          size-md="10"
+          size-sm="8"
+          size-xs="8"
+          (click)="schemaRedirect()"
+        >
+          <!-- <ion-slides
+            #sliderScheme
+            class="w100"
+            [options]="
+              !!screenWidth &&
+              (screenWidth > 500
+                ? 'slideOptionsForSchemes'
+                : 'slideOptionsForSchemesSmallScreen')
+            "
+          >
+            <ion-slide
+              class="slider slideScheme"
+              *ngFor="let schema of schema.schemes"
+            >
+              <ion-col>
+                <ion-row>
+                  <img [src]="schema.image" class="hwauto mh200pImp" />
+                </ion-row>
+                <ion-row>
+                  <ion-label class="schemeText">{{ schema.name }}</ion-label>
+                </ion-row>
+              </ion-col>
+            </ion-slide>
+            <ion-slide class="slider slideScheme">
+              <ion-col>
+                <ion-row>
+                  <ion-button class="mauto">View All</ion-button>
+                </ion-row>
+              </ion-col>
+            </ion-slide>
+          </ion-slides> -->
+        </ion-col>
+        <ion-col size-lg="0.5" size-md="1" size-sm="2" size-xs="2">
+          <ion-button class="h100" fill="clear" (click)="next2()">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <div class="mt5"></div>
+  <ion-card
+    tappable
+    *ngIf="
+      showUserDetailsOnHomePageBottom &&
+      isUserExists &&
+      isOutStandingAmount.outstandingAmount.valueOf() > 0
+    "
+    class="sectionBackground ion_card_home"
+  >
+    <ion-card-header>
+      <ion-card-title>Outstanding</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-label *ngIf="!isOutStandingAmount.outstandingAmount"
+            >Total Outstanding Amount
+          </ion-label>
+          <ion-label *ngIf="!!isOutStandingAmount.outstandingAmount"
+            >Total Outstanding Amount as on
+            {{ isOutStandingAmount.creditUpdate }}</ion-label
+          >
+          <ion-row>
+            <ion-col>
+              <ion-label
+                class="amount colorRed"
+                *ngIf="isOutStandingAmount.outstandingAmount != 0"
+              >
+                {{ _companyService.currency }}
+                {{ isOutStandingAmount.outstandingAmount }}
+              </ion-label>
+              <ion-label
+                class="amount colorRed"
+                *ngIf="isOutStandingAmount.outstandingAmount == 0"
+              >
+                None
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isOutStandingAmount.outstandingAmount != 0">
+            <ion-col class="tar">
+              <ion-button
+                class="w100"
+                (click)="
+                  payWithRazorForMobile(isOutStandingAmount.outstandingAmount)
+                "
+                >Pay now
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12">
+          <ion-row>
+            <ion-col>
+              <ion-label>Credit Limit</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label
+                class="amount"
+                *ngIf="isOutStandingAmount.creditLimit != 0"
+                >Days {{ isOutStandingAmount.creditLimit }}
+              </ion-label>
+              <ion-label
+                class="amount"
+                *ngIf="isOutStandingAmount.creditLimit == 0"
+              >
+                None
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>

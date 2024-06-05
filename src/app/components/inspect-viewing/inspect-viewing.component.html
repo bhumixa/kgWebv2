@@ -1,0 +1,3007 @@
+<div *ngIf="design == 'old'">
+  <div *ngIf="defaultSelected == 'none'">
+    <ion-row *ngIf="details">
+      <ion-col size="10" size-xs="6" style="text-align: center">
+        ({{ stoneName }}) ({{ no + 1 }} / {{ selected.length }})
+      </ion-col>
+      <ion-col size="2" size-xs="6">
+        <ion-button (click)="close.emit()" class="round-button v2Btn">
+          {{ 'Close inspection ' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    Welcome to the Virtual Inspection Environment. Please select default Media
+    Type for a smooth experience.
+    <ion-grid>
+      <ion-row class="mt10Imp">
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(0); loadSlider(slideWithNav, 0)"
+          >
+            <!-- (click)="defaultSelected = 'Image360'"> -->
+            {{ 'Vision 360 Video' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(1); loadSlider(slideWithNav, 1)"
+          >
+            {{ 'Ideal Scope Image' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(2); loadSlider(slideWithNav, 2)"
+          >
+            {{ 'Black Background Image' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(4); loadSlider(slideWithNav, 3)"
+          >
+            {{ 'Heart View' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(5); loadSlider(slideWithNav, 5)"
+          >
+            {{ 'Arrow View' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(2); loadSlider(slideWithNav, 2)"
+          >
+            {{ 'White Background Image' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+
+        <!-- <ion-col size-md="4" size-xs="6">
+          <ion-button color="primary" expand="block" class="round-button v2Btn" (click)="loadSlider(slideWithNav, 6)">
+            Certifiate Plotting
+          </ion-button>
+        </ion-col> -->
+
+        <ion-col size-md="4" size-xs="6">
+          <ion-button
+            color="primary"
+            expand="block"
+            class="round-button v2Btn"
+            (click)="setDefaultView(7); loadSlider(slideWithNav, 7)"
+          >
+            {{ 'ASET Image' | translate }}
+            <!-- <ion-icon name="close"></ion-icon> -->
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-grid *ngIf="defaultSelected != 'none'" class="noPadding">
+    <ion-row>
+      <ion-col size="10" size-xs="6" class="tac">
+        <ion-button
+          [disabled]="selected.length == 0 || no == 0"
+          (click)="minus(true); loadData(selected[no])"
+        >
+          {{ 'Previous' | translate }}
+        </ion-button>
+        <ion-button
+          [disabled]="selected.length == 0"
+          *ngIf="selected[no]?.refCartID && selected[no]?.refCartProductId"
+          (click)="rejectStone()"
+        >
+          {{ 'Reject' | translate }}
+        </ion-button>
+        <ion-button
+          [disabled]="selected.length == 0"
+          (click)="addStonesToCart()"
+          [disabled]="
+            !selected[stoneIndex]['availableForSale'] ||
+            selected[stoneIndex][kgPricing.kgAppliedPrice] == 0
+          "
+          *ngIf="!selected[no]?.removed"
+        >
+          {{ 'Add to Cart' | translate }}
+        </ion-button>
+        <ion-button
+          [disabled]="selected.length == 0"
+          (click)="removeStonesFromCart()"
+          *ngIf="selected[no]?.removed"
+        >
+          {{ 'Remove from cart' | translate }}
+        </ion-button>
+        <ion-button
+          (click)="plus(true); loadData(selected[no])"
+          [disabled]="selected.length == 0"
+        >
+          {{ 'Next' | translate }}
+        </ion-button>
+      </ion-col>
+      <ion-col size="2" size-xs="6" size="tar">
+        <ion-button (click)="close.emit()" class="round-button v2Btn">
+          {{ 'Close inspection' | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-row *ngIf="details">
+    <ion-col size="10" style="text-align: center">
+      ({{ stoneName }}) ({{ no + 1 }} / {{ selected.length }})
+    </ion-col>
+  </ion-row>
+  <ion-grid *ngIf="defaultSelected != 'none'" style="height: 420px">
+    <ion-row>
+      <ion-col size="6">
+        <swiper-container
+          #slideWithNav
+          pager="true"
+          [options]="slideOptsOne"
+          (ionSlideDidChange)="SlideDidChange(sliderOne, slideWithNav)"
+        >
+          <swiper-slide *ngFor="let st of stone" class="slide">
+            <!-- <iframe *ngIf="st.href == 'iframe'" [src]="st.link" class="videoiframe"></iframe> -->
+            <iframe
+              *ngIf="st.href == 'iframe' && !isIframeEmpty"
+              [src]="st.link"
+              [ngClass]="getClass(st)"
+              #videoIframe
+              (load)="myLoadEvent(selected[stoneIndex])"
+              allow="autoplay"
+            >
+            </iframe>
+            <div *ngIf="isIframeEmpty && st.href == 'iframe'">
+              <img
+                src="assets/images/Video not Found.png"
+                class="imageBorder"
+              />
+            </div>
+            <img
+              style="height: 480px"
+              *ngIf="st.href == 'image'"
+              [src]="st.link"
+              alt=""
+              onError="src = 'assets/images/Image not availible.png'"
+              class="imageBorder"
+            />
+          </swiper-slide>
+        </swiper-container>
+      </ion-col>
+      <ion-col size="6">
+        <swiper-container
+          pager="false"
+          [options]="slideOptsThree"
+          #slideWithNav3
+          (ionSlideDidChange)="SlideDidChange(sliderThree, slideWithNav3)"
+          slides-per-view="5"
+          free-mode="true"
+          space-between="20"
+          navigation="true"
+        >
+          <swiper-slide
+            *ngFor="let st of stone"
+            (click)="loadSlider(slideWithNav, st.no)"
+            [ngStyle]="{
+              border:
+                defaultSelected == st.no
+                  ? '1px solid  black'
+                  : '1px solid white'
+            }"
+            class="slide"
+          >
+            <div *ngIf="st.href != 'image'">
+              <img
+                style="height: 50px"
+                [src]="st.image"
+                alt=""
+                class="sld-rnd"
+                onError="src = 'assets/images/Image not availible.png'"
+              />
+              <div>{{ st.name | translate }}</div>
+            </div>
+            <div *ngIf="st.href == 'image'">
+              <img
+                style="height: 50px"
+                [src]="st.link"
+                alt=""
+                class="sld-rnd"
+                onError="src = 'assets/images/Image not availible.png'"
+              />
+              <div>{{ st.name | translate }}</div>
+            </div>
+          </swiper-slide>
+        </swiper-container>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="details && defaultSelected != 'none'">
+    <ion-col size="12" *ngIf="hits?.length != 0">
+      <app-dx-data-grid
+        [columns]="searchResultColumns"
+        [rowData]="hits"
+        [selected]="selected"
+      >
+      </app-dx-data-grid>
+    </ion-col>
+  </ion-grid>
+</div>
+<ng-container *ngIf="design == 'new'">
+  <app-loading></app-loading>
+  <ng-container *ngIf="showiFrame">
+    <ion-button (click)="closeIframe()" class="round-button v2Btn">
+      {{ 'close' | translate }}
+    </ion-button>
+    <div class="iframe-container">
+      <iframe
+        [src]="certiLink"
+        class="responsive-iframe"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </ng-container>
+  <div class="largescreen">
+    <ion-row
+      [ngClass]="
+        _companyService.productListing == 'grid' &&
+        loadFrom == 'config' &&
+        selected.length == 1
+          ? 'mtp25'
+          : ''
+      "
+    >
+    </ion-row>
+    <!-- <div class="swipe" (swipe)="onSwipe($event)">
+      <h1>Swipe Gesture</h1>
+      <p>Works with both mouse and touch.</p>
+      <h5 [innerHTML]="direction"></h5>
+    </div> -->
+    <ng-container *ngIf="defaultSelected == 'none'">
+      <!-- <ion-row *ngIf="details">
+        <ion-col size="10" size-xs="5" style="text-align: center"> ({{ stoneName }}) ({{ no + 1 }} / {{ selected.length
+          }}) </ion-col>
+        <ion-col size="2" size-xs="7">
+          <ion-button (click)="close.emit()" class="round-button v2Btn"> Close inspection </ion-button>
+        </ion-col>
+      </ion-row> -->
+      Welcome to the Virtual Inspection Environment. Please select default Media
+      Type for a smooth experience.
+      <ion-grid>
+        <ion-row class="mt10Imp">
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(0); loadSlider(slideWithNav, 0)"
+            >
+              <!-- (click)="defaultSelected = 'Image360'"> -->
+              {{ 'Vision 360 Video' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(1); loadSlider(slideWithNav, 1)"
+            >
+              {{ 'Ideal Scope Image' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(3); loadSlider(slideWithNav, 3)"
+            >
+              {{ 'Black Background Image' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(4); loadSlider(slideWithNav, 4)"
+            >
+              {{ 'Heart View' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(5); loadSlider(slideWithNav, 5)"
+            >
+              {{ 'Arrow View' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn cursor"
+              (click)="setDefaultView(2); loadSlider(slideWithNav, 2)"
+            >
+              {{ 'White Background Image' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+          <!-- <ion-col size-md="4" size-xs="12">
+            <ion-button color="primary" expand="block" class="round-button v2Btn" (click)="loadSlider(slideWithNav, 6)">
+              Certifiate Plotting
+            </ion-button>
+          </ion-col> -->
+          <ion-col size-md="4" size-xs="12">
+            <ion-button
+              color="primary"
+              expand="block"
+              class="round-button v2Btn"
+              (click)="setDefaultView(7); loadSlider(slideWithNav, 7)"
+            >
+              {{ 'ASET Image' | translate }}
+              <!-- <ion-icon name="close"></ion-icon> -->
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="details">
+    <ion-row>
+      <ion-col size="10" style="text-align: center"> ({{ stoneName }}) ({{ no + 1 }} / {{ selected.length }}) </ion-col>
+    </ion-row>
+  </ng-container> -->
+
+    <ng-container *ngIf="defaultSelected != 'none'">
+      <ion-grid class="noPadding">
+        <ion-row class="noPadding">
+          <ion-col
+            size="5"
+            sizeXs="12"
+            sizeSm="12"
+            sizeMd="6"
+            sizeLg="5"
+            offsetLg="0.4"
+            class="noBottomTopPadding position-r"
+          >
+            <ion-row>
+              <ion-col>
+                <swiper-container
+                  #slideWithNav
+                  pager="true"
+                  [options]="slideOptsOne"
+                  (ionSlideDidChange)="SlideDidChange(sliderOne, slideWithNav)"
+                >
+                  <swiper-slide *ngFor="let st of stone" class="slide">
+                    <!-- <iframe *ngIf="st.href == 'iframe'" [src]="st.link" class="videoiframe"></iframe> -->
+                    <iframe
+                      *ngIf="
+                        st.href == 'iframe' &&
+                        st.enableView &&
+                        !isIframeEmpty &&
+                        dataLoaded
+                      "
+                      [src]="st.link"
+                      [ngClass]="getClass(st)"
+                      #videoIframe
+                      (load)="myLoadEvent(selected[stoneIndex])"
+                      allow="autoplay"
+                    >
+                    </iframe>
+
+                    <div *ngIf="isIframeEmpty && st.href == 'iframe'">
+                      <img
+                        src="assets/images/Video not Found.png"
+                        class="imageBorder"
+                      />
+                    </div>
+                    <img
+                      *ngIf="st.href == 'image'"
+                      [src]="st.link"
+                      alt=""
+                      onError="src = 'assets/images/Image not availible.png'"
+                      class="imageBorder"
+                    />
+                  </swiper-slide>
+                </swiper-container>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="downloadIconCol">
+                <div
+                  class="display_f jc_fe"
+                  *ngIf="!isIframeEmpty && defaultSelected == 0 && dataLoaded"
+                >
+                  <ion-icon
+                    name="download-outline"
+                    class="cursor videoIcon"
+                    (click)="downloadVideo(selected[stoneIndex])"
+                  ></ion-icon>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <!--||||||| Prev & Next Button |||||||-->
+                <!-- <div
+                  *ngIf="(isBeginning$ | async) === false"
+                  class="prvSliderBtn"
+                  (click)="prevSlide()"
+                >
+                  <ion-icon name="chevron-back" class="cursor"></ion-icon>
+                </div>
+
+                <div
+                  *ngIf="(isEnd$ | async) === false"
+                  class="nextSliderBtn"
+                  (click)="nextSlide()"
+                >
+                  <ion-icon name="chevron-forward" class="cursor"></ion-icon>
+                </div> -->
+
+                <!-- slides-per-view="7"
+                  loop="true"
+                  free-mode="true"
+                  space-between="20" -->
+                <!--<swiper-container
+                  pager="false"
+                  (ionSlideWillChange)="updateSliderIconState()"
+                  [options]="slideOptsThree"
+                  #slideWithNav3
+                  (ionSlideDidChange)="
+                    SlideDidChange(sliderThree, slideWithNav3)
+                  "
+                >
+                  <swiper-slide
+                    *ngFor="let st of stone"
+                    (click)="loadSlider(slideWithNav, st.no)"
+                    [ngClass]="
+                      defaultSelected == st.no
+                        ? 'selectedSlide'
+                        : 'notSelectedSlide'
+                    "
+                  >
+                    <div *ngIf="st.href != 'image'">
+                      <img
+                        style="height: 50px"
+                        [src]="st.image"
+                        alt=""
+                        class="desktop-sld-rnd cursor"
+                        (click)="setDefaultView(st.no, st)"
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <div>{{ st.name | translate }}</div>
+                    </div>
+                    <div *ngIf="st.href == 'image'" class="cursor">
+                      <img
+                        style="height: 50px"
+                        [src]="st.link"
+                        alt=""
+                        (click)="setDefaultView(st.no, st)"
+                        class="desktop-sld-rnd"
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <div>{{ st.name | translate }}</div>
+                    </div>
+                  </swiper-slide> -->
+
+                <!-- (slidechangetransitionstart)="updateSliderIconState()" -->
+                <swiper-container
+                  pager="false"
+                  [options]="slideOptsThree"
+                  #slideWithNav3
+                  (ionSlideDidChange)="
+                    SlideDidChange(sliderThree, slideWithNav3)
+                  "
+                  slides-per-view="5"
+                  free-mode="true"
+                  space-between="20"
+                  navigation="true"
+                >
+                  <swiper-slide
+                    *ngFor="let st of stone"
+                    (click)="loadSlider(slideWithNav, st.no)"
+                    [ngClass]="
+                      defaultSelected == st.no
+                        ? 'selectedSlide'
+                        : 'notSelectedSlide'
+                    "
+                  >
+                    <div *ngIf="st.href != 'image'">
+                      <img
+                        [src]="st.image"
+                        alt=""
+                        class="br1vw"
+                        (click)="setDefaultView(st.no, st)"
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <div class="tac-text">{{ st.name | translate }}</div>
+                      <!-- <iframe [src]="st.link" class="slider-iframe-thumbnail"></iframe> -->
+                    </div>
+                    <div *ngIf="st.href == 'image'" class="cursor">
+                      <img
+                        [src]="st.link"
+                        alt=""
+                        class="br1vw"
+                        (click)="setDefaultView(st.no, st)"
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <div class="tac-text">{{ st.name | translate }}</div>
+                    </div>
+                  </swiper-slide>
+                </swiper-container>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="tab_show tab_show_table">
+              <ion-col class="p0">
+                <ion-row>
+                  <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height width_100 mt10"
+                  >
+                    <div class="stone-info">
+                      <table
+                        class="tableBorder width_fill_available"
+                        *ngIf="selected && selected?.length > 0"
+                      >
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Measurement' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['Length'] }} -
+                            {{ selected[stoneIndex]['Width'] }} *
+                            {{ selected[stoneIndex]['TotDepthMm'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Total Depth' | translate }}%:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['TotDepth'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Table' | translate }}%</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['TablePer'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Cr Angle/Height' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['CrAngle'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Pav Angle/Depth' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['PavAngle'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Girdle' | translate }}%:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['GirdlePer'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Culet' | translate }}:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['CuletSizeCode'] }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Heart & Arrow' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['HeartandArrowCode']"
+                          >
+                            {{ selected[stoneIndex]['HeartandArrowCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['HeartandArrowCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <ion-row>
+                      <ion-col size="6">
+                        <ng-container
+                          *ngIf="
+                            !!selected[stoneIndex] &&
+                            selected[stoneIndex]['Certificate']
+                          "
+                        >
+                          <ion-col class="tac noBottomTopPadding">
+                            <a
+                              href="javascript:void(0);"
+                              class="colorPrimary"
+                              (click)="
+                                openCertificateFile(
+                                  selected[stoneIndex]['Certificate']
+                                )
+                              "
+                            >
+                              {{ 'View Certificate' | translate }}
+                            </a>
+                            <!-- <div *ngIf="mobileView; else viewCertiTemplate">
+                          <a href="javascript:void(0);" class="colorPrimary" (click)="
+
+                              openCertificateFile(
+                                selected[stoneIndex]['Certificate']
+                              )
+                            "
+                          >
+                            View Certificate
+                          </a>
+                        </div> -->
+                            <!-- <ng-template #viewCertiTemplate>
+                          <a [href]="selected[stoneIndex]['Certificate']" target="_blank" class="colorPrimary">
+
+                            View Certificate
+                          </a>
+                        </ng-template> -->
+                          </ion-col>
+                        </ng-container>
+                      </ion-col>
+                      <ion-col size="6">
+                        <ng-container
+                          *ngIf="
+                            !!selected[stoneIndex] &&
+                            selected[stoneIndex]['VideoLink'] &&
+                            !isIframeEmpty
+                          "
+                        >
+                          <ion-col class="tac noBottomTopPadding">
+                            <a
+                              href="javascript:void(0);"
+                              class="colorPrimary"
+                              (click)="
+                                openVideoLink(selected[stoneIndex]['VideoLink'])
+                              "
+                            >
+                              {{ 'Video Link' | translate }}
+                            </a>
+                            <!-- <div *ngIf="mobileView; else viewVideoTemplate">
+                          <a href="javascript:void(0);" class="colorPrimary" (click)="
+                              openVideoLink(selected[stoneIndex]['VideoLink'])
+                            "
+                          >
+                            Video Link
+                          </a>
+                        </div>
+
+                        <ng-template #viewVideoTemplate>
+                          <a
+                            [href]="selected[stoneIndex]['VideoLink']"
+                            target="_blank"
+                            class="colorPrimary"
+                          >
+                            Video Link
+                          </a>
+                        </ng-template> -->
+                          </ion-col>
+                        </ng-container>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </ion-row>
+
+                <ion-row
+                  class="tab_show"
+                  [ngClass]="
+                    loadFrom != 'config' && selected?.length > 1
+                      ? 'tab_show_tracr_m'
+                      : 'tab_show_tracr_s'
+                  "
+                >
+                  <!-- <ion-col class="noBottomTopPadding tab_landscape_hide p0" *ngIf="selected[stoneIndex]['TracrUrl']">
+                    <div class="">
+                      <a target="_blank" [href]="selected[stoneIndex]['TracrUrl']"><img class="redirectImg tracr"
+                          src="assets/images/tracr.png" />11</a>
+                    </div>
+                  </ion-col> -->
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              *ngIf="!!selected[stoneIndex] && isTabletSize"
+              class="cart_btns_container"
+            >
+              <!-- <ion-col size-xl="5" size-lg="4" size-md="6" size-sm="6"
+                class="noBottomTopPadding tab_hide tab_landscape_show" *ngIf="
+                  !!selected[stoneIndex] && selected[stoneIndex]['TracrUrl']
+                ">
+                <div class="tracr-icon">
+                  <a target="_blank" [href]="selected[stoneIndex]['TracrUrl']"><img class="redirectImg tracr"
+                      src="assets/images/tracr.png" />22</a>
+                </div>
+              </ion-col> -->
+
+              <ion-col
+                sizeXl="6"
+                sizeLg="10"
+                sizeMd="12"
+                sizeSm="12"
+                class="noBottomTopPadding cart_btns"
+              >
+                <ion-button
+                  fill="clear"
+                  [disabled]="selected.length == 0"
+                  (click)="addStonesToCart()"
+                  [disabled]="
+                    !selected[stoneIndex]['availableForSale'] ||
+                    selected[stoneIndex][kgPricing.kgAppliedPrice] == 0
+                  "
+                  class="round-clear-button v2Btn btn-height btn-font btn-width btn-margin"
+                  expand="block"
+                  *ngIf="
+                    !selected[no]?.refCartID && !selected[no]?.refCartProductId
+                  "
+                >
+                  {{ 'Add to Cart' | translate }}
+                </ion-button>
+
+                <ion-button
+                  fill="clear"
+                  [disabled]="selected.length == 0"
+                  (click)="removeStonesFromCart()"
+                  class="round-clear-button v2Btn btn-height btn-font btn-width btn-margin"
+                  expand="block"
+                  *ngIf="
+                    selected[no]?.refCartID && selected[no]?.refCartProductId
+                  "
+                >
+                  {{ 'Remove from Cart' | translate }}
+                </ion-button>
+
+                <ion-button
+                  [disabled]="selected.length == 0"
+                  (click)="addStonesToCart('purchase')"
+                  [disabled]="
+                    !selected[stoneIndex]['availableForSale'] ||
+                    selected[stoneIndex][kgPricing.kgAppliedPrice] == 0
+                  "
+                  class="round-button v2Btn btn-height btn-font btn-width btn-margin purchase_btn"
+                  expand="block"
+                >
+                  {{ 'Purchase' | translate }}
+                </ion-button>
+              </ion-col>
+
+              <ng-container
+                *ngIf="
+                  loggedinUser &&
+                  (selected?.length > 1 ||
+                    (!!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 1))
+                "
+              >
+                <ng-container
+                  *ngIf="
+                    (loadFrom != 'config' &&
+                      !!selected &&
+                      !selected[stoneIndex]?.rejected) ||
+                    (loadFrom == 'config' &&
+                      !!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      !_navigateService.productDetailPageList[this.no]
+                        ?.rejected)
+                  "
+                >
+                  <a
+                    href="javascript:void(0);"
+                    class="rejectLink"
+                    (click)="rejectStone()"
+                  >
+                    <ion-icon name="remove" color="primary"></ion-icon>
+                    {{ 'Reject Diamond' | translate }}
+                  </a>
+                </ng-container>
+              </ng-container>
+            </ion-row>
+          </ion-col>
+          <ion-col
+            size="5"
+            sizeXs="12"
+            sizeSm="12"
+            sizeMd="6"
+            sizeLg="6.2"
+            class="pdlft noBottomTopPadding"
+          >
+            <ion-grid
+              *ngIf="
+                _navigateService?.productDetailPageList?.length ||
+                selected?.length > 1
+              "
+              class="noPadding"
+            >
+              <ion-row *ngIf="loadFrom != 'config' && selected?.length > 1">
+                <ion-col size="12" sizeLg="10" class="noBottomTopPadding">
+                  <ion-row>
+                    <ion-col size="3" sizeMd="3" sizeLg="2" class="tal">
+                      <!-- [disabled]="selected.length == 0 || no == 0" -->
+                      <ion-button
+                        (click)="
+                          minus(true);
+                          loadData(selected[no]);
+                          loaddefaultSlide()
+                        "
+                        class="pnButton pBtn"
+                        fill="clear"
+                      >
+                        &lt; {{ 'Previous' | translate }}
+                      </ion-button>
+                    </ion-col>
+
+                    <ion-col
+                      size="6"
+                      sizeMd="6"
+                      sizeLg="8"
+                      class="mt10 view-text text-align-c"
+                      *ngIf="details"
+                    >
+                      <span class="vColor">
+                        {{ 'Viewing' | translate }} {{ no + 1 }}
+                        {{ 'of' | translate }} {{ selected.length }}
+                        {{ 'Selected' | translate }}
+                      </span>
+                    </ion-col>
+
+                    <ion-col size="3" sizeMd="3" sizeLg="2" class="tar">
+                      <ion-button
+                        (click)="
+                          plus(true); loadData(selected[no]); loaddefaultSlide()
+                        "
+                        [disabled]="selected.length == 0"
+                        class="pnButton"
+                        fill="clear"
+                      >
+                        {{ 'Next' | translate }} &gt;
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                *ngIf="
+                  loadFrom == 'config' &&
+                  _navigateService?.productDetailPageList?.length
+                "
+              >
+                <ion-col size="10">
+                  <ion-row class="marPad0">
+                    <ion-col class="tal" size="3">
+                      <ion-button
+                        [disabled]="
+                          _navigateService.productDetailPageList.length == 0 ||
+                          no == 0
+                        "
+                        (click)="minus(); changeStoneId(no)"
+                        class="pnButton pBtn"
+                        fill="clear"
+                      >
+                        &lt; {{ 'Previous' | translate }}
+                      </ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="tac" *ngIf="!details">
+                      <ion-button
+                        (click)="close.emit()"
+                        class="pnButton"
+                        fill="clear"
+                      >
+                        {{ 'Close' | translate }}
+                      </ion-button>
+                    </ion-col>
+                    <ion-col class="tar" size="3">
+                      <ion-button
+                        (click)="plus(); changeStoneId(no)"
+                        fill="clear"
+                        class="pnButton"
+                        [disabled]="
+                          _navigateService.productDetailPageList.length == 0
+                        "
+                      >
+                        {{ 'Next' | translate }} &gt;
+                      </ion-button>
+                    </ion-col>
+                    <!-- <ion-col size="6" class="tal">
+                  <ion-button [disabled]="_navigateService.productDetailPageList.length == 0  || no == 0"
+                    (click)="minus();changeStoneId(no)">
+                    Previous
+                  </ion-button>
+                </ion-col>
+                <ion-col size="6" class="tar">
+                  <ion-button (click)="plus();changeStoneId(no)"
+                    [disabled]="_navigateService.productDetailPageList.length == 0 || no == _navigateService.productDetailPageList.length - 1">
+                    Next
+                  </ion-button>
+                  <ion-button (click)="close.emit()">
+                    Close inspection
+                  </ion-button>
+                </ion-col> -->
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-row *ngIf="!!selected[stoneIndex]">
+              <ion-col class="tal stoneName noBottomTopPadding">
+                <span
+                  [ngClass]="
+                    selected[stoneIndex]['externalStatus']?.toLowerCase() ===
+                    'on memo'
+                      ? 'memo_hold'
+                      : ''
+                  "
+                >
+                  {{
+                    selected[stoneIndex]['stoneName']
+                      ? selected[stoneIndex]['stoneName']
+                      : selected[stoneIndex]['name']
+                  }}
+                </span>
+                <ng-container
+                  *ngIf="
+                    (loadFrom != 'config' &&
+                      !!selected &&
+                      selected[stoneIndex]?.rejected) ||
+                    (loadFrom == 'config' &&
+                      !!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      _navigateService.productDetailPageList[this.no]?.rejected)
+                  "
+                >
+                  <a
+                    href="javascript:void(0);"
+                    class="rejectedCss"
+                    (click)="removeReject()"
+                  >
+                    {{ 'Rejected' | translate }}
+                  </a>
+                  <div class="tooltip">
+                    <ion-icon
+                      name="close"
+                      class="iconFs cursor"
+                      (click)="removeReject()"
+                    ></ion-icon>
+                    <span class="tooltiptext">{{
+                      'Remove from Reject' | translate
+                    }}</span>
+                  </div>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    (loadFrom != 'config' &&
+                      !!selected &&
+                      selected[stoneIndex]?.refCartID &&
+                      selected[stoneIndex]?.refCartProductId) ||
+                    (loadFrom == 'config' &&
+                      !!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      _navigateService.productDetailPageList[this.no]
+                        ?.refCartID)
+                  "
+                >
+                  <span class="inCartLabel">{{ 'In Cart' | translate }}</span>
+                  <div class="tooltip">
+                    <ion-icon
+                      name="close"
+                      class="iconFs cursor"
+                      (click)="removeStonesFromCart()"
+                    ></ion-icon>
+                    <span class="tooltiptext">{{
+                      'Remove from Cart' | translate
+                    }}</span>
+                  </div>
+                </ng-container>
+              </ion-col>
+            </ion-row>
+            <ng-container *ngIf="!!selected[stoneIndex]">
+              <ion-row class="marPad0 table_container_desc">
+                <!-- left col -->
+                <ion-col
+                  sizeXl="5"
+                  sizeLg="5"
+                  sizeMd="12"
+                  sizeSm="12"
+                  class="noBottomTopPadding"
+                >
+                  <!-- 1st box                -->
+                  <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height"
+                  >
+                    <div
+                      class="ion-justify-content-center product-details-desktop_div"
+                    >
+                      <div class="tal stoneName-desktop">
+                        {{ selected[stoneIndex]['ShapeCode'] | translate }}
+                      </div>
+                      <div class="tal stoneName-desktop">
+                        {{ selected[stoneIndex]['cts'] | number : '1.2-2' }} CTS
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2nd box                -->
+                  <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height"
+                  >
+                    <div class="stone-info">
+                      <table
+                        class="tableBorder width_fill_available"
+                        *ngIf="selected && selected?.length > 0"
+                      >
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Lab' | translate }}:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['lab'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Report No' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['ReportNo'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Inscription' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['lab'] }}
+                            {{ selected[stoneIndex]['ReportNo'] }}
+                            {{
+                              selected[stoneIndex]['lab'] &&
+                              selected[stoneIndex]['ReportNo']
+                                ? ''
+                                : '-'
+                            }}
+                          </td>
+                        </tr>
+                        <ng-container
+                          *ngIf="
+                            selected[stoneIndex]['ColorCode']?.toLowerCase() ===
+                              'fancy' ||
+                            selected[stoneIndex][
+                              'ColorCodeFancy'
+                            ]?.toLowerCase() === 'fancy'
+                          "
+                        >
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Intensity' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{
+                                selected[stoneIndex][
+                                  'FancyColorIntensityCode'
+                                ] || '-'
+                              }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Overtone' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{
+                                selected[stoneIndex][
+                                  'FancyColorOvertoneCode'
+                                ] || '-'
+                              }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Fancy Color' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{
+                                selected[stoneIndex]['FancyColorCode'] || '-'
+                              }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Color Description' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{
+                                selected[stoneIndex]['ColorDescriptions'] || '-'
+                              }}
+                            </td>
+                          </tr>
+                        </ng-container>
+                        <tr
+                          class="specifications"
+                          *ngIf="
+                            selected[stoneIndex]['ColorCode']?.toLowerCase() !==
+                              'fancy' &&
+                            selected[stoneIndex][
+                              'ColorCodeFancy'
+                            ]?.toLowerCase() !== 'fancy'
+                          "
+                        >
+                          <td class="td-header">{{ 'Color' | translate }}:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['ColorCode'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Clarity' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['ClarityCode'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Cut' | translate }}:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['CutCode'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Polish' | translate }}:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['PolishCode'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Symmetry' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['SymmetryCode'] || '-' }}
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Fluorescence' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{
+                              selected[stoneIndex]['FluorescenceCode'] || '-'
+                            }}
+                          </td>
+                        </tr>
+                        <tr class="specifications tab_hide_tableRow">
+                          <td class="td-header">
+                            {{ 'Availability' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['availableForSale']"
+                          >
+                            {{
+                              selected[stoneIndex]['availableForSale']
+                                ? 'YES'
+                                : 'NO'
+                            }}
+                          </td>
+                          <!-- <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['availableForSale']"
+                          >
+                            No
+                          </td> -->
+                        </tr>
+                        <tr class="specifications tab_hide_tableRow">
+                          <td class="td-header">
+                            {{ 'Location' | translate }}:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['location'] || '-' }}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- 3rd box                -->
+                  <div class="tab_hide">
+                    <div
+                      class="card-bg leftRightPad3 product-details-desktop col-height"
+                    >
+                      <div class="stone-info">
+                        <table
+                          class="tableBorder width_fill_available"
+                          *ngIf="selected && selected?.length > 0"
+                        >
+                          <!-- <span (click)="downloadVideo()">dowanload</span> -->
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Measurement' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['Length'] }} -
+                              {{ selected[stoneIndex]['Width'] }} *
+                              {{ selected[stoneIndex]['TotDepthMm'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Total Depth' | translate }}%:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['TotDepth'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Table' | translate }}%
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['TablePer'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Cr Angle/Height' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['CrAngle'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Pav Angle/Depth' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['PavAngle'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Girdle' | translate }}%:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['GirdlePer'] }}
+                            </td>
+                          </tr>
+                          <tr class="specifications">
+                            <td class="td-header">
+                              {{ 'Culet' | translate }}:
+                            </td>
+                            <td class="td-data">
+                              {{ selected[stoneIndex]['CuletSizeCode'] }}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <ion-row>
+                        <ion-col size="6">
+                          <ng-container
+                            *ngIf="selected[stoneIndex]['Certificate']"
+                          >
+                            <ion-col class="tac noBottomTopPadding">
+                              <div *ngIf="mobileView; else viewCertiTemplate">
+                                <a
+                                  href="javascript:void(0);"
+                                  class="colorPrimary"
+                                  (click)="
+                                    openCertificateFile(
+                                      selected[stoneIndex]['Certificate']
+                                    )
+                                  "
+                                >
+                                  {{ 'View Certificate' | translate }}
+                                </a>
+                              </div>
+
+                              <ng-template #viewCertiTemplate>
+                                <a
+                                  [href]="selected[stoneIndex]['Certificate']"
+                                  target="_blank"
+                                  class="colorPrimary"
+                                >
+                                  {{ 'View Certificate' | translate }}
+                                </a>
+                              </ng-template>
+                            </ion-col>
+                          </ng-container>
+                        </ion-col>
+                        <ion-col size="6">
+                          <ng-container
+                            *ngIf="
+                              selected[stoneIndex]['VideoLink'] &&
+                              !isIframeEmpty
+                            "
+                          >
+                            <ion-col class="tac noBottomTopPadding">
+                              <div *ngIf="mobileView; else viewVideoTemplate">
+                                <a
+                                  href="javascript:void(0);"
+                                  class="colorPrimary"
+                                  (click)="
+                                    openVideoLink(
+                                      selected[stoneIndex]['VideoLink']
+                                    )
+                                  "
+                                >
+                                  {{ 'Video Link' | translate }}
+                                </a>
+                              </div>
+
+                              <ng-template #viewVideoTemplate>
+                                <a
+                                  [href]="selected[stoneIndex]['VideoLink']"
+                                  target="_blank"
+                                  class="colorPrimary"
+                                >
+                                  {{ 'Video Link' | translate }}
+                                </a>
+                              </ng-template>
+                            </ion-col>
+                          </ng-container>
+                        </ion-col>
+                      </ion-row>
+                    </div>
+                  </div>
+
+                  <!-- <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height tab_show"
+                  >
+                    <div class="stone-info">
+                      <table
+                        class="tableBorder width100"
+                        *ngIf="selected && selected?.length > 0"
+                      >
+                        <tr class="specifications">
+                          <td class="td-header">Availability:</td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['availableForSale']"
+                          >
+                            YES
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['availableForSale']"
+                          >
+                            No
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">Location:</td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['location'] }}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div> -->
+                </ion-col>
+                <!-- right col -->
+                <ion-col
+                  sizeXl="6"
+                  sizeLg="7"
+                  sizeMd="12"
+                  sizeSm="12"
+                  class="noBottomTopPadding"
+                >
+                  <!-- 1st box                -->
+                  <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height"
+                  >
+                    <div class="stone-info">
+                      <table
+                        class="tableBorder width_fill_available"
+                        *ngIf="selected && selected?.length > 0"
+                      >
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Shade' | translate }}:</td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['ShadesCode']"
+                          >
+                            {{ selected[stoneIndex]['ShadesCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['ShadesCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <!-- <tr class="specifications">
+                          <td class="td-header">
+                            Luster:
+                          </td>
+                          <td class="td-data">
+                            {{ selected[stoneIndex]['LusterCode']}}
+                          </td>
+                        </tr> -->
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Eye Clean' | translate }}:
+                          </td>
+                          <!-- <td class="td-data">-</td> -->
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['EyeCleanCode']"
+                          >
+                            {{ selected[stoneIndex]['EyeCleanCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['EyeCleanCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">{{ 'Luster' | translate }}:</td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['LusterCode']"
+                          >
+                            {{ selected[stoneIndex]['LusterCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['LusterCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Natural' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['NaturalCode']"
+                          >
+                            {{ selected[stoneIndex]['NaturalCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['NaturalCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Table Black Inc' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              selected[stoneIndex]['TableBlackInclusionCode']
+                            "
+                          >
+                            {{
+                              selected[stoneIndex]['TableBlackInclusionCode']
+                            }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              !selected[stoneIndex]['TableBlackInclusionCode']
+                            "
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Table White Inc' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              selected[stoneIndex]['TableWhiteInclusionCode']
+                            "
+                          >
+                            {{
+                              selected[stoneIndex]['TableWhiteInclusionCode']
+                            }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              !selected[stoneIndex]['TableWhiteInclusionCode']
+                            "
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Side Black Inc' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              selected[stoneIndex]['SideBlackInclusionCode']
+                            "
+                          >
+                            {{ selected[stoneIndex]['SideBlackInclusionCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              !selected[stoneIndex]['SideBlackInclusionCode']
+                            "
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Side White Inc' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              selected[stoneIndex]['SideWhiteInclusionCode']
+                            "
+                          >
+                            {{ selected[stoneIndex]['SideWhiteInclusionCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="
+                              !selected[stoneIndex]['SideWhiteInclusionCode']
+                            "
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'Graining' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['GrainingCode']"
+                          >
+                            {{ selected[stoneIndex]['GrainingCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['GrainingCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                        <tr class="specifications tab_hide_tableRow">
+                          <td class="td-header">
+                            {{ 'Heart & Arrow' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['HeartandArrowCode']"
+                          >
+                            {{ selected[stoneIndex]['HeartandArrowCode'] }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['HeartandArrowCode']"
+                          >
+                            -
+                          </td>
+                        </tr>
+
+                        <tr class="specifications">
+                          <td class="td-header">
+                            {{ 'LW Ratio' | translate }}:
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="selected[stoneIndex]['L_W']"
+                          >
+                            {{ selected[stoneIndex]['L_W'] | number : '1.2-2' }}
+                          </td>
+                          <td
+                            class="td-data"
+                            *ngIf="!selected[stoneIndex]['L_W']"
+                          >
+                            -
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- 2nd box -->
+                  <!-- <div class=" card-bg  product-details-desktop col-height ">
+                    <div class="ion-justify-content-center" style="color: #4d5258;">
+                      <ion-row class="noPadding grade-box">
+                        <ion-col size="12" class="tac">
+                          <b>Clarity Grade</b>
+                        </ion-col>
+                        <ion-col size="12" class="tac rainbow-shade ">
+                          {{ selected[stoneIndex]['ClarityCode'] }}
+                        </ion-col>
+                        <ion-col size="12" class="tac ">
+                          <b> Color Grade </b>
+                        </ion-col>
+                        <ion-col size="12" class="tac rainbow-shade">
+                          {{ selected[stoneIndex]['ColorCode'] }}
+                        </ion-col>
+                      </ion-row>
+
+                    </div>
+                  </div> -->
+                  <!-- 3rd box -->
+                  <div
+                    class="card-bg leftRightPad3 product-details-desktop col-height"
+                    *ngIf="selected[stoneIndex]['availableForSale']"
+                  >
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="tal stoneName-desktop bp0">
+                        {{ 'Disc' | translate }} :
+                        {{
+                          selected[stoneIndex]['Rapnet_plusDiscountPercent']
+                        }}% <br />
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="marPad0">
+                        <span
+                          *ngIf="selected[stoneIndex]['Rapnet_pluspercarat']"
+                          class="disc-font"
+                          >{{
+                            selected[stoneIndex]['Rapnet_pluspercarat']
+                              | currency : 'CAD' : 'symbol-narrow'
+                          }}/ct &nbsp;</span
+                        >
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="total-span">
+                        <p class="total-info mb0">
+                          <span *ngIf="selected[stoneIndex]['Rapnet_plus']">
+                            <b>
+                              {{
+                                selected[stoneIndex]['Rapnet_plus']
+                                  | currency : 'CAD' : 'symbol-narrow'
+                              }}
+                              Total &nbsp;
+                            </b></span
+                          >
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+                    <table
+                      class="tableBorder mb5 tab_show_tableRow width_fill_available"
+                      *ngIf="selected && selected?.length > 0"
+                    >
+                      <tr class="specifications">
+                        <td class="td-header">
+                          {{ 'Availability' | translate }}:
+                        </td>
+                        <td
+                          class="td-data"
+                          *ngIf="selected[stoneIndex]['availableForSale']"
+                        >
+                          {{ 'YES' | translate }}
+                        </td>
+                        <td
+                          class="td-data"
+                          *ngIf="!selected[stoneIndex]['availableForSale']"
+                        >
+                          {{ 'No' | translate }}
+                        </td>
+                      </tr>
+                      <tr class="specifications">
+                        <td class="td-header">Location:</td>
+                        <td class="td-data">
+                          {{ selected[stoneIndex]['location'] }}
+                        </td>
+                      </tr>
+                    </table>
+                    <ion-col
+                      size-xl="5"
+                      size-lg="4"
+                      size-md="6"
+                      size-sm="6"
+                      class="noBottomTopPadding tab_hide tab_landscape_show"
+                      *ngIf="
+                        !!selected[stoneIndex] &&
+                        selected[stoneIndex]['TracrUrl'] &&
+                        isTabletSize
+                      "
+                    >
+                      <div class="tracr-icon">
+                        <a
+                          target="_blank"
+                          [href]="selected[stoneIndex]['TracrUrl']"
+                          ><img
+                            class="redirectImg tracr"
+                            src="assets/images/tracr.png"
+                        /></a>
+                        <!-- tablet llandscape view -->
+                      </div>
+                    </ion-col>
+                  </div>
+                  <ion-col
+                    class="noBottomTopPadding tab_landscape_hide p0"
+                    *ngIf="selected[stoneIndex]['TracrUrl'] && isTabletSize"
+                  >
+                    <div class="">
+                      <a
+                        target="_blank"
+                        [href]="selected[stoneIndex]['TracrUrl']"
+                        ><img
+                          class="redirectImg tracr"
+                          src="assets/images/tracr.png"
+                      /></a>
+                      <!-- tablet portrait view -->
+                    </div>
+                  </ion-col>
+                  <!-- <div  class="leftRightPad3 product-details-desktop col-height tracr_div">
+                    <img src="assets\images\tracr_img.png" alt="" class="tracr_img">my
+                  </div> -->
+                  <ion-col
+                    size-xl="5"
+                    size-lg="4"
+                    size-md="6"
+                    size-sm="6"
+                    class="noBottomTopPadding tab_hide tab_landscape_show"
+                    *ngIf="
+                      !!selected[stoneIndex] &&
+                      selected[stoneIndex]['TracrUrl'] &&
+                      !isTabletSize
+                    "
+                  >
+                    <div class="tracr-icon">
+                      <a
+                        target="_blank"
+                        [href]="selected[stoneIndex]['TracrUrl']"
+                        ><img
+                          class="redirectImg tracr"
+                          src="assets/images/tracr.png"
+                      /></a>
+                      <!-- desktop view -->
+                    </div>
+                  </ion-col>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+
+            <!-- <ion-row
+              *ngIf="loggedinUser && (selected?.length > 1 || (!!_navigateService.productDetailPageList &&  _navigateService.productDetailPageList.length>1 ))">
+              <ion-col size="6">
+                <a href="javascript:void(0);" class="colorPrimary "
+                  (click)="openCertificateFile(selected[stoneIndex]['Certificate'])">
+                  View Certificate
+                </a>
+              </ion-col>
+            </ion-row> -->
+
+            <ion-row
+              *ngIf="!!selected[stoneIndex] && !isTabletSize"
+              class="cart_btns_container"
+            >
+              <!-- <ion-col size-xl="5" size-lg="4" size-md="6" size-sm="6"
+                class="noBottomTopPadding tab_hide tab_landscape_show" *ngIf="
+                  !!selected[stoneIndex] && selected[stoneIndex]['TracrUrl']
+                ">
+                <div class="tracr-icon">
+                  <a target="_blank" [href]="selected[stoneIndex]['TracrUrl']"><img class="redirectImg tracr"
+                      src="assets/images/tracr.png" />33</a>
+                </div>
+              </ion-col> -->
+
+              <ion-col
+                sizeXl="6"
+                sizeLg="10"
+                sizeMd="12"
+                sizeSm="12"
+                class="noBottomTopPadding cart_btns"
+              >
+                <ion-button
+                  fill="clear"
+                  [disabled]="selected.length == 0"
+                  (click)="addStonesToCart()"
+                  [disabled]="
+                    !selected[stoneIndex]['availableForSale'] ||
+                    selected[stoneIndex][kgPricing.kgAppliedPrice] == 0
+                  "
+                  class="round-clear-button v2Btn btn-height btn-font btn-width btn-margin"
+                  expand="block"
+                  *ngIf="
+                    !selected[no]?.refCartID && !selected[no]?.refCartProductId
+                  "
+                >
+                  {{ 'Add to Cart' | translate }}
+                </ion-button>
+
+                <ion-button
+                  fill="clear"
+                  [disabled]="selected.length == 0"
+                  (click)="removeStonesFromCart()"
+                  class="round-clear-button v2Btn btn-height btn-font btn-width btn-margin"
+                  expand="block"
+                  *ngIf="
+                    selected[no]?.refCartID && selected[no]?.refCartProductId
+                  "
+                >
+                  {{ 'Remove from Cart' | translate }}
+                </ion-button>
+
+                <ion-button
+                  [disabled]="selected.length == 0"
+                  (click)="addStonesToCart('purchase')"
+                  [disabled]="
+                    !selected[stoneIndex]['availableForSale'] ||
+                    selected[stoneIndex][kgPricing.kgAppliedPrice] == 0
+                  "
+                  class="round-button v2Btn btn-height btn-font btn-width btn-margin purchase_btn"
+                  expand="block"
+                >
+                  {{ 'Purchase' | translate }}
+                </ion-button>
+              </ion-col>
+
+              <ng-container
+                *ngIf="
+                  loggedinUser &&
+                  (selected?.length > 1 ||
+                    (!!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 1))
+                "
+              >
+                <ng-container
+                  *ngIf="
+                    (loadFrom != 'config' &&
+                      !!selected &&
+                      !selected[stoneIndex]?.rejected) ||
+                    (loadFrom == 'config' &&
+                      !!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      !_navigateService.productDetailPageList[this.no]
+                        ?.rejected)
+                  "
+                >
+                  <a
+                    href="javascript:void(0);"
+                    class="rejectLink"
+                    (click)="rejectStone()"
+                  >
+                    <ion-icon name="remove" color="primary"></ion-icon>
+                    {{ 'Reject Diamond' | translate }}
+                  </a>
+                </ng-container>
+              </ng-container>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+    <ion-fab
+      vertical="bottom"
+      horizontal="end"
+      slot="fixed"
+      [ngClass]="
+        loadFrom != 'config' && selected?.length > 1
+          ? 'share_fab_tab_m'
+          : 'share_fab_tab_s'
+      "
+      *ngIf="isIpad && !webViewMobile"
+    >
+      <ion-fab-button>
+        <ion-icon
+          name="share-social"
+          color="dark"
+          class="shareBtn"
+          (click)="share(selected[stoneIndex])"
+        ></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+  <div class="smallScreen wrapper">
+    <ng-container *ngIf="!showiFrame">
+      <ng-container *ngIf="defaultSelected == 'none'">
+        <!-- <ion-row *ngIf="details">
+          <ion-col size="10" size-xs="6" style="text-align: center"> ({{ stoneName }}) ({{ no + 1 }} / {{
+            selected.length
+            }}) </ion-col>
+          <ion-col size="2" size-xs="6">
+            <ion-button (click)="close.emit()" class="round-button v2Btn maxBtn"> Close inspection </ion-button>
+          </ion-col>
+        </ion-row> -->
+        Welcome to the Virtual Inspection Environment. Please select default
+        Media Type for a smooth experience.
+        <ion-grid>
+          <ion-row class="mt10Imp">
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(0);
+                  loadSlider(slideWithNav, 0);
+                  addMargin = true
+                "
+              >
+                <!-- (click)="defaultSelected = 'Image360'"> -->
+                {{ ' Vision 360 Video' | translate }}
+                <!-- <ion-icon name="close"></ion-icon scrolling="no" > -->
+              </ion-button>
+            </ion-col>
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(1);
+                  loadSlider(slideWithNav, 1);
+                  addMargin = true
+                "
+              >
+                {{ 'Ideal Scope Image' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(3);
+                  loadSlider(slideWithNav, 3);
+                  addMargin = true
+                "
+              >
+                {{ 'Black Background Image' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(4);
+                  loadSlider(slideWithNav, 4);
+                  addMargin = true
+                "
+              >
+                {{ 'Heart View' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(5);
+                  loadSlider(slideWithNav, 5);
+                  addMargin = true
+                "
+              >
+                {{ 'Arrow View' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(2);
+                  loadSlider(slideWithNav, 2);
+                  addMargin = true
+                "
+              >
+                {{ 'White Background Image' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+            <!-- <ion-col size-md="4" size-xs="12">
+              <ion-button color="primary" expand="block" class="round-button v2Btn"
+                (click)="loadSlider(slideWithNav, 6);addMargin=true">
+                Certifiate Plotting
+              </ion-button>
+            </ion-col> -->
+            <ion-col size-md="4" size-xs="12">
+              <ion-button
+                color="primary"
+                expand="block"
+                class="round-button v2Btn"
+                (click)="
+                  setDefaultView(7);
+                  loadSlider(slideWithNav, 7);
+                  addMargin = true
+                "
+              >
+                {{ 'ASET Image' | translate }}
+                <!-- <ion-icon name="close"></ion-icon> -->
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-container>
+
+      <ng-container *ngIf="defaultSelected != 'none'">
+        <ion-row>
+          <ion-col size="12" *ngIf="!mobileView">
+            <ion-row>
+              <ion-col>
+                <swiper-container
+                  #slideWithNavMobile
+                  pager="true"
+                  [options]="slideOptsOne"
+                  (ionSlideDidChange)="
+                    SlideDidChange(sliderOne, slideWithNavMobile)
+                  "
+                >
+                  <swiper-slide *ngFor="let st of stone" class="slide">
+                    <!-- <iframe *ngIf="st.href == 'iframe'" [src]="st.link" class="videoiframe"></iframe> -->
+                    <iframe
+                      *ngIf="st.href == 'iframe' && !isIframeEmpty"
+                      [src]="st.link"
+                      [ngClass]="getClass(st)"
+                      #videoIframe
+                      (load)="myLoadEvent(selected[stoneIndex])"
+                      allow="autoplay"
+                    >
+                    </iframe>
+
+                    <div *ngIf="isIframeEmpty && st.href == 'iframe'">
+                      <img
+                        src="assets/images/Video not Found.png"
+                        class="imageBorder"
+                      />
+                    </div>
+                    <img
+                      *ngIf="st.href == 'image'"
+                      [src]="st.link"
+                      alt=""
+                      onError="src = 'assets/images/Image not availible.png'"
+                      class="imageBorder"
+                    />
+                  </swiper-slide>
+                </swiper-container>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <swiper-container
+                  pager="false"
+                  [options]="slideOptsThree"
+                  #slideWithNav3Mobile
+                  (ionSlideDidChange)="
+                    SlideDidChange(sliderThree, slideWithNav3Mobile)
+                  "
+                  slides-per-view="5"
+                  free-mode="true"
+                  space-between="20"
+                  navigation="true"
+                >
+                  <swiper-slide
+                    *ngFor="let st of stone"
+                    (click)="loadSlider(slideWithNavMobile, st.no)"
+                    [ngClass]="
+                      defaultSelected == st.no
+                        ? 'selectedSlide'
+                        : 'notSelectedSlide'
+                    "
+                    class="slide-small"
+                  >
+                    <div *ngIf="st.href != 'image'">
+                      <img
+                        style="height: 94px"
+                        [src]="st.image"
+                        class="sld-rnd"
+                        alt=""
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <!-- <div>{{ st.name }}</div> -->
+                    </div>
+                    <div *ngIf="st.href == 'image'">
+                      <img
+                        style="height: 94px"
+                        [src]="st.link"
+                        class="sld-rnd"
+                        alt=""
+                        onError="src = 'assets/images/Image not availible.png'"
+                      />
+                      <!-- <div>{{ st.name }}</div> -->
+                    </div>
+                  </swiper-slide>
+                </swiper-container>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <!-- <div class="tooltip" #tooltip>
+
+        </div> -->
+        <div class="swipe" #swipeCard [ngClass]="selectionClass()">
+          <div class="inst1" id="step1"></div>
+          <div class="inst2" id="step2"></div>
+          <div class="mt10Imp m4">
+            <ion-row
+              class="dispBlock"
+              *ngIf="
+                selected[stoneIndex]['ShapeCode'] && selected[stoneIndex]['cts']
+              "
+            >
+              <div class="swipecard-div1">
+                <ion-col size="7" class="marPad0">
+                  <div class="mr10 card-bg pad3 product-details col-height">
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="tal stoneName-mobile">
+                        {{ selected[stoneIndex]['ShapeCode'] }},
+                        {{ selected[stoneIndex]['cts'] }} CT
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="marPad0">
+                        <p class="stone-info">
+                          <ion-row
+                            class="ion-justify-content-center"
+                            class="marPad0"
+                          >
+                            <span *ngIf="selected[stoneIndex]['ColorCode']"
+                              >{{
+                                selected[stoneIndex]['ColorCode']
+                              }},&nbsp;</span
+                            >
+                            <span *ngIf="selected[stoneIndex]['ClarityCode']"
+                              >{{
+                                selected[stoneIndex]['ClarityCode']
+                              }},&nbsp;</span
+                            >
+                            <span *ngIf="selected[stoneIndex]['CutCode']"
+                              >{{ selected[stoneIndex]['CutCode'] }}&nbsp;</span
+                            >
+                            <span *ngIf="selected[stoneIndex]['PolishCode']"
+                              >{{
+                                selected[stoneIndex]['PolishCode']
+                              }}&nbsp;</span
+                            >
+                            <span *ngIf="selected[stoneIndex]['SymmetryCode']"
+                              >{{
+                                selected[stoneIndex]['SymmetryCode']
+                              }}&nbsp;</span
+                            >
+                            <span
+                              *ngIf="selected[stoneIndex]['FluorescenceCode']"
+                              >{{
+                                selected[stoneIndex]['FluorescenceCode']
+                              }}</span
+                            >
+                          </ion-row>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col>
+                        <p class="lab-info">
+                          {{ selected[stoneIndex]['lab'] }} &nbsp;
+                          {{ selected[stoneIndex]['ReportNo'] }}
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </ion-col>
+                <ion-col
+                  size="5"
+                  class="marPad0"
+                  *ngIf="selected[stoneIndex]['availableForSale']"
+                >
+                  <div class="card-bg pad3 product-details col-height">
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="tal stoneName-mobile bp0">
+                        {{ 'Disc' | translate }} :
+                        {{
+                          selected[stoneIndex]['Rapnet_plusDiscountPercent']
+                        }}% <br />
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="marPad0">
+                        <span
+                          *ngIf="selected[stoneIndex]['Rapnet_pluspercarat']"
+                          class="disc-font"
+                          >{{
+                            selected[stoneIndex]['Rapnet_pluspercarat']
+                              | currency : 'CAD' : 'symbol-narrow'
+                          }}/ct &nbsp;</span
+                        >
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <ion-col class="total-span">
+                        <p class="total-info">
+                          <span *ngIf="selected[stoneIndex]['Rapnet_plus']">
+                            <b>
+                              {{
+                                selected[stoneIndex]['Rapnet_plus']
+                                  | currency : 'CAD' : 'symbol-narrow'
+                              }}
+                              {{ 'Total' | translate }} &nbsp;
+                            </b></span
+                          >
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </ion-col>
+              </div>
+              <!-- <ion-col size="7" class="swipecard-div1">
+                <ion-card class="mr10 card-bg pad3 product-details col-height ">
+                  <ion-row>
+                    <ion-col class="tal stoneName-mobile">
+                      {{ selected[stoneIndex]['ShapeCode'] }}, {{ selected[stoneIndex]['cts'] }} CT
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="marPad0">
+                      <p class="stone-info">
+                        <span *ngIf="selected[stoneIndex]['ColorCode']">{{ selected[stoneIndex]['ColorCode']
+                          }}-&nbsp;</span>
+                        <span *ngIf="selected[stoneIndex]['ClarityCode']">{{ selected[stoneIndex]['ClarityCode']
+                          }},&nbsp;</span>
+                        <span *ngIf="selected[stoneIndex]['CutCode']">{{ selected[stoneIndex]['CutCode'] }}&nbsp;</span>
+                        <span *ngIf="selected[stoneIndex]['PolishCode']">{{ selected[stoneIndex]['PolishCode']
+                          }}&nbsp;</span>
+                        <span *ngIf="selected[stoneIndex]['SymmetryCode']">{{ selected[stoneIndex]['SymmetryCode']
+                          }}&nbsp;</span>
+                        <span *ngIf="selected[stoneIndex]['FluorescenceCode']">{{
+                          selected[stoneIndex]['FluorescenceCode']
+                          }}</span>
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <p class="lab-info">
+                        {{ selected[stoneIndex]['lab'] }} &nbsp; {{ selected[stoneIndex]['ReportNo'] }}
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col>
+              <ion-col size="5" class="swipecard-div1">
+                <ion-card class="card-bg pad3 product-details col-height ">
+                  <ion-row>
+                    <ion-col class="tal stoneName-mobile bp0">
+                      Disc : {{selected[stoneIndex]['SPMDiscountPercent']}}% <br />
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="marPad0">
+                      <span *ngIf="selected[stoneIndex]['SPMpercarat']" class="disc-font">${{
+                        selected[stoneIndex]['SPMpercarat']
+                        }}/ct &nbsp;</span>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="total-span">
+                      <p class="stone-info">
+                        <span *ngIf="selected[stoneIndex]['SPM']">
+                          <b> ${{ selected[stoneIndex]['SPM']
+                            }} Total &nbsp; </b></span>
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col> -->
+            </ion-row>
+
+            <ion-row>
+              <ion-col class="card-bg product-details">
+                <div class="m4">
+                  <b>
+                    {{ 'Stone Id' | translate }}: &nbsp;{{
+                      selected[stoneIndex]['stoneName']
+                    }}
+                  </b>
+                  <br />
+                  <b>
+                    {{ 'Location' | translate }}: &nbsp;{{
+                      selected[stoneIndex]['location']
+                    }}</b
+                  >
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col class="card-bg product-details">
+                <div class="m4">
+                  <span *ngIf="selected[stoneIndex]['Length']">
+                    {{ selected[stoneIndex]['Length'] }}
+                  </span>
+                  <span *ngIf="selected[stoneIndex]['Width']">
+                    * {{ selected[stoneIndex]['Width'] }}
+                  </span>
+                  <span *ngIf="selected[stoneIndex]['TotDepthMm']">
+                    * {{ selected[stoneIndex]['TotDepthMm'] }}
+                  </span>
+                  <br />
+                  <span>
+                    {{ 'Table' | translate }} %: &nbsp;{{
+                      selected[stoneIndex]['TablePer']
+                    }}
+                  </span>
+                  <br />
+                  <span>
+                    {{ 'Depth' | translate }} %: &nbsp;{{
+                      selected[stoneIndex]['TotDepth']
+                    }}</span
+                  >
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+
+        <ion-row *ngIf="mobileView">
+          <ion-col>
+            <div
+              class="specifications"
+              *ngIf="
+                selected?.length > 0 &&
+                !!selected[stoneIndex] &&
+                selected[stoneIndex]['Certificate'] &&
+                selected[stoneIndex]['Certificate'] != 'null'
+              "
+            >
+              <a
+                href="javascript:void(0);"
+                class="colorPrimary"
+                (click)="
+                  openCertificateFile(selected[stoneIndex]['Certificate'])
+                "
+              >
+                {{ 'View Certificate' | translate }}
+              </a>
+              &nbsp; &nbsp;
+              <a
+                href="javascript:void(0);"
+                class="colorPrimary"
+                (click)="openVideoLink(selected[stoneIndex]['VideoLink'])"
+              >
+                {{ 'Video Link' | translate }}
+              </a>
+            </div>
+          </ion-col>
+          <ion-col>
+            <swiper-container
+              pager="false"
+              [options]="slideOptsThreeMobile"
+              #slideWithNav3Mobile
+              (ionSlideDidChange)="
+                SlideDidChange(sliderThree, slideWithNav3Mobile)
+              "
+              slides-per-view="4"
+              free-mode="true"
+              space-between="10"
+            >
+              <swiper-slide
+                *ngFor="let st of stone"
+                (click)="loadSlider(slideWithNavMobile, st.no)"
+                [ngClass]="
+                  defaultSelected == st.no
+                    ? 'selectedSlide'
+                    : 'notSelectedSlide'
+                "
+                class="slide-small"
+              >
+                <div *ngIf="st.href != 'image'" class="tac-text">
+                  <img
+                    style="height: 94px"
+                    [src]="st.image"
+                    class="sld-rnd"
+                    alt=""
+                    onError="src = 'assets/images/Image not availible.png'"
+                  />
+                  <!-- <div>{{ st.name }}</div> -->
+                </div>
+                <div *ngIf="st.href == 'image'">
+                  <img
+                    style="height: 94px"
+                    [src]="st.link"
+                    class="sld-rnd"
+                    alt=""
+                    onError="src = 'assets/images/Image not availible.png'"
+                  />
+                  <!-- <div>{{ st.name }}</div> -->
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="mobileView">
+          <ion-col>
+            <swiper-container
+              #slideWithNavMobile
+              pager="true"
+              [options]="slideOptsOne"
+              (ionSlideDidChange)="
+                SlideDidChange(sliderOne, slideWithNavMobile)
+              "
+            >
+              <swiper-slide *ngFor="let st of stone" class="slide">
+                <!-- <iframe *ngIf="st.href == 'iframe'" [src]="st.link" class="videoiframe"></iframe> -->
+                <!-- TESTING -->
+                <iframe
+                  *ngIf="st.href == 'iframe' && !isIframeEmpty"
+                  [src]="st.link"
+                  [ngClass]="getClass(st)"
+                  #videoIframe
+                  (load)="myLoadEvent(selected[stoneIndex])"
+                  allow="autoplay"
+                  allowfullscreen="false"
+                  webkitallowfullscreen="false"
+                  (webkitfullscreenchange)="webkitFullscreenChange()"
+                >
+                </iframe>
+                <div *ngIf="isIframeEmpty && st.href == 'iframe'">
+                  <img
+                    src="assets/images/Video not Found.png"
+                    class="imageBorder"
+                  />
+                </div>
+                <img
+                  *ngIf="st.href == 'image'"
+                  [src]="st.link"
+                  alt=""
+                  onError="src = 'assets/images/Image not availible.png'"
+                />
+              </swiper-slide>
+            </swiper-container>
+          </ion-col>
+          <ion-col class="tac mAuto">
+            <!-- *ngIf="loadFrom != 'config'" -->
+            <ng-container>
+              <ng-container>
+                <ion-button
+                  id="closeBtn"
+                  class="cursor h50"
+                  color="danger"
+                  (click)="rejectStone()"
+                  *ngIf="
+                    (loadFrom != 'config' && !selected[stoneIndex]?.rejected) ||
+                    (loadFrom == 'config' &&
+                      !!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      !_navigateService.productDetailPageList[this.no]
+                        ?.rejected)
+                  "
+                >
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+                <ion-button
+                  id="closeBtn"
+                  class="cursor h50 opacity"
+                  color="danger"
+                  (click)="removeReject()"
+                  *ngIf="
+                    selected[stoneIndex]?.rejected ||
+                    (!!_navigateService.productDetailPageList &&
+                      _navigateService.productDetailPageList.length > 0 &&
+                      this._navigateService.productDetailPageList[this.no]
+                        ?.rejected)
+                  "
+                >
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+
+                <!-- <a href="javascript:void(0);" class="rejectedCss" (click)="removeReject()">
+                  Rejected
+                </a>
+                <ion-icon name="close" class="iconFs cursor" (click)="removeReject()"></ion-icon> -->
+              </ng-container>
+              <ng-container>
+                <!-- <span class="inCartLabel">In Cart</span>
+                <ion-icon name="close" class="iconFs cursor" (click)="removeStonesFromCart()"></ion-icon> -->
+                <ng-container
+                  *ngIf="
+                    (selected[stoneIndex]?.refCartID &&
+                      selected[stoneIndex]?.refCartProductId) ||
+                      (loadFrom == 'config' &&
+                        !!_navigateService.productDetailPageList &&
+                        _navigateService.productDetailPageList.length > 0 &&
+                        _navigateService.productDetailPageList[this.no]
+                          ?.refCartID);
+                    else elseif1
+                  "
+                >
+                  <ion-button
+                    id="closeBtn"
+                    class="cursor h50 opacity"
+                    color="success"
+                    (click)="removeStonesFromCart()"
+                  >
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ng-container>
+                <ion-row *ngIf="selected[stoneIndex]['TracrUrl']">
+                  <ion-col>
+                    <div>
+                      <a
+                        href="javascript:void(0);"
+                        (click)="
+                          openTracrLink(selected[stoneIndex]['TracrUrl'])
+                        "
+                        ><img
+                          class="redirectImg tracr"
+                          src="assets/images/tracr.png"
+                      /></a>
+                      <!-- mobile portrait view -->
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ng-template #elseif1>
+                  <ion-button
+                    id="closeBtn"
+                    class="cursor h50"
+                    color="success"
+                    (click)="addStonesToCart()"
+                    [disabled]="!selected[stoneIndex]['availableForSale']"
+                    *ngIf="
+                      (loadFrom != 'config' &&
+                        !selected[stoneIndex]?.refCartID &&
+                        !selected[stoneIndex]?.refCartProductId) ||
+                      (loadFrom == 'config' &&
+                        !!_navigateService.productDetailPageList &&
+                        _navigateService.productDetailPageList.length > 0 &&
+                        !_navigateService.productDetailPageList[this.no]
+                          ?.refCartID)
+                    "
+                  >
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ng-template>
+              </ng-container>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="marginBottom m10 justify-content-beetween">
+          <ion-col class="card-bg product-details" size="5.7">
+            <ion-row class="marPad0">
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Shade' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['ShadesCode']"
+              >
+                {{ selected[stoneIndex]['ShadesCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['ShadesCode']"
+                >-
+              </ion-col>
+            </ion-row>
+            <ion-row class="marPad0">
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Eye Clean' | translate }}:
+              </ion-col>
+              <!-- <ion-col size="6" class="pd-par-info-val">- </ion-col> - -->
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['EyeCleanCode']"
+              >
+                {{ selected[stoneIndex]['EyeCleanCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['EyeCleanCode']"
+                >-
+              </ion-col>
+            </ion-row>
+            <!-- <b>  &nbsp; </b> <span class="pd-info"> </span> <br />
+            <b> Eye Clean: &nbsp;</b> <span class="pd-info">{{ selected[stoneIndex]['EyeCleanCode'] }}</span><br /> -->
+          </ion-col>
+          <ion-col class="card-bg product-details" size="5.7">
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Luster' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['LusterCode']"
+              >
+                {{ selected[stoneIndex]['LusterCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['LusterCode']"
+                >-
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Natural' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['NaturalCode']"
+              >
+                {{ selected[stoneIndex]['NaturalCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['NaturalCode']"
+                >-
+              </ion-col>
+            </ion-row>
+            <!-- <b> Milky: &nbsp; </b> <span class="pd-info">{{ selected[stoneIndex]['LusterCode'] }} </span><br />
+            <b> Natural: &nbsp;</b> <span class="pd-info">{{ selected[stoneIndex]['NaturalCode'] }}</span> <br /> -->
+          </ion-col>
+          <ion-col size="12" class="card-bg product-details">
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Table Black Inc' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['TableBlackInclusionCode']"
+              >
+                {{ selected[stoneIndex]['TableBlackInclusionCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['TableBlackInclusionCode']"
+                >-
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Table White Inc' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['TableWhiteInclusionCode']"
+              >
+                {{ selected[stoneIndex]['TableWhiteInclusionCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['TableWhiteInclusionCode']"
+                >-
+              </ion-col>
+              <!-- <ion-col size="6" class="pd-par-info-val"> {{ selected[stoneIndex]['TableWhiteInclusionCode']
+                }} </ion-col> -->
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Side Black Inc' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['SideBlackInclusionCode']"
+              >
+                {{ selected[stoneIndex]['SideBlackInclusionCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['SideBlackInclusionCode']"
+                >-
+              </ion-col>
+              <!-- <ion-col size="6" class="pd-par-info-val"> {{ selected[stoneIndex]['SideBlackInclusionCode']
+                }} </ion-col> -->
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Side White Inc' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['SideWhiteInclusionCode']"
+              >
+                {{ selected[stoneIndex]['SideWhiteInclusionCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['SideWhiteInclusionCode']"
+                >-
+              </ion-col>
+              <!-- <ion-col size="6" class="pd-par-info-val"> {{ selected[stoneIndex]['SideWhiteInclusionCode']
+                }} </ion-col> -->
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info"
+                >{{ 'Graining' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['GrainingCode']"
+              >
+                {{ selected[stoneIndex]['GrainingCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['GrainingCode']"
+                >-
+              </ion-col>
+              <!-- <ion-col size="6" class="pd-par-info-val"> {{ selected[stoneIndex]['GrainingCode'] }}</ion-col> -->
+            </ion-row>
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'Heart & Arrow' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['HeartandArrowCode']"
+              >
+                {{ selected[stoneIndex]['HeartandArrowCode'] }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['HeartandArrowCode']"
+                >-
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="6" class="pd-par-info">
+                {{ 'LW Ratio' | translate }}:
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="selected[stoneIndex]['L_W']"
+              >
+                {{ selected[stoneIndex]['L_W'] | number : '1.2-2' }}
+              </ion-col>
+              <ion-col
+                size="6"
+                class="pd-par-info-val"
+                *ngIf="!selected[stoneIndex]['L_W']"
+                >-
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <ng-container
+        *ngIf="defaultSelected != 'none' && selected && selected?.length > 0"
+      >
+        <ion-fab
+          vertical="bottom"
+          horizontal="end"
+          slot="fixed"
+          class="share-fab"
+          *ngIf="!webViewMobile || isIpad"
+        >
+          <ion-fab-button>
+            <ion-icon
+              name="share-social"
+              class="shareBtn"
+              (click)="share(selected[stoneIndex])"
+            ></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+
+        <ion-fab
+          vertical="bottom"
+          horizontal="end"
+          slot="fixed"
+          class="share-fab"
+          *ngIf="webViewMobile"
+        >
+          <ion-fab-button>
+            <a
+              href="https://api.whatsapp.com/send?text=https://www.kgdiamonds.com/products/{{
+                selected[stoneIndex].stoneName
+              }}/{{ selected[stoneIndex].stoneName }}/{{
+                selected[stoneIndex].currentLocation
+              }}"
+              target="_blank"
+              data-action="share/whatsapp/share"
+              class="share-link"
+            >
+              <ion-icon name="share-social" class="shareBtn"></ion-icon>
+            </a>
+          </ion-fab-button>
+        </ion-fab>
+
+        <ion-row
+          class="fixed-row ion-justify-content-center"
+          *ngIf="
+            _navigateService?.productDetailPageList?.length ||
+            selected?.length > 1
+          "
+        >
+          <ion-col size="12" class="product-pagin">
+            <ng-container
+              *ngIf="
+                _navigateService?.productDetailPageList?.length ||
+                selected?.length > 1
+              "
+            >
+              <ion-row *ngIf="loadFrom != 'config' && selected?.length > 1">
+                <ion-col size="2">
+                  <!-- [disabled]="selected.length == 0 || no == 0" -->
+                  <ion-button
+                    class="noPad"
+                    (click)="
+                      minus(true); loadData(selected[no]); loaddefaultSlide()
+                    "
+                    fill="clear"
+                  >
+                    <ion-icon
+                      name="caret-back-outline"
+                      class="pIcon"
+                    ></ion-icon>
+                  </ion-button>
+                </ion-col>
+
+                <ion-col size="8" class="d-div">
+                  <div class="tac-text">
+                    <span class="vColor" *ngIf="details">
+                      {{ 'Stone' | translate }} {{ no + 1 }}
+                      {{ 'of' | translate }} {{ selected.length }}</span
+                    >
+                  </div>
+                </ion-col>
+
+                <ion-col size="2" style="padding-left: 0">
+                  <ion-button
+                    (click)="
+                      plus(true); loadData(selected[no]); loaddefaultSlide()
+                    "
+                    class="noPad"
+                    [disabled]="selected.length == 0"
+                    fill="clear"
+                  >
+                    <ion-icon name="caret-forward-outline" class="pIcon">
+                    </ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                *ngIf="
+                  loadFrom == 'config' &&
+                  _navigateService?.productDetailPageList?.length
+                "
+                style="display: flex"
+              >
+                <ion-col size="2">
+                  <ion-button
+                    [disabled]="
+                      _navigateService.productDetailPageList.length == 0 ||
+                      no == 0
+                    "
+                    (click)="minus(); changeStoneId(no)"
+                    fill="clear"
+                    class="noPad"
+                  >
+                    <ion-icon
+                      name="caret-back-outline"
+                      class="pIcon"
+                    ></ion-icon>
+                  </ion-button>
+                </ion-col>
+
+                <ion-col size="8" class="d-div">
+                  <div class="tac">
+                    <ion-button
+                      (click)="close.emit()"
+                      class="pnButton"
+                      fill="clear"
+                      color="primary"
+                    >
+                      {{ 'Close' | translate }}</ion-button
+                    >
+                  </div>
+                </ion-col>
+
+                <ion-col size="2">
+                  <ion-button
+                    (click)="plus(); changeStoneId(no)"
+                    [disabled]="
+                      _navigateService.productDetailPageList.length == 0 ||
+                      no == _navigateService.productDetailPageList.length - 1
+                    "
+                    fill="clear"
+                    class="noPad"
+                  >
+                    <ion-icon
+                      name="caret-forward-outline"
+                      class="pIcon"
+                    ></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-container>

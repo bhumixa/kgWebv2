@@ -1,0 +1,296 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row class="ion-align-items-center">
+      <ion-col *ngIf="!!companyLogo" class="logoMainColWithBack">
+        <!-- <cl-image secure="true" public-id="/logo/{{databaseServiceService.refCompanyId}}" format="png" class="logoMain">
+          <cl-transformation></cl-transformation>
+        </cl-image> -->
+      </ion-col>
+      <ion-col class="tar">
+        <ion-button (click)="closeModal()">Close</ion-button>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-title>{{productTitle}}</ion-title> -->
+    <!-- <ion-icon slot="end" name="close" (click)="closeModal()"></ion-icon> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="marPad0" *ngIf="showSkeleton">
+    <ion-skeleton-text animated style="height: 65px"></ion-skeleton-text>
+    <ion-row *ngFor="let data of configService.arrayOne(15)">
+      <ion-skeleton-text animated style="height: 35px"></ion-skeleton-text>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="!showSkeleton" class="ml10Imp">
+    <ion-row class="ffWhitney marPad0">
+      <ion-col>
+        <h1 class="product-title tal">{{ productData.data[0].name }}</h1>
+        <!-- <h5 *ngIf="productData && productData.data && productData.data[0]" class="pdp-name pdp-bb1">
+          {{ productData.data[0].sku }}
+        </h5> -->
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="!!productPrice && productPrice != 0 && (!hidePrice || hidePrice != '1') && (!_companyService.hidePriceForLogin || (_companyService.hidePriceForLogin && userId))"
+      class="marPad0"
+    >
+      <ion-col size="12" *ngIf="discount != 0 && finalPrice">
+        <span class="title fl">
+          <b
+            >{{ _companyService.currency }} {{ finalPrice | number: ".2-2" }}</b
+          >
+        </span>
+        <span
+          class="ml5p"
+          *ngIf="!!customerTag && !databaseServiceService.hideCustomerTagInProductDetail"
+        >
+          ({{ customerTag }})</span
+        >
+        <br
+          *ngIf="!!customerTag && !databaseServiceService.hideCustomerTagInProductDetail"
+        />
+        <span class="ml5p colorGrey"> (Extra {{ discount }}% OFF)</span>
+      </ion-col>
+      <ion-col size="12">
+        <strong class="title tal" *ngIf="discount == 0">
+          <b
+            >{{ _companyService.currency }} {{ productPrice | number: ".2-2"
+            }}</b
+          >
+        </strong>
+        <del *ngIf="discount != 0" class="delTitle tal"
+          >{{ _companyService.currency }} {{ productPrice | number: ".2-2"
+          }}</del
+        >
+        <span class="ml5p" *ngIf="!!compareDiscount && compareDiscount != 0">
+          ({{ compareDiscount }}% OFF)
+        </span>
+      </ion-col>
+      <ion-col
+        size="12"
+        class="delTitle tal"
+        *ngIf="!!compareAtPrice && compareAtPrice > 0 && !!compareDiscount && compareDiscount != 0"
+      >
+        <del
+          >{{ _companyService.currency }} {{ compareAtPrice | number: ".2-2"
+          }}</del
+        >
+      </ion-col>
+      <br />
+    </ion-row>
+    <ion-row *ngIf="!!hidePrice && hidePrice == '1'" class="marPad0">
+      <ion-col size="12">
+        <span class="title fl">
+          <b>TBD</b>
+        </span>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="listOfProductVariantType && listOfProductVariantType[0]"
+      class="marPad0"
+    >
+      <ion-col
+        class="pTopBottom0"
+        size="12"
+        *ngIf="listOfVariantType1.length != 0"
+      >
+        <!-- <ion-item class="pStartNone" lines="none"> -->
+        <label> {{ listOfProductVariantType[0].name }} </label>
+        <!-- </ion-item> -->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <div
+        class="variantDiv"
+        *ngIf="listOfProductVariantType && listOfProductVariantType[0] && listOfVariantType1.length != 0"
+      >
+        <ion-col
+          size="6"
+          class="pTopBottom0"
+          *ngFor="let variant of listOfVariantType1; let index1 = index"
+        >
+          <ion-row
+            class="w100"
+            (click)="variantSelectedByButton(listOfVariantType1, index1, 1)"
+          >
+            <ion-col size="9">
+              <ion-button
+                id="btn_{{ index1 }}"
+                fill="outline"
+                shape="round"
+                [ngClass]="listOfVariantType1[index1].isSelected ? 'variant variantSelected' : 'variant variantNotSelected'"
+                *ngIf="variant.name == listOfProductVariantType[0].name"
+              >
+                {{ variant.value }}
+              </ion-button>
+            </ion-col>
+            <!-- <ion-col size="3" *ngIf="listOfVariantType2.length == 0">
+                    <ion-input type="number" class="tar quantity" [(ngModel)]="variant.quantity"></ion-input>
+                  </ion-col> -->
+          </ion-row>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row *ngIf="listOfProductVariantType && listOfProductVariantType[1]">
+      <ion-col
+        class="pTopBottom0"
+        size="12"
+        *ngIf="listOfVariantType2.length != 0"
+      >
+        <label>{{ listOfProductVariantType[1].name }} </label>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="listOfProductVariantType && listOfProductVariantType[1] && selectedVariantType1"
+    >
+      <ion-col
+        size="6"
+        class="pTopBottom0"
+        *ngFor="let variant2 of selectedVariantType1.secondVariantList; let index2 = index"
+      >
+        <ion-row
+          class="w100"
+          (click)="variantSelectedByButton(listOfVariantType2, index2, 2)"
+        >
+          <ion-col size="9">
+            <ion-button
+              [ngClass]="listOfVariantType2[index2].isSelected ? 'variant variantSelected' : 'variant variantNotSelected'"
+              id="btn_{{ index2 }}"
+            >
+              <div *ngIf="variant2.isPresentInCart" class="cartQty fr">
+                {{ variant2.cartQuantity }}
+              </div>
+              <ion-icon
+                *ngIf="variant2.isPresentInCart"
+                [color]="listOfVariantType2[index2].isSelected ? 'grey' : ''"
+                name="cart"
+              >
+              </ion-icon>
+              &nbsp;{{ variant2.value }}
+            </ion-button>
+          </ion-col>
+          <ion-col size="3">
+            <ion-input
+              type="number"
+              class="tar quantity"
+              [(ngModel)]="variant2.quantity"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      class="p20p"
+      *ngIf="!!selectedVariant && !!selectedVariant.listOfProductVariantAddOns && selectedVariant.listOfProductVariantAddOns.length > 0"
+    >
+      <ion-col size="12">
+        Add Ons <span class="optional">(optional)</span>
+      </ion-col>
+      <ion-col size="12" class="marPad0">
+        <ion-row
+          *ngFor="let addOn of selectedVariant.listOfProductVariantAddOns"
+          class="marPad0"
+        >
+          <ion-col size="1" class="marPad0">
+            <ion-img
+              *ngIf="!addOn.image && !!companyLogo"
+              [src]="companyLogo"
+            ></ion-img>
+            <ion-img *ngIf="!!addOn.image" [src]="addOn.image"></ion-img>
+          </ion-col>
+          <ion-col size="9" class="marPad0">
+            {{ addOn.name }} &nbsp;&nbsp;
+            <span *ngIf="addOn.price > 0"
+              >{{ _companyService.currency }}{{ addOn.price }}</span
+            >
+          </ion-col>
+          <ion-col size="2" class="marPad0">
+            <ion-toggle
+              [(ngModel)]="addOn.selected"
+              (ionChange)="selectAddOn($event, selectedVariant)"
+            ></ion-toggle>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      class="marPad0"
+      *ngIf="productData && productData.data[0] && productData.data[0].listOfVariants.length != 0"
+    >
+      <ion-col class="tar pdp-add-to-bag marPad0">
+        <ion-button
+          (click)="buyNow()"
+          *ngIf="!!selectedVariant && (!selectedVariant.outOfStock || selectedVariant.outOfStock == 0) && (!hidePrice || hidePrice != '1')"
+        >
+          <ion-icon slot="start" name="cart"></ion-icon>
+          Add To Cart
+        </ion-button>
+        <ion-button
+          class="outOfStock"
+          expand="block"
+          fill="outline"
+          *ngIf="!!selectedVariant && !!selectedVariant.outOfStock && selectedVariant.outOfStock == 1"
+        >
+          Sold Out
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <br />
+    <ion-row
+      *ngIf="productData && productData.data[0] && showDescription"
+      class="lineBreak marPad0"
+    >
+      <ion-col class="marPad0">
+        <h4 class="pdp-product-description-title">
+          Product Details
+          <ion-icon name="list" class="ml5p"></ion-icon>
+        </h4>
+      </ion-col>
+      <!-- <h5 class="pl"><b>Description</b></h5> -->
+    </ion-row>
+    <ion-row
+      *ngIf="productData && productData.data[0] && showDescription"
+      class="pdp-product-description-content"
+    >
+      <!-- {{productData?.data[0]?.description}} -->
+      <ion-col>
+        <div [innerHTML]="(productData?.data)[0]?.description"></div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+      *ngIf="productData && productData.data[0]"
+      class="index-sizeFitDesc"
+    >
+      <!--h4 class="index-sizeFitDescTitle"><b>SPECIFICATIONS</b></h4-->
+    </ion-row>
+    <ion-row class="index-tableContainer">
+      <!-- <ion-col size="12" class="index-row" *ngIf="param.paramName != 'Hide Price'">
+              <ion-row>
+                <ion-col size="4" class="index-rowKey">
+                  {{ param.paramName }}
+                </ion-col>
+                <ion-col size="8" class="index-rowValue">
+                  {{ param.paramValue }}
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+      <ion-col
+        size="6"
+        class="specifications"
+        *ngFor="let param of (productData?.data)[0]?.listOfParameter"
+      >
+        <div
+          class="specifications-col-inn fon-size-14"
+          *ngIf="param.paramName != 'Hide Price'"
+        >
+          <div class="specifications-rawval bold-md">{{ param.paramName }}</div>
+          <div class="specifications-titleVal black-text">
+            {{ param.paramValue }}
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

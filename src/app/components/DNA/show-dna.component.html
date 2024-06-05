@@ -1,0 +1,15 @@
+<ion-grid>
+  <ion-row class="mt10Imp">
+    <ion-col size="12">
+      <ion-input type="text" class="bgLightBlue border  input border-secondary" (keyup.enter)="show()" [(ngModel)]="stoneId"
+        [placeholder]="'Enter Stone ID'| translate" (keypress)="omit_special_char($event)"></ion-input>
+    </ion-col>
+    <ion-col size="12" class="tar">
+      <ion-button color="primary"  class="round-button v2Btn "  (click)="closeModal()"> {{"Cancel"|translate}} </ion-button> 
+      <ion-button class="round-button v2Btn " color="primary" (click)="show()"  [disabled]="!stoneId">
+        {{"Show"| translate}}
+      </ion-button>
+      
+    </ion-col>
+  </ion-row>
+</ion-grid>

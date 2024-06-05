@@ -1,0 +1,14 @@
+.cartImg {
+  background: var(--ion-color-primary);
+  width: auto !important;
+  // height: auto !important;
+}
+.disInline {
+  display: contents !important;
+}
+.ionCardForDeskTop {
+  display: inline-block;
+}
+.pageMinHt {
+  min-height: 40vh;
+}

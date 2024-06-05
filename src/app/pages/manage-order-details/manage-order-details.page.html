@@ -1,0 +1,1430 @@
+<app-header *ngIf="!hideBackButton" showBackButton="true"></app-header>
+<app-header *ngIf="hideBackButton" showBackButton="false"></app-header>
+
+<ion-content>
+  <div class="contentDiv">
+    <ion-row>
+      <ion-col class="onPageTitle" *ngIf="!bookName">
+        {{"Orders"|translate}} #{{ orderAndAddressDetails.serialNumber }}
+      </ion-col>
+      <ion-col class="onPageTitle" *ngIf="!!bookName">
+        <h4><b> {{ bookName }} {{"Details"|translate}} </b></h4>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="showSkeleton && _companyService.productListing != 'grid'">
+      <ion-row>
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w200-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w95-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w55-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w100-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w55-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <!-- Ordered {{ addedOn | timeAgo }} | Order#{{ orderId }} <br />
+            <span class="normal fs14">Payment Mode : {{ orderAndAddressDetails.paymentMode }}</span> -->
+            </ion-card-header>
+            <ion-card-content class="mar10">
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text
+              ><br />
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text
+              ><br />
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text
+              ><br />
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text
+              ><br />
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text>
+              <br />
+              <ion-skeleton-text
+                animated
+                class="delivery-skel"
+              ></ion-skeleton-text>
+            </ion-card-content>
+
+            <div *ngFor="let data of _configService.arrayOne(2)">
+              <ion-card-content>
+                <ion-row>
+                  <ion-col size="2">
+                    <ion-skeleton-text
+                      animated
+                      class="product-image-skel"
+                    ></ion-skeleton-text>
+                  </ion-col>
+                  <ion-col size="10">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                    <ion-skeleton-text
+                      animated
+                      class="w55-skel"
+                    ></ion-skeleton-text>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </div>
+            <div class="fr">
+              <ion-skeleton-text animated class="orderT"></ion-skeleton-text>
+              <ion-skeleton-text animated class="orderT"></ion-skeleton-text>
+            </div>
+            <br />
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10 marPad0">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="w200-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="skeleton-btn"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-item
+                class="pad15"
+                *ngFor="let data of _configService.arrayOne(2)"
+              >
+                <ion-col>
+                  <ion-row class="padBottom">
+                    <ion-col>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="padBottom">
+                    <ion-col>
+                      <ion-skeleton-text
+                        animated
+                        class="w155-skel"
+                      ></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="padBottom">
+                    <ion-col
+                      size="6"
+                      size-xs="12"
+                      size-sm="12"
+                      size-md="6"
+                      size-xl="6"
+                    >
+                      <ion-skeleton-text
+                        animated
+                        class="w155-skel"
+                      ></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div
+      *ngIf="!showSkeleton && _companyService.productListing != 'grid' && _companyService.productListing != 'MobileList'"
+    >
+      <ion-row>
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col>
+                  {{"Ordered"|translate}} {{ addedOn | timeAgo }} |
+                  {{"Order"|translate}}#{{ orderAndAddressDetails.serialNumber
+                  }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col> {{"Payment Mode"|translate}}: </ion-col>
+                <ion-col>
+                  {{ orderAndAddressDetails.paymentMode | translate}}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col> {{"Status"|translate}}: </ion-col>
+                <ion-col>
+                  {{ orderAndAddressDetails.orderStatus | translate}}
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="!!orderAndAddressDetails.clientRemark">
+                <ion-col> {{"Remark"|translate}}: </ion-col>
+                <ion-col> {{ orderAndAddressDetails.clientRemark }} </ion-col>
+              </ion-row>
+
+              <ion-row *ngIf="!!orderAndAddressDetails.referenceNo">
+                <ion-col> {{"Reference No"|translate}}: </ion-col>
+                <ion-col> {{ orderAndAddressDetails.referenceNo }} </ion-col>
+              </ion-row>
+              <!-- Ordered {{ addedOn | timeAgo }} | Order#{{ orderId }} <br />
+            <span class="normal fs14">Payment Mode : {{ orderAndAddressDetails.paymentMode }}</span> -->
+            </ion-card-header>
+            <ion-card-content class="mar10">
+              <ion-row
+                *ngIf="!!orderAndAddressDetails.fullNameUser"
+                class="marPad0"
+              >
+                <ion-col size="12" class="marPad0">
+                  <b>{{"User Details"|translate}}</b>
+                </ion-col>
+                <ion-col size="12" class="marPad0">
+                  {{"Full Name"|translate}}:
+                  {{orderAndAddressDetails.fullNameUser}}
+                </ion-col>
+                <ion-col
+                  size="12"
+                  class="marPad0"
+                  *ngIf="!!orderAndAddressDetails.username"
+                >
+                  {{"Ph No"|translate}}.: {{orderAndAddressDetails.username}}
+                </ion-col>
+                <ion-col
+                  size="12"
+                  class="marPad0"
+                  *ngIf="!!orderAndAddressDetails.userPincode"
+                >
+                  {{"Pincode"|translate}}:
+                  {{orderAndAddressDetails.userPincode}}
+                </ion-col>
+              </ion-row>
+              <b
+                >{{ orderAndAddressDetails.shipmentType }}
+                {{"Address"|translate}}</b
+              ><br />
+              {{ orderAndAddressDetails.fullName }} ,<br />
+              {{ orderAndAddressDetails.house }} {{ orderAndAddressDetails.area
+              }},<br />
+              {{ orderAndAddressDetails.city }} {{
+              orderAndAddressDetails.pinCode }},<br />
+              {{ orderAndAddressDetails.state }} {{
+              orderAndAddressDetails.country }} <br />
+              <ion-icon name="call"></ion-icon> {{
+              orderAndAddressDetails.phoneNo }} <br />
+              <br />
+              <ion-label *ngIf="orderAndAddressDetails.pickuptime">
+                {{"Pick Up Time"|translate}} : {{
+                orderAndAddressDetails.pickuptime }}</ion-label
+              >
+            </ion-card-content>
+
+            <div *ngFor="let order of orderDetails">
+              <ion-card-content>
+                <div
+                  [ngClass]="onMobile ? '' : 'marTB'"
+                  *ngIf="order.lastShipDate && order.orderStatus == 'Pending'"
+                >
+                  <ion-label
+                    class="shippedDetails"
+                    [ngClass]="!onMobile ? 'pad45' : ''"
+                    >{{"Shipped"|translate}} {{ order.lastShipDate | timeAgo
+                    }}</ion-label
+                  >
+                  <ion-label
+                    [ngClass]="!onMobile ? 'pad45' : ''"
+                    *ngIf="order.lastShipDate && order.orderStatus == 'Delivered'"
+                    >{{"Delivered"|translate}} {{ order.lastShipDate | timeAgo
+                    }}</ion-label
+                  >
+                </div>
+
+                <ion-row>
+                  <ion-col
+                    size="1"
+                    size-xs="2"
+                    size-sm="2"
+                    size-md="2"
+                    size-lg="1"
+                  >
+                    <!-- <ion-img *ngIf="(!order.listOfImages || order.listOfImages?.length == 0) && !!companyLogo"
+                      [src]="companyLogo"></ion-img>
+                    <ion-img
+                      *ngIf="!!order.listOfImages && order.listOfImages?.length > 0 && !order.listOfImages[0].image.includes('i.mobioffice.io')"
+                      [src]="order.listOfImages[0].image"></ion-img>
+                    <ion-img
+                      *ngIf="!!order.listOfImages && order.listOfImages?.length > 0 && order.listOfImages[0].image.includes('i.mobioffice.io')"
+                      [attr.data-piio]="order.listOfImages[0].image" [src]="databaseServiceService.X1X"></ion-img>
+                    <ion-img *ngIf="(!order.listOfImages || order.listOfImages?.length == 0) && !companyLogo"
+                      [src]="databaseServiceService.defaultLogo"></ion-img> -->
+                    <!-- <cl-image secure="true" public-id="/logo/{{databaseServiceService.refCompanyId}}" format="png"
+                      *ngIf="(!order.listOfImages || order.listOfImages?.length == 0) && !!companyLogo"
+                      class="cartImgMinHt">
+                      <cl-transformation width="58" height="78" gravity="auto" crop="fill_pad"></cl-transformation>
+                    </cl-image>
+                    <cl-image secure="true" [public-id]="order.listOfImages[0].image" format="jpg"
+                      *ngIf="!!order.listOfImages && order.listOfImages?.length > 0" class="cartImgMinHt">
+                      <cl-transformation width="58" height="78" gravity="auto" crop="fill"></cl-transformation>
+                    </cl-image> -->
+                  </ion-col>
+                  <ion-col
+                    size="10"
+                    size-xs="9"
+                    size-sm="9"
+                    size-md="9"
+                    size-lg="10"
+                  >
+                    <ion-label>{{ order.title }}</ion-label>
+                    <ion-label class="fr">{{ order.quantity }} Qty</ion-label
+                    ><br />
+                    <!-- <ion-label  *ngIf="order.totalDiscountPrice==0">{{ _companyService.currencySymbol }}{{order.total}}</ion-label>
+          <ion-label *ngIf="order.totalDiscountPrice!=0"><del>{{ _companyService.currencySymbol }}{{ order.total }} </del> &nbsp; {{ _companyService.currencySymbol }}{{ order.totalDiscountPrice }}</ion-label> -->
+
+                    <ion-label *ngIf="!hideStorePrice">
+                      {{ _companyService.currencySymbol }}{{ order.discountPrice
+                      | number: ".2-2" }}
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice == 0 && order.taxAblePrice == 0 && !hideStorePrice"
+                    >
+                      {{ _companyService.currencySymbol }}{{ order.total }}
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice == 0 && order.taxAblePrice != 0 && !hideStorePrice"
+                    >
+                      {{ _companyService.currencySymbol }}{{ order.total }} + {{
+                      _companyService.currencySymbol }}{{ (order.total *
+                      order.taxes) / 100 | number: ".2-2" }}(Tax)
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice != 0 && !order.isScheme && !hideStorePrice"
+                    >
+                      <del *ngIf="order.total != order.taxAblePrice"
+                        >{{ _companyService.currencySymbol }}{{ order.total
+                        }}</del
+                      >
+                      &nbsp; {{ _companyService.currencySymbol }}{{
+                      order.taxAblePrice | number: ".2-2" }}
+                      <span *ngIf="order.taxes > 0">
+                        ({{"Tax"| translate}} {{ order.taxes }}%)
+                      </span>
+                    </ion-label>
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice != 0 && order.isScheme && !hideStorePrice"
+                    >
+                      {{ _companyService.currencySymbol }}{{ order.taxAblePrice
+                      | number: ".2-2" }}
+                    </ion-label>
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice == 0 && !hideStorePrice"
+                    >
+                      <del
+                        >{{ _companyService.currencySymbol }}{{ order.total }}
+                      </del>
+                      &nbsp; {{ _companyService.currencySymbol }}{{
+                      order.totalDiscountPrice }}
+                    </ion-label>
+                    <ion-row
+                      *ngIf="!!order.selectedAddOns && order.selectedAddOns.length > 0"
+                    >
+                      <ion-col>
+                        <ion-row>
+                          <ion-col class="tal">
+                            {{"Add Ons"| translate}}
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngFor="let addOn of order.selectedAddOns">
+                          <ion-col size="1">
+                            <ion-img
+                              *ngIf="!addOn.image && !!companyLogo"
+                              [src]="companyLogo"
+                            ></ion-img>
+                            <ion-img
+                              *ngIf="!!addOn.image"
+                              [src]="addOn.image"
+                            ></ion-img>
+                            <!-- <cl-image secure="true"  public-id="/logo/{{databaseServiceService.refCompanyId}}" format="png"
+                              *ngIf="!addOn.image" class="cartImgMinHt">
+                              <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad">
+                              </cl-transformation>
+                            </cl-image>
+                            <cl-image secure="true"  [public-id]="addOn.image" format="jpg" *ngIf="addOn.image" class="cartImgMinHt">
+                              <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+                            </cl-image> -->
+                          </ion-col>
+                          <ion-col size="11">
+                            <ion-label
+                              >{{ addOn.name }}
+                              <!-- - {{ _companyService.currencySymbol }}{{ addOn.addOnPrice }} -->
+                            </ion-label>
+                          </ion-col>
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let item of shipmentDetails">
+                      <ion-col>
+                        <ion-label>
+                          {{ findShipQty(item.listOfShipmentProducts,
+                          order.refPvID) }} {{"pcs shipped via"|translate}} {{
+                          item.shipVia }} {{ item.trackingNo }} {{
+                          item.createdOn | timeAgo }}
+                        </ion-label>
+                      </ion-col>
+                    </ion-row>
+                    <!-- <ion-label class="fr">{{ findRemainQty(order.refPvID) }} Qty</ion-label>   -->
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </div>
+            <ion-row class="tar" *ngIf="orderTotalTax > 0 && !hideStorePrice">
+              <ion-label class="w100 orderTotal"
+                >{{"Total Tax"|translate}} {{ _companyService.currencySymbol
+                }}{{ orderTotalTax | number: ".2-2" }}</ion-label
+              >
+            </ion-row>
+            <ion-row
+              class="tar"
+              *ngIf="orderAndAddressDetails.paymentCharges && !hideStorePrice"
+            >
+              <ion-label class="w100 orderTotal"
+                >{{"Payment Cost"|translate}} {{ _companyService.currencySymbol
+                }}{{ -orderAndAddressDetails.paymentCharges | number: ".2-2" }}
+              </ion-label>
+            </ion-row>
+            <ion-row class="tar" *ngIf="!hideStorePrice">
+              <ion-label class="w100 orderTotal"
+                >{{"Grand Total"|translate}} {{ _companyService.currencySymbol
+                }}{{ orderTotal | number: ".2-2" }}</ion-label
+              >
+            </ion-row>
+            <ion-row
+              class="tar"
+              *ngIf="orderAndAddressDetails.collectiveValue && !hideStorePrice"
+            >
+              <ion-label class="w100 orderTotal"
+                >{{"Collectible Amount"|translate}} {{
+                _companyService.currencySymbol }}{{
+                orderAndAddressDetails.collectiveValue | number: ".2-2" }}
+              </ion-label>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!!shipmentDetails">
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10 marPad0">
+            <ion-card-header class="cardHeader bold fs16">
+              {{"Shipment Details" | translate}}
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row
+                class="pad15"
+                *ngFor="let item of shipmentDetails; let i = index"
+              >
+                <ion-col size="6">
+                  <ion-row class="shipmentTotal padBottom summaryMar"
+                    >{{ i + 1 }}</ion-row
+                  >
+
+                  <ion-row class="padBottom">
+                    {{"Tracking No"| translate}}: {{ item.trackingNo }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Ship Via"| translate}}: {{ item.shipVia }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Date"| translate}}: {{ item.createdOn | timeAgo }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Invoice Dt"| translate}}: {{ item.invoiceDate | timeAgo
+                    }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Total Qty"| translate}}: {{ item.totalQty }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Total Amount"| translate}}: {{ item.total }}
+                  </ion-row>
+
+                  <ion-row
+                    class="padBottom"
+                    *ngIf="!!item.courierDetails && item.courierDetails.link"
+                    (click)="trackShipment(item)"
+                    ><a> {{"Track here"| translate}} </a></ion-row
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="!!userId && !!pendingInfo && equals(pendingInfo,'false') && !!pendingDetails && pendingDetails.length > 0"
+      >
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10 marPad0">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col> {{"Pending Details"|translate}} </ion-col>
+                <ion-col class="tar">
+                  <ion-button
+                    (click)="confirmCancelAllProducts()"
+                    *ngIf="orderAndAddressDetails.orderStatus != 'Closed' && orderAndAddressDetails.orderStatus != 'Delivered'"
+                  >
+                    {{"Cancel"|translate}}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-item
+                class="marPad0"
+                *ngFor="let item of pendingDetails; let i = index"
+              >
+                <ion-col>
+                  <ion-row>
+                    <ion-col>
+                      <ion-label class="mwFitContent">
+                        {{ item.title }}
+                      </ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <!-- <ion-row class="padBottom ">
+                    <ion-col>
+                      <ion-label class="mwFitContent"> {{ item.sku }} </ion-label>
+                    </ion-col>
+                  </ion-row> -->
+                  <ion-row>
+                    <ion-col
+                      size="6"
+                      size-xs="12"
+                      size-sm="12"
+                      size-md="6"
+                      size-xl="6"
+                    >
+                      {{"Pending"|translate}}: {{ item.quantity -
+                      item.shipment_quantity - item.cancelledQuantity }}
+                      {{"pcs"|translate}}
+                    </ion-col>
+                    <ion-col
+                      *ngIf="!!item.cancelledQuantity"
+                      size="6"
+                      size-xs="12"
+                      size-sm="12"
+                      size-md="6"
+                      size-xl="6"
+                    >
+                      {{"Cancelled"|translate}}: {{ item.cancelledQuantity
+                      }}{{"pcs"|translate}}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    *ngIf="item.isScheme == 0 && item.quantity - item.shipment_quantity - item.cancelledQuantity > 0 && orderAndAddressDetails.orderStatus != 'Closed' && orderAndAddressDetails.orderStatus != 'Delivered'"
+                  >
+                    <ion-col size="8" class="">
+                      {{"Cancel"|translate}}
+                    </ion-col>
+                    <ion-col size="2" class="marPad0">
+                      <ion-input
+                        type="number"
+                        min="0"
+                        [(ngModel)]="item.cancelQty"
+                      ></ion-input>
+                    </ion-col>
+                    <ion-col size="2" class="tar marPad0">
+                      <ion-button (click)="cancelProduct(item)">
+                        <ion-icon name="trash"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div
+      *ngIf="!showSkeleton && _companyService.productListing == 'MobileList'"
+    >
+      <ion-row>
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col>
+                  {{"Ordered"|translate}} {{ addedOn | timeAgo }} |
+                  {{"Order"|translate}}#{{ orderAndAddressDetails.serialNumber
+                  }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col> {{"Payment Mode"|translate}}: </ion-col>
+                <ion-col>
+                  {{ orderAndAddressDetails.paymentMode | translate}}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col> {{"Status"|translate}}: </ion-col>
+                <ion-col>
+                  {{ orderAndAddressDetails.orderStatus |translate}}
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="!!orderAndAddressDetails.clientRemark">
+                <ion-col> {{"Remark"|translate}}: </ion-col>
+                <ion-col> {{ orderAndAddressDetails.clientRemark }} </ion-col>
+              </ion-row>
+
+              <ion-row *ngIf="!!orderAndAddressDetails.referenceNo">
+                <ion-col> {{"Reference No"|translate}}: </ion-col>
+                <ion-col> {{ orderAndAddressDetails.referenceNo }} </ion-col>
+              </ion-row>
+              <!-- Ordered {{ addedOn | timeAgo }} | Order#{{ orderId }} <br />
+            <span class="normal fs14">Payment Mode : {{ orderAndAddressDetails.paymentMode }}</span> -->
+            </ion-card-header>
+            <ion-card-content class="mar10">
+              <b
+                >{{ orderAndAddressDetails.shipmentType }}
+                {{"Address"|translate}}</b
+              ><br />
+              {{ orderAndAddressDetails.fullName }} ,<br />
+              {{ orderAndAddressDetails.house }} {{ orderAndAddressDetails.area
+              }},<br />
+              {{ orderAndAddressDetails.city }} {{
+              orderAndAddressDetails.pinCode }},<br />
+              {{ orderAndAddressDetails.state }} {{
+              orderAndAddressDetails.country }} <br />
+              <ion-icon name="call"></ion-icon> {{
+              orderAndAddressDetails.phoneNo }} <br />
+              <br />
+              <ion-label *ngIf="orderAndAddressDetails.pickuptime">
+                {{"Pick Up Time"|translate}} : {{
+                orderAndAddressDetails.pickuptime }}</ion-label
+              >
+            </ion-card-content>
+
+            <div *ngFor="let order of orderDetails">
+              <ion-card-content>
+                <div
+                  [ngClass]="onMobile ? '' : 'marTB'"
+                  *ngIf="order.lastShipDate && order.orderStatus == 'Pending'"
+                >
+                  <ion-label
+                    class="shippedDetails"
+                    [ngClass]="!onMobile ? 'pad45' : ''"
+                    >{{"Shipped"|translate}} {{ order.lastShipDate | timeAgo
+                    }}</ion-label
+                  >
+                  <ion-label
+                    [ngClass]="!onMobile ? 'pad45' : ''"
+                    *ngIf="order.lastShipDate && order.orderStatus == 'Delivered'"
+                    >{{"Delivered"|translate}} {{ order.lastShipDate | timeAgo
+                    }}</ion-label
+                  >
+                </div>
+
+                <ion-row>
+                  <ion-col>
+                    <ion-label>{{ order.title }}</ion-label>
+                    <ion-label class="fr"
+                      >{{ order.quantity }} {{"Qty"|translate}}</ion-label
+                    ><br />
+                    <!-- <ion-label  *ngIf="order.totalDiscountPrice==0">{{ _companyService.currencySymbol }}{{order.total}}</ion-label>
+          <ion-label *ngIf="order.totalDiscountPrice!=0"><del>{{ _companyService.currencySymbol }}{{ order.total }} </del> &nbsp; {{ _companyService.currencySymbol }}{{ order.totalDiscountPrice }}</ion-label> -->
+
+                    <ion-label *ngIf="!hideStorePrice">
+                      {{ _companyService.currencySymbol }}{{ order.discountPrice
+                      | number: ".2-2" }}
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice == 0 && order.taxAblePrice == 0 && !hideStorePrice"
+                    >
+                      ion-label class="fr" *ngIf="order.totalDiscountPrice == 0
+                      && order.taxAblePrice == 0 && !hideStorePrice"> {{
+                      _companyService.currencySymbol }}{{ order.total }}
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice == 0 && order.taxAblePrice != 0 && !hideStorePrice"
+                    >
+                      {{ _companyService.currencySymbol }}{{ order.total }} + {{
+                      _companyService.currencySymbol }}{{ (order.total *
+                      order.taxes) / 100 | number: ".2-2"
+                      }}({{"Tax"|translate}})
+                    </ion-label>
+
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice != 0 && !order.isScheme && !hideStorePrice"
+                    >
+                      <del *ngIf="order.total != order.taxAblePrice"
+                        >{{ _companyService.currencySymbol }}{{ order.total
+                        }}</del
+                      >
+                      &nbsp; {{ _companyService.currencySymbol }}{{
+                      order.taxAblePrice | number: ".2-2" }}
+                      <span *ngIf="order.taxes > 0">
+                        ({{"Tax"|translate}} {{ order.taxes }}%)
+                      </span>
+                    </ion-label>
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice != 0 && order.isScheme && !hideStorePrice"
+                    >
+                      {{ _companyService.currencySymbol }}{{ order.taxAblePrice
+                      | number: ".2-2" }}
+                    </ion-label>
+                    <ion-label
+                      class="fr"
+                      *ngIf="order.totalDiscountPrice != 0 && order.taxAblePrice == 0 && !hideStorePrice"
+                    >
+                      <del
+                        >{{ _companyService.currencySymbol }}{{ order.total }}
+                      </del>
+                      &nbsp; {{ _companyService.currencySymbol }}{{
+                      order.totalDiscountPrice }}
+                    </ion-label>
+                    <ion-row
+                      *ngIf="!!order.selectedAddOns && order.selectedAddOns.length > 0"
+                    >
+                      <ion-col>
+                        <ion-row>
+                          <ion-col class="tal">
+                            {{"Add Ons"|translate}}
+                          </ion-col>
+                        </ion-row>
+                        <ion-row *ngFor="let addOn of order.selectedAddOns">
+                          <ion-col size="1">
+                            <ion-img
+                              *ngIf="!addOn.image && !!companyLogo"
+                              [src]="companyLogo"
+                            ></ion-img>
+                            <ion-img
+                              *ngIf="!!addOn.image"
+                              [src]="addOn.image"
+                            ></ion-img>
+                            <!-- <cl-image secure="true"  public-id="/logo/{{databaseServiceService.refCompanyId}}" format="png"
+                              *ngIf="!addOn.image" class="cartImgMinHt">
+                              <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad">
+                              </cl-transformation>
+                            </cl-image>
+                            <cl-image secure="true"  [public-id]="addOn.image" format="jpg" *ngIf="addOn.image" class="cartImgMinHt">
+                              <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+                            </cl-image> -->
+                          </ion-col>
+                          <ion-col size="11">
+                            <ion-label
+                              >{{ addOn.name }}
+                              <!-- - {{ _companyService.currencySymbol }}{{ addOn.addOnPrice }} -->
+                            </ion-label>
+                          </ion-col>
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let item of shipmentDetails">
+                      <ion-col>
+                        <ion-label>
+                          {{ findShipQty(item.listOfShipmentProducts,
+                          order.refPvID) }} {{"pcs shipped via"|translate}} {{
+                          item.shipVia }} {{ item.trackingNo }} {{
+                          item.createdOn | timeAgo }}
+                        </ion-label>
+                      </ion-col>
+                    </ion-row>
+                    <!-- <ion-label class="fr">{{ findRemainQty(order.refPvID) }} Qty</ion-label>   -->
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </div>
+            <ion-row class="tar" *ngIf="orderTotalTax > 0 && !hideStorePrice">
+              <ion-label class="w100 orderTotal"
+                >{{"Total Tax"|translate}} {{ _companyService.currencySymbol
+                }}{{ orderTotalTax | number: ".2-2" }}</ion-label
+              >
+            </ion-row>
+            <ion-row
+              class="tar"
+              *ngIf="orderAndAddressDetails.paymentCharges && !hideStorePrice"
+            >
+              <ion-label class="w100 orderTotal"
+                >{{"Payment Cost"|translate}} {{ _companyService.currencySymbol
+                }}{{ -orderAndAddressDetails.paymentCharges | number: ".2-2" }}
+              </ion-label>
+            </ion-row>
+            <ion-row class="tar" *ngIf="!hideStorePrice">
+              <ion-label class="w100 orderTotal"
+                >{{"Grand Tota"|translate}}l {{ _companyService.currencySymbol
+                }}{{ orderTotal | number: ".2-2" }}</ion-label
+              >
+            </ion-row>
+            <ion-row
+              class="tar"
+              *ngIf="orderAndAddressDetails.collectiveValue && !hideStorePrice"
+            >
+              <ion-label class="w100 orderTotal"
+                >{{"Collectible Amount"|translate}} {{
+                _companyService.currencySymbol }}{{
+                orderAndAddressDetails.collectiveValue | number: ".2-2" }}
+              </ion-label>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!!shipmentDetails">
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10 marPad0">
+            <ion-card-header class="cardHeader bold fs16">
+              {{"Shipment Details"|translate}}
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row
+                class="pad15"
+                *ngFor="let item of shipmentDetails; let i = index"
+              >
+                <ion-col size="6">
+                  <ion-row class="shipmentTotal padBottom summaryMar"
+                    >{{ i + 1 }}</ion-row
+                  >
+
+                  <ion-row class="padBottom">
+                    {{"Tracking No"|translate}}: {{ item.trackingNo }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Ship Via"|translate}}: {{ item.shipVia }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Date"|translate}}: {{ item.createdOn | timeAgo }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Invoice Dt"|translate}}: {{ item.invoiceDate | timeAgo }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Total Qty"|translate}}: {{ item.totalQty }}
+                  </ion-row>
+
+                  <ion-row class="padBottom">
+                    {{"Total Amount"|translate}}: {{ item.total }}
+                  </ion-row>
+
+                  <ion-row
+                    class="padBottom"
+                    *ngIf="!!item.courierDetails && item.courierDetails.link"
+                    ><a [href]="item.courierDetails">
+                      {{"Track here"|translate}}
+                    </a></ion-row
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="!!userId && !!pendingInfo && equals(pendingInfo,'false') && !!pendingDetails && pendingDetails.length > 0"
+      >
+        <ion-col
+          size="12"
+          size-lg="6"
+          offset-lg="3"
+          size-md="6"
+          offset-md="3"
+          size-sm="8"
+          offset-sm="2"
+        >
+          <ion-card class="mar10 marPad0">
+            <ion-card-header class="cardHeader bold fs16">
+              <ion-row>
+                <ion-col> {{"Pending Details"|translate}} </ion-col>
+                <ion-col class="tar">
+                  <ion-button
+                    (click)="confirmCancelAllProducts()"
+                    *ngIf="orderAndAddressDetails.orderStatus != 'Closed' && orderAndAddressDetails.orderStatus != 'Delivered'"
+                  >
+                    {{"Cancel"|translate}}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-item
+                class="marPad0"
+                *ngFor="let item of pendingDetails; let i = index"
+              >
+                <ion-col>
+                  <ion-row>
+                    <ion-col>
+                      <ion-label class="mwFitContent">
+                        {{ item.title }}
+                      </ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <!-- <ion-row class="padBottom ">
+                    <ion-col>
+                      <ion-label class="mwFitContent"> {{ item.sku }} </ion-label>
+                    </ion-col>
+                  </ion-row> -->
+                  <ion-row>
+                    <ion-col
+                      size="6"
+                      size-xs="12"
+                      size-sm="12"
+                      size-md="6"
+                      size-xl="6"
+                    >
+                      {{"Pending"|translate}}: {{ item.quantity -
+                      item.shipment_quantity - item.cancelledQuantity }}
+                      {{"pcs"|translate}}
+                    </ion-col>
+                    <ion-col
+                      *ngIf="!!item.cancelledQuantity"
+                      size="6"
+                      size-xs="12"
+                      size-sm="12"
+                      size-md="6"
+                      size-xl="6"
+                    >
+                      {{"Cancelled"|translate}}: {{ item.cancelledQuantity
+                      }}{{"pcs"|translate}}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    *ngIf="item.isScheme == 0 && item.quantity - item.shipment_quantity - item.cancelledQuantity > 0 && orderAndAddressDetails.orderStatus != 'Closed' && orderAndAddressDetails.orderStatus != 'Delivered'"
+                  >
+                    <ion-col size="8" class="">
+                      {{"Cancel"|translate}}
+                    </ion-col>
+                    <ion-col size="2" class="marPad0">
+                      <ion-input
+                        type="number"
+                        min="0"
+                        [(ngModel)]="item.cancelQty"
+                      ></ion-input>
+                    </ion-col>
+                    <ion-col size="2" class="tar marPad0">
+                      <ion-button (click)="cancelProduct(item)">
+                        <ion-icon name="trash"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row
+      *ngIf="_companyService.productListing == 'grid' && !!orderDetails && orderDetails.length > 0"
+    >
+      <ion-col size="12" class="fl tal mAuto largeFilters">
+        <ng-container *ngIf="!!orderPageButton && orderPageButton.length > 0">
+          <ion-button
+            *ngFor="let btn of orderPageButton"
+            (click)="actionButtonClick(btn)"
+            class="fs12 round-button v2Btn"
+            [disabled]="status=='Cancelled'"
+          >
+            {{ btn.name | translate}}
+          </ion-button>
+        </ng-container>
+        <ng-container *ngIf="bookName != 'Offer'">
+          <img
+            src="assets/images/excel.png"
+            class="clsActionImage cursor"
+            (click)="ExcelProducts()"
+            alt=""
+          />
+          <img
+            src="assets/images/email.png"
+            class="clsActionImage cursor"
+            (click)="showGetEmailId()"
+            alt=""
+          />
+        </ng-container>
+      </ion-col>
+    </ion-row>
+
+    <div
+      *ngIf="!showSkeleton && _companyService.productListing == 'grid' && orderDetails"
+    >
+      <div *ngIf="bookName == 'Memo' || !bookName">
+        <ion-row>
+          <ion-col *ngIf="bookName == 'Memo'">
+            <ion-label>
+              {{"Memo on"|translate}} {{ addedOn | timeAgo }} |
+              {{"Memo"|translate}}#{{ orderAndAddressDetails.serialNumber }}
+            </ion-label>
+          </ion-col>
+          <ion-col *ngIf="!bookName">
+            <ion-label>
+              {{"Ordered"|translate}} {{ addedOn | timeAgo }} |
+              {{"Order"|translate}}#{{ orderAndAddressDetails.serialNumber }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col
+            size="2"
+            size-xs="6"
+            size-sm="6"
+            size-md="2"
+            size-lg="2"
+            size-xl="2"
+          >
+            <ion-label> {{"Payment Mode"|translate}}: </ion-label>
+          </ion-col>
+          <ion-col>
+            {{ orderAndAddressDetails.paymentMode | translate}}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="bookName == 'Memo'">
+          <ion-col
+            size="2"
+            size-xs="6"
+            size-sm="6"
+            size-md="2"
+            size-lg="2"
+            size-xl="2"
+          >
+            <ion-label> {{"Memo Days"|translate}}: </ion-label>
+          </ion-col>
+          <ion-col> {{ orderAndAddressDetails.memoDays }} </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col
+            size="2"
+            size-xs="6"
+            size-sm="6"
+            size-md="2"
+            size-lg="2"
+            size-xl="2"
+          >
+            <ion-label> {{"Delivery / Pickup"| translate}} </ion-label>
+          </ion-col>
+          <ion-col>
+            {{ orderAndAddressDetails.shipmentType | translate}}
+          </ion-col>
+        </ion-row>
+        <ng-container
+          *ngIf="orderAndAddressDetails?.fullName || orderAndAddressDetails?.house || orderAndAddressDetails?.area
+          || orderAndAddressDetails?.city || orderAndAddressDetails?.pinCode || orderAndAddressDetails?.state
+          || orderAndAddressDetails?.country || orderAndAddressDetails?.phoneNo"
+        >
+          <ion-row>
+            <ion-col
+              size="2"
+              size-xs="6"
+              size-sm="6"
+              size-md="2"
+              size-lg="2"
+              size-xl="2"
+            >
+              <ion-label> {{"Address"| translate}}: </ion-label>
+            </ion-col>
+            <ion-col>
+              {{ orderAndAddressDetails.fullName }},<br />
+              {{ orderAndAddressDetails.house }} {{ orderAndAddressDetails.area
+              }},<br />
+              {{ orderAndAddressDetails.city }} {{
+              orderAndAddressDetails.pinCode }},<br />
+              {{ orderAndAddressDetails.state }} {{
+              orderAndAddressDetails.country }} <br />
+              <ion-icon name="call"></ion-icon> {{
+              orderAndAddressDetails.phoneNo }} <br />
+            </ion-col>
+          </ion-row>
+        </ng-container>
+        <ion-row>
+          <ion-col
+            size="2"
+            size-xs="6"
+            size-sm="6"
+            size-md="2"
+            size-lg="2"
+            size-xl="2"
+          >
+            {{"Status"| translate}}:
+          </ion-col>
+          <ion-col>
+            {{ orderAndAddressDetails.orderStatus| translate }}
+          </ion-col>
+        </ion-row>
+        <br />
+      </div>
+      <ion-row
+        *ngIf="orderDetails && searchResultColumns.length > 0 && loadData"
+      >
+        <ng-container *ngIf="bookName == 'Offer'">
+          <ion-button
+            (click)="presentActionSheet()"
+            class="round-button v2Btn mr smallFilters"
+          >
+            {{"Select Action"| translate}}
+          </ion-button>
+        </ng-container>
+        <ion-col size="12">
+          <app-dx-data-grid
+            *ngIf="bookName == 'Offer'"
+            [tableId]="'manage-order-detail-grid'"
+            [columns]="searchResultColumns"
+            [rowData]="orderDetails"
+            (deleteFunction)="cancelProductFromOrder($event)"
+            [totalSummary]="totalSummary"
+            [allowDeleting]="allowDeleting"
+            mode="multiple"
+            orderBook="Offer"
+            (callFunction)="selected = $event.selectedRowsData"
+            [mobileView]="mobileView"
+            [disableOffer]="disableOffer"
+            (selectStone)="singleProduct($event)"
+            (discountError)="showDiscountError($event)"
+            [listOfferApplied]="listOffer"
+            (viewOfferInputs)="viewOfferInputsFn($event)"
+            page="order-details"
+          >
+          </app-dx-data-grid>
+
+          <app-dx-data-grid
+            *ngIf="bookName != 'Offer'"
+            [tableId]="'manage-order-detail-grid'"
+            [columns]="searchResultColumns"
+            [rowData]="orderDetails"
+            [totalSummary]="totalSummary"
+            (callFunction)="selected = $event.selectedRowsData"
+            [mobileView]="mobileView"
+            mode="multiple"
+            (selectStone)="singleProduct($event)"
+          >
+          </app-dx-data-grid>
+        </ion-col>
+
+        <ion-row
+          *ngIf="bookName == 'Offer' && orderDetails.length > 1 && !mobileView"
+          style="width: 100%"
+        >
+          <ion-col size="6" class="paddingBottom0">
+            <ion-checkbox
+              color="primary"
+              class="chkBoxSelectAll"
+              [(ngModel)]="listOffer"
+              (ionChange)="ListOffer()"
+            >
+            </ion-checkbox>
+            List Offer
+          </ion-col>
+          <ion-col size="3" class="pb-pt-0">
+            {{"Payment Method"| translate}} :
+            <ion-select [(ngModel)]="paymentMode" class="input">
+              <ion-select-option
+                [value]="payMode"
+                *ngFor="let payMode of paymentModeList"
+              >
+                <label>{{ payMode.name | uppercase }} </label>
+                <label class="discount" *ngIf="!!payMode.flat">
+                  {{"Flat"| translate}} {{ payMode.flat }} {{
+                  _companyService.currencySymbol }} {{"Off"| translate}}
+                </label>
+                <label class="discount" *ngIf="!!payMode.discount">
+                  {{ payMode.discount }} % {{"Off"| translate}}
+                </label>
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size=" 1" class="paddingBottom0" *ngIf="listOffer">
+            {{"List Discount"| translate}}
+            <ion-input
+              class="bgLightBlue border tal input"
+              (ionBlur)="updateListValue('Disc')"
+              type="number"
+              min="0"
+              (keyup.enter)="updateListValue('Disc')"
+              [(ngModel)]="List.discount"
+              (ngModelChange)="updateListValue('Disc')"
+              (keypress)="omit_special_char($event)"
+            >
+            </ion-input>
+          </ion-col>
+          <ion-col size="1" class="paddingBottom0" *ngIf="listOffer">
+            {{"List Price"| translate}}
+            <ion-input
+              class="bgLightBlue border tal input"
+              (ionBlur)="updateListValue('Price')"
+              type="number"
+              min="0"
+              (keyup.enter)="updateListValue('Price')"
+              [(ngModel)]="List.price"
+              (ngModelChange)="updateListValue('Price')"
+              (keypress)="omit_special_char($event)"
+            >
+            </ion-input>
+          </ion-col>
+          <ion-col size="1" class="paddingBottom0" *ngIf="listOffer">
+            {{"List Amount"| translate}}
+            <ion-input
+              class="bgLightBlue border tal input"
+              (ionBlur)="updateListValue('Amt')"
+              type=" number"
+              min="0"
+              (keyup.enter)="updateListValue('Amt')"
+              [(ngModel)]="List.amount"
+              (ngModelChange)="updateListValue('Amt')"
+              (keypress)="omit_special_char($event)"
+            >
+            </ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+      <ng-container
+        *ngIf="bookName == 'Offer' && orderDetails.length > 1 && mobileView"
+        style="width: 100%"
+      >
+        <div class="mar10">
+          <ion-row>
+            <ion-col>
+              <ion-checkbox
+                color="primary"
+                class="chkBoxSelectAll"
+                [(ngModel)]="listOffer"
+                (ionChange)="ListOffer()"
+              >
+              </ion-checkbox>
+              {{"List Offer"| translate}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6"> {{"Payment Method"| translate}} : </ion-col>
+            <ion-col size="6">
+              <ion-select [(ngModel)]="paymentMode" class="list-selectBox">
+                <ion-select-option
+                  [value]="payMode"
+                  *ngFor="let payMode of paymentModeList"
+                >
+                  <label>{{ payMode.name | uppercase }} </label>
+                  <label class="discount" *ngIf="!!payMode.flat">
+                    {{"Flat"| translate}} {{ payMode.flat }} {{
+                    _companyService.currencySymbol }} {{"Off"| translate}}
+                  </label>
+                  <label class="discount" *ngIf="!!payMode.discount">
+                    {{ payMode.discount }} % {{"Off"| translate}}
+                  </label>
+                </ion-select-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="listOffer">
+            <ion-col size="6"> {{"List Discount"| translate}} : </ion-col>
+            <ion-col size="6">
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Disc')"
+                type="number"
+                (keyup.enter)="updateListValue('Disc')"
+                [(ngModel)]="List.discount"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="paddingBottom0" *ngIf="listOffer">
+            <ion-col size="6">
+              {{"List Price"| translate}} : &nbsp;&nbsp; &nbsp;&nbsp;
+            </ion-col>
+            <ion-col size="6">
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Price')"
+                type="number"
+                min="0"
+                (keyup.enter)="updateListValue('Price')"
+                [(ngModel)]="List.price"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="paddingBottom0" *ngIf="listOffer">
+            <ion-col size="6"> {{"List Amount"| translate}} : </ion-col>
+            <ion-col size="6">
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Amt')"
+                type=" number"
+                (keyup.enter)="updateListValue('Amt')"
+                [(ngModel)]="List.amount"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ng-container>
+    </div>
+    <br />
+    <br />
+    <!-- skeleton for grid-->
+    <div *ngIf="showSkeleton && _companyService.productListing == 'grid'">
+      <ion-grid>
+        <!-- <ion-row *ngFor="let data of _configService.arrayOne(5)">
+          <ion-col size="3">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="3">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row> -->
+        <ion-row *ngFor="let data of _configService.arrayOne(15)">
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>

@@ -1,0 +1,141 @@
+.setWidth {
+  width: 250px;
+}
+
+.container {
+  display: flex;
+  justify-content: left;
+  flex-flow: row wrap;
+  align-content: space-between;
+  // justify-content: space-between;
+}
+
+// .paramBox {
+//   height: auto;
+//   overflow-y: scroll;
+// }
+
+.mart20 {
+  margin-top: 20px;
+}
+
+.padding-top15 {
+  padding-top: 15px;
+}
+
+.padding-top20 {
+  padding-top: 20px;
+}
+
+.paddingRemove {
+  -webkit-padding-start: 0px !important;
+  padding-inline-start: 0px !important;
+  -webkit-padding-end: 0px !important;
+  padding-inline-end: 0px !important;
+}
+
+.fixWidthSubParam {
+  width: 100px;
+}
+
+.fixWidth {
+  width: 217px;
+}
+
+.buttonWidth {
+  // width: 70px;
+  display: grid;
+}
+
+.paddingMargin0 {
+  padding: 0;
+  margin: 0;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.buttonSet {
+  --padding-start: 0;
+  --inner-padding-end: 0px;
+  --inner-padding-start: 0;
+  --padding-end: 0;
+}
+
+.vHeight {
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+.font-size {
+  font-size: 13px !important;
+}
+
+.borderBottom {
+  border-bottom: 1px solid;
+}
+
+.paddingBottom {
+  padding-bottom: 5px;
+}
+
+.modalPage {
+  margin: auto;
+  // min-width: 380px;
+  width: 600px;
+  height: 300px;
+  z-index: 100;
+  overflow-y: scroll;
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  margin-top: 10px;
+  border: 2px solid #3880ff;
+  border-radius: 5px;
+  // top: calc(25%-20px);
+  left: calc(50% - 300px);
+}
+
+.greenBorder {
+  background: #10dc60;
+}
+
+.grayBorder {
+  background: gray;
+}
+
+.srchBox {
+  border: 1px solid var(--ion-color-secondary) !important;
+  border-radius: 80px;
+  padding: 10px;
+  min-width: 60px;
+  cursor: pointer;
+  text-align: center;
+  height: 37px;
+  margin-right: 5px;
+}
+
+.srchBoxSelected {
+  border: 1px solid var(--ion-color-secondary) !important;
+  border-radius: 80px;
+  border-left-color: white;
+  border-right-color: white;
+  padding: 10px;
+  min-width: 60px;
+  cursor: pointer;
+  background: var(--ion-color-primary);
+  color: white;
+  text-align: center;
+  height: 37px;
+  margin-right: 5px;
+}
+
+ion-item {
+
+  --border-color: rgb(43, 166, 200) !important;
+}
+
+// .teal-bg{
+//   --background:#89B8CA
+// }

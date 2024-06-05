@@ -1,0 +1,1102 @@
+<div class="minHeightMinus120">
+  <ion-grid *ngIf="view != 'page'">
+    <ion-row class="mt10Imp">
+      <ion-col size="10">
+        <form (ngSubmit)="submitSearch()">
+          <ion-searchbar
+            name="test"
+            [(ngModel)]="searchText"
+            (ionClear)="clearSearch($event)"
+          >
+          </ion-searchbar>
+        </form>
+      </ion-col>
+      <ion-col size="2" class="mAuto">
+        <!-- <ion-buttons slot="end"> -->
+        <ion-button color="primary" (click)="closeCart()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+        <!-- </ion-buttons> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-row [ngClass]="_companyService.productListing == 'grid' ? 'mt5' : ''">
+  </ion-row>
+  <ion-row [ngClass]="contentClass">
+    <ion-col
+      class="top-button-row"
+      size="12"
+      *ngIf="showActionButton && _companyService.productListing == 'grid'"
+    >
+      <ng-container
+        *ngIf="
+          !!cartPageButton &&
+          cartPageButton.length > 0 &&
+          view == 'page' &&
+          cartData?.data?.products?.length > 0
+        "
+      >
+        <ion-button
+          *ngFor="let btn of cartPageButton"
+          (click)="actionButtonClick(btn)"
+          [ngClass]="
+            _companyService.productListing == 'grid'
+              ? 'round-clear-button v2Btn largeFilters'
+              : 'fs12 largeFilters'
+          "
+          [fill]="_companyService.productListing == 'grid' ? 'clear' : 'solid'"
+        >
+          {{ btn.name | translate }}
+        </ion-button>
+        <ion-button
+          (click)="presentActionSheet()"
+          [ngClass]="
+            _companyService.productListing == 'grid'
+              ? 'round-button v2Btn mr smallFilters'
+              : 'fs12 smallFilters'
+          "
+        >
+          {{ "Select Action" | translate }}
+        </ion-button>
+        <ion-button
+          [ngClass]="
+            _companyService.productListing == 'grid'
+              ? 'round-clear-button v2Btn largeFilters'
+              : 'fs12 largeFilters'
+          "
+          (click)="clearCart()"
+          [fill]="_companyService.productListing == 'grid' ? 'clear' : 'solid'"
+        >
+          {{ "Remove" | translate }}
+        </ion-button>
+      </ng-container>
+      <!-- <ion-button color="primary" *ngIf="!orderBook && cartData?.data?.products?.length > 0"
+        [ngClass]="getClasses('actionBtn')"
+        [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn largeFilters': 'largeFilters'"
+        (click)="openCartActions()">
+        Cart Actions
+      </ion-button> -->
+      <ng-container
+        *ngIf="
+          !!cartPageButton &&
+          cartPageButton.length > 0 &&
+          view == 'page' &&
+          cartData?.data?.products?.length > 0
+        "
+      >
+        <img
+          src="assets/images/excel.png"
+          class="clsActionImage cursor"
+          (click)="ExcelExport()"
+          alt=""
+        />
+        <img
+          src="assets/images/email.png"
+          class="clsActionImage cursor"
+          (click)="showGetEmailId()"
+          alt=""
+        />
+      </ng-container>
+
+      <span class="floatRight summary_span">
+        <ng-container *ngIf="mode == 'multiple' && !inspectionView">
+          <ng-container *ngIf="selected?.length">
+            <span class="summaryCapsules">
+              {{ "Cts" | translate }}:
+              {{ totalSelectedSummary["cts"] | number : "1.2-2" }}
+            </span>
+            <span class="summaryCapsules">
+              {{ "Pcs" | translate }}: {{ totalSelectedSummary["pcs"] }}</span
+            >
+            <span class="summaryCapsules">
+              {{ "Amount" | translate }}:{{
+                totalSelectedSummary["amount"] | number : "1.2-2"
+              }}
+            </span>
+            <span class="summaryCapsules">
+              {{ "Avg/Carat" | translate }}:
+              {{
+                totalSelectedSummary["amount"] / totalSelectedSummary["cts"]
+                  | number : "1.2-2"
+              }}
+            </span>
+            <span class="summaryCapsules">
+              {{ "Avg Disc" | translate }}:
+              {{
+                100 -
+                  (totalSelectedSummary["amount"] /
+                    totalSelectedSummary["rapValue"]) *
+                    100 | number : "1.2-2"
+              }}%
+            </span>
+          </ng-container>
+        </ng-container>
+      </span>
+    </ion-col>
+  </ion-row>
+  <div class="cart-form">
+    <div
+      class="cart-item-container cart-section"
+      *ngIf="cartData?.data?.products?.length > 0"
+    >
+      <div
+        *ngIf="view != 'page' && _companyService.productListing != 'MobileList'"
+      >
+        <div
+          class="tableView ion-justify-content-between"
+          *ngFor="let item of cartData?.data?.products; let i = index"
+        >
+          <div *ngIf="!item.show">
+            <ion-row>
+              <ion-col size="2">
+                <h5 class="marPad0 serialNumber">{{ i + 1 }}</h5>
+              </ion-col>
+
+              <ion-col size="7" (click)="showCardView(item)">
+                <h6 class="marPad0">{{ item.title }}</h6>
+                <span class="toppingsCollapsedView" *ngIf="item.addOns">
+                  {{ item.addOns }}</span
+                >
+              </ion-col>
+
+              <ion-col size="3" class="serialNumber alignRight">
+                {{ "Qty" | translate }}: {{ item.quantity }}
+              </ion-col>
+            </ion-row>
+            <ion-row class="lineBottom">
+              <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+                <div
+                  class="right0"
+                  *ngIf="item.discountPrice == 0 && !hideStorePrice"
+                >
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                  >
+                    {{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discount != 0">
+                <div
+                  class="right0"
+                  *ngIf="item.discount != 0 && !hideStorePrice"
+                >
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                    ><del>
+                      {{ _companyService.currencySymbol
+                      }}{{ item.price * item.quantity }}</del
+                    >
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+                <div
+                  class="right0"
+                  *ngIf="item.discountPrice != 0 && !hideStorePrice"
+                >
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0 fr" *ngIf="item.taxes && !hideStorePrice">
+                <div class="absBottom0 right0 marPad0">
+                  Tax : {{ item.taxes }}%
+                </div>
+              </ion-col>
+              <ion-button
+                fill="clear"
+                class="fr marPad0 pSpE0 colorGray"
+                *ngIf="item.price > 0"
+                (click)="removeCartProduct(item)"
+              >
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-row>
+          </div>
+          <ion-card *ngIf="item.show" class="cartMarginNone">
+            <ion-card-header class="marPad0">
+              <ion-row class="cartImg ion-justify-content-between">
+                <ion-col size="3" class="cartImg">
+                  <!-- <cl-image
+                    public-id="/logo/{{ _companyService.refCompanyId }}"
+                    format="png"
+                    *ngIf="!item.image"
+                    secure="true"
+                    class="cartImgMinHt"
+                  >
+                    <cl-transformation
+                      width="78"
+                      height="105"
+                      gravity="auto"
+                      crop="fill_pad"
+                    ></cl-transformation>
+                  </cl-image>
+                  <cl-image
+                    [public-id]="item.image"
+                    format="jpg"
+                    *ngIf="item.image"
+                    class="cartImgMinHt"
+                    secure="true"
+                  >
+                    <cl-transformation
+                      width="78"
+                      height="105"
+                      gravity="auto"
+                      crop="fill"
+                    ></cl-transformation>
+                  </cl-image> -->
+                </ion-col>
+                <ion-col size="9" class="cartImg marPad0">
+                  <!-- <ion-button fill="clear" class="fr colorGray" *ngIf="item.price < 0" (click)="removeCartProduct(item)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button> -->
+                  <ion-row class="marPad0">
+                    <ion-col
+                      size="12"
+                      class="marPad0"
+                      (click)="hideCardView(item)"
+                    >
+                      <h6 class="marPad0">
+                        {{ item.title }}
+                        <br
+                          *ngIf="
+                            !!item.selectedAddOns &&
+                            item.selectedAddOns.length > 0
+                          "
+                        />
+                        <ion-row
+                          *ngIf="
+                            !!item.selectedAddOns &&
+                            item.selectedAddOns.length > 0
+                          "
+                        >
+                          <!-- <ion-col size="6" *ngFor="let addOn of item.selectedAddOns" class="marPad0 fs12">
+                        {{ addOn.name }} 
+                       </ion-col> -->
+                          {{ item.addOns }}
+                        </ion-row>
+                      </h6>
+                      <ion-button
+                        fill="clear"
+                        class="fr colorGray"
+                        *ngIf="item.price > 0"
+                      >
+                        <!-- <ion-icon name="trash" (click)="removeCartProduct(item);$event.stopPropagation()"></ion-icon> -->
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="marPad0">
+                    <ion-col size="12" class="marPad0">
+                      <div class="absBottom5 disInline">
+                        <ion-row class="marPad0">
+                          <ion-col size="3" class="marPad0">
+                            <ion-button
+                              expand="block"
+                              fill="outline"
+                              size="small"
+                              *ngIf="item.price > 0"
+                              (click)="
+                                decrementQuantity(item);
+                                $event.stopPropagation()
+                              "
+                            >
+                              <ion-icon name="remove"></ion-icon>
+                            </ion-button>
+                          </ion-col>
+                          <ion-col size="4" class="marPad0">
+                            <ion-label
+                              class="tar quantity"
+                              *ngIf="item.price < 0"
+                              >{{ item.quantity }}</ion-label
+                            >
+                            <ion-input
+                              class="tar quantity"
+                              type="number"
+                              debounce="500"
+                              *ngIf="item.price > 0"
+                              [(ngModel)]="item.quantity"
+                              (ionChange)="
+                                changeQuantity(item, i);
+                                $event.stopPropagation()
+                              "
+                            >
+                            </ion-input>
+                          </ion-col>
+                          <!-- (ionFocus)="onFocus(item)" (input)="valChange($event.target.value, i)"-->
+                          <ion-col size="3" class="marPad0">
+                            <ion-button
+                              expand="block"
+                              fill="outline"
+                              size="small"
+                              *ngIf="item.price > 0"
+                              (click)="
+                                incrementQuantity(item);
+                                $event.stopPropagation()
+                              "
+                            >
+                              <ion-icon name="add"></ion-icon>
+                            </ion-button>
+                          </ion-col>
+                        </ion-row>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="!hideStorePrice">
+                <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+                  <div class="right0" *ngIf="item.discountPrice == 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                    >
+                      {{ _companyService.currencySymbol
+                      }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0" *ngIf="item.discount != 0">
+                  <div class="right0" *ngIf="item.discount != 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                      ><del>
+                        {{ _companyService.currencySymbol
+                        }}{{ item.price * item.quantity || 0 }}</del
+                      >
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+                  <div class="right0" *ngIf="item.discountPrice != 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                    >
+                      {{ _companyService.currencySymbol
+                      }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0 fr" *ngIf="item.taxes">
+                  <div class="absBottom0 right0 marPad0" *ngIf="item.taxes">
+                    Tax : {{ item.taxes }}%
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </div>
+      <div
+        *ngIf="view != 'page' && _companyService.productListing == 'MobileList'"
+      >
+        <div
+          class="tableView ion-justify-content-between"
+          *ngFor="let item of cartData.data.products; let i = index"
+        >
+          <div *ngIf="!item.show">
+            <ion-row>
+              <ion-col size="2">
+                <h5 class="marPad0 serialNumber">{{ i + 1 }}</h5>
+              </ion-col>
+
+              <ion-col size="7" (click)="showCardView(item)">
+                <h6 class="marPad0">{{ item.title }}</h6>
+                <span class="toppingsCollapsedView" *ngIf="item.addOns">
+                  {{ item.addOns }}</span
+                >
+              </ion-col>
+
+              <ion-col size="3" class="serialNumber alignRight">
+                Qty: {{ item.quantity }}
+              </ion-col>
+            </ion-row>
+            <ion-row class="lineBottom">
+              <ion-col
+                class="marPad0"
+                *ngIf="item.discountPrice == 0 && !hideStorePrice"
+              >
+                <div class="right0" *ngIf="item.discountPrice == 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col
+                class="marPad0"
+                *ngIf="item.discount != 0 && !hideStorePrice"
+              >
+                <div class="right0" *ngIf="item.discount != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                    ><del>
+                      {{ _companyService.currencySymbol
+                      }}{{ item.price * item.quantity || 0 }}</del
+                    >
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col
+                class="marPad0"
+                *ngIf="item.discountPrice != 0 && !hideStorePrice"
+              >
+                <div class="right0" *ngIf="item.discountPrice != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    (click)="showCardView(item)"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0 fr" *ngIf="item.taxes && !hideStorePrice">
+                <div class="absBottom0 right0 marPad0">
+                  Tax : {{ item.taxes }}%
+                </div>
+              </ion-col>
+              <ion-button
+                fill="clear"
+                class="fr marPad0 pSpE0 colorGray"
+                *ngIf="item.price > 0"
+                (click)="removeCartProduct(item)"
+              >
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-row>
+          </div>
+          <ion-card *ngIf="item.show" class="cartMarginNone">
+            <ion-card-header class="marPad0">
+              <ion-row class="cartImg ion-justify-content-between">
+                <ion-col class="cartImg marPad0">
+                  <!-- <ion-button fill="clear" class="fr colorGray" *ngIf="item.price < 0" (click)="removeCartProduct(item)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button> -->
+                  <ion-row class="marPad0">
+                    <ion-col
+                      size="12"
+                      class="marPad0"
+                      (click)="hideCardView(item)"
+                    >
+                      <h6 class="marPad0">
+                        {{ item.title }}
+                        <br
+                          *ngIf="
+                            !!item.selectedAddOns &&
+                            item.selectedAddOns.length > 0
+                          "
+                        />
+                        <ion-row
+                          *ngIf="
+                            !!item.selectedAddOns &&
+                            item.selectedAddOns.length > 0
+                          "
+                        >
+                          <!-- <ion-col size="6" *ngFor="let addOn of item.selectedAddOns" class="marPad0 fs12">
+                        {{ addOn.name }} 
+                       </ion-col> -->
+                          {{ item.addOns }}
+                        </ion-row>
+                      </h6>
+                      <ion-button
+                        fill="clear"
+                        class="fr colorGray"
+                        *ngIf="item.price > 0"
+                      >
+                        <!-- <ion-icon name="trash" (click)="removeCartProduct(item);$event.stopPropagation()"></ion-icon> -->
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="marPad0">
+                    <ion-col size="12" class="marPad0">
+                      <div class="absBottom5 disInline">
+                        <ion-row class="marPad0">
+                          <ion-col size="3" class="marPad0">
+                            <ion-button
+                              expand="block"
+                              fill="outline"
+                              size="small"
+                              *ngIf="item.price > 0"
+                              (click)="
+                                decrementQuantity(item);
+                                $event.stopPropagation()
+                              "
+                            >
+                              <ion-icon name="remove"></ion-icon>
+                            </ion-button>
+                          </ion-col>
+                          <ion-col size="4" class="marPad0">
+                            <ion-label
+                              class="tar quantity"
+                              *ngIf="item.price < 0"
+                              >{{ item.quantity }}</ion-label
+                            >
+                            <ion-input
+                              class="tar quantity"
+                              type="number"
+                              debounce="500"
+                              *ngIf="item.price > 0"
+                              [(ngModel)]="item.quantity"
+                              (ionChange)="
+                                changeQuantity(item, i);
+                                $event.stopPropagation()
+                              "
+                            >
+                            </ion-input>
+                          </ion-col>
+                          <!-- (ionFocus)="onFocus(item)" (input)="valChange($event.target.value, i)"-->
+                          <ion-col size="3" class="marPad0">
+                            <ion-button
+                              expand="block"
+                              fill="outline"
+                              size="small"
+                              *ngIf="item.price > 0"
+                              (click)="
+                                incrementQuantity(item);
+                                $event.stopPropagation()
+                              "
+                            >
+                              <ion-icon name="add"></ion-icon>
+                            </ion-button>
+                          </ion-col>
+                        </ion-row>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="!hideStorePrice">
+                <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+                  <div class="right0" *ngIf="item.discountPrice == 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                    >
+                      {{ _companyService.currencySymbol
+                      }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0" *ngIf="item.discount != 0">
+                  <div class="right0" *ngIf="item.discount != 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                      ><del>
+                        {{ _companyService.currencySymbol
+                        }}{{ item.price * item.quantity || 0 }}</del
+                      >
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+                  <div class="right0" *ngIf="item.discountPrice != 0">
+                    <ion-button
+                      expand="block"
+                      fill="clear"
+                      size="small"
+                      class="fr marPad0 price-list"
+                    >
+                      {{ _companyService.currencySymbol
+                      }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                    </ion-button>
+                  </div>
+                </ion-col>
+                <ion-col class="marPad0 fr" *ngIf="item.taxes">
+                  <div class="absBottom0 right0 marPad0" *ngIf="item.taxes">
+                    Tax : {{ item.taxes }}%
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </div>
+      <div [ngClass]="contentClass">
+        <div
+          *ngIf="
+            view == 'page' &&
+            !!cartData?.data?.products &&
+            cartData?.data?.products.length > 0 &&
+            searchResultColumnsForCart
+          "
+          [ngClass]="mobileView ? 'mr5 ml5' : 'mar10'"
+        >
+          <app-dx-data-grid
+            *ngIf="!inspectionView"
+            [tableId]="'cart-grid'"
+            [columns]="searchResultColumnsForCart"
+            [rowData]="cartData?.data?.products"
+            mode="multiple"
+            [totalSummary]="totalSummary"
+            [selected]="selected"
+            [allowUpdating]="orderBook == 'Offer'"
+            (callFunction)="selected = $event.selectedRowsData"
+            (selectStone)="singleProduct($event)"
+            (viewCertificateFn)="viewCertificate($event)"
+            [allowDeleting]="allowDeleting"
+            [orderBook]="orderBook"
+            (deleteFunction)="removeCartProduct($event)"
+            (offerValueUpdate)="offerValueUpdate($event)"
+            (discountError)="showDiscountError($event)"
+            [mobileView]="mobileView"
+            page="cart"
+            [listOfferApplied]="listOffer"
+            (viewOfferInputs)="viewOfferInputsFn($event)"
+            [hideClearSelection]="hideClearSelection"
+            [refreshGrid]="refreshGrid"
+            (selectionViewData)="selectionViewData($event)"
+            [allowColumnResizing]="false"
+            [allowColumnReordering]="false"
+          >
+          </app-dx-data-grid>
+          <ion-col size="12" *ngIf="inspectionView">
+            <app-inspect-viewing
+              [selected]="selected"
+              [details]="details"
+              (close)="changeView()"
+              loadFrom="cart"
+              [defaultSelected]="defaultSelected"
+            >
+            </app-inspect-viewing>
+          </ion-col>
+
+          <ng-container
+            *ngIf="
+              orderBook == 'Offer' &&
+              cartData.data.products.length > 1 &&
+              mobileView
+            "
+            class="pt10"
+          >
+            <ion-row>
+              <ion-col>
+                <ion-checkbox
+                  color="primary"
+                  class="chkBoxSelectAll"
+                  [(ngModel)]="listOffer"
+                  (ionChange)="ListOffer(); updateListValue('Disc')"
+                >
+                </ion-checkbox>
+                {{ "List Offer" | translate }}
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="6"> {{ "Payment Method" | translate }} : </ion-col>
+              <ion-col size="6">
+                <ion-select [(ngModel)]="paymentMode" class="list-selectBox">
+                  <ion-select-option
+                    [value]="payMode"
+                    *ngFor="let payMode of paymentModeList"
+                  >
+                    <label>{{ payMode.name | uppercase }} </label>
+                    <label class="discount" *ngIf="!!payMode.flat">
+                      {{ "Flat" | translate }} {{ payMode.flat }}
+                      {{ _companyService.currencySymbol }}
+                      {{ "Off" | translate }}
+                    </label>
+                    <label class="discount" *ngIf="!!payMode.discount">
+                      {{ payMode.discount }} % {{ "Off" | translate }}
+                    </label>
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="listOffer">
+              <ion-col size="6"> {{ "List Discount" | translate }} : </ion-col>
+              <ion-col size="6">
+                <ion-input
+                  class="bgLightBlue border tal input"
+                  (ionBlur)="updateListValue('Disc')"
+                  type="number"
+                  (keyup.enter)="updateListValue('Disc')"
+                  [(ngModel)]="List.discount"
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="paddingBottom0" *ngIf="listOffer">
+              <ion-col size="6">
+                {{ "List Price/ct" | translate }} : &nbsp;&nbsp; &nbsp;&nbsp;
+              </ion-col>
+              <ion-col size="6">
+                <ion-input
+                  class="bgLightBlue border tal input"
+                  (ionBlur)="updateListValue('Price')"
+                  type="number"
+                  min="0"
+                  (keyup.enter)="updateListValue('Price')"
+                  [(ngModel)]="List.price"
+                  min
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="paddingBottom0" *ngIf="listOffer">
+              <ion-col size="6"> {{ "List Amount" | translate }} : </ion-col>
+              <ion-col size="6">
+                <ion-input
+                  class="bgLightBlue border tal input"
+                  (ionBlur)="updateListValue('Amt')"
+                  type=" number"
+                  (keyup.enter)="updateListValue('Amt')"
+                  [(ngModel)]="List.amount"
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+
+          <ion-row
+            *ngIf="
+              orderBook == 'Offer' &&
+              cartData.data.products.length > 1 &&
+              !mobileView
+            "
+            class="pt10"
+          >
+            <ion-col size="2" class="paddingBottom0">
+              <ion-checkbox
+                color="primary"
+                class="chkBoxSelectAll"
+                [(ngModel)]="listOffer"
+                (ionChange)="ListOffer(); updateListValue('Disc')"
+              >
+              </ion-checkbox>
+              {{ "List Offer" | translate }}
+            </ion-col>
+            <ion-col size="3" class="pb-pt-0">
+              {{ "Payment Method" | translate }} :
+              <ion-select [(ngModel)]="paymentMode" class="input">
+                <ion-select-option
+                  [value]="payMode"
+                  *ngFor="let payMode of paymentModeList"
+                >
+                  <label>{{ payMode.name | uppercase }} </label>
+                  <label class="discount" *ngIf="!!payMode.flat">
+                    {{ "Flat" | translate }} {{ payMode.flat }}
+                    {{ _companyService.currencySymbol }} {{ "Off" | translate }}
+                  </label>
+                  <label class="discount" *ngIf="!!payMode.discount">
+                    {{ payMode.discount }} % {{ "Off" | translate }}
+                  </label>
+                </ion-select-option>
+              </ion-select>
+            </ion-col>
+            <ion-col
+              size="1"
+              offset="2"
+              class="paddingBottom0"
+              *ngIf="listOffer"
+            >
+              {{ "List Discount" | translate }}
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Disc')"
+                type="number"
+                min="0"
+                [(ngModel)]="List.discount"
+                (ngModelChange)="updateListValue('Disc')"
+                (keyup.enter)="updateListValue('Disc')"
+                (keypress)="omit_special_char($event)"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col size="1" class="paddingBottom0" *ngIf="listOffer">
+              {{ "List Price/ct" | translate }}
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Price')"
+                type="number"
+                min="0"
+                [(ngModel)]="List.price"
+                (ngModelChange)="updateListValue('Price')"
+                (keyup.enter)="updateListValue('Price')"
+                (keypress)="omit_special_char($event)"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col size="1" class="paddingBottom0" *ngIf="listOffer">
+              {{ "List Amount" | translate }}
+              <ion-input
+                class="bgLightBlue border tal input"
+                (ionBlur)="updateListValue('Amt')"
+                type=" number"
+                min="0"
+                [(ngModel)]="List.amount"
+                (ngModelChange)="updateListValue('Amt')"
+                (keyup.enter)="updateListValue('Amt')"
+                (keypress)="omit_special_char($event)"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <ng-container *ngIf="cartData?.data?.products?.length > 0">
+      <div [ngClass]="contentClass">
+        <ion-row
+          class="padd15 summaryText"
+          *ngIf="
+            !orderBook &&
+            !hideStorePrice &&
+            !inspectionView &&
+            !!cartData?.data?.count
+          "
+        >
+          <ion-col size="12" class="paddingBottom0">
+            <div class="mar16 displayAmount fr total paddingBottom0">
+              {{ "Sub Total" | translate }} :
+              {{ subTotal || 0 | number : ".2-2" }}
+              <!-- {{ cartData.data.count.SubTotal || 0 | number : '.2-2' }} -->
+            </div>
+          </ion-col>
+          <ion-col
+            size="12"
+            class="paddingBottom0"
+            *ngIf="
+              cartData.data.count.FinalPrice - cartData.data.count.SubTotal > 0
+            "
+          >
+            <div class="mar16 displayAmount fr total paddingBottom0">
+              {{ "Tax Amount" | translate }}:
+              {{
+                cartData.data.count.FinalPrice - cartData.data.count.SubTotal ||
+                  0 | number : ".2-2"
+              }}
+            </div>
+          </ion-col>
+          <ion-col
+            size="12"
+            class="paddingBottom0"
+            *ngIf="_companyService.productListing != 'grid'"
+          >
+            <div class="mar16 displayAmount fr total paddingBottom0 grandTotal">
+              {{ "Grand Total" | translate }} :
+              {{ cartData.data.count.FinalPrice || 0 | number : ".2-2" }}
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ng-container>
+    <ion-row
+      *ngIf="!orderBook"
+      [ngClass]="
+        _companyService.productListing == 'grid' && !mobileView
+          ? 'ml50 mr50 padd15'
+          : ''
+      "
+    >
+      <ion-col size="12">
+        <ion-button
+          type="button"
+          *ngIf="
+            !!cartData?.data?.products && cartData?.data?.products.length > 0
+          "
+          [ngClass]="getClasses('last')"
+          class=""
+          expand="block"
+          (click)="continue()"
+        >
+          {{ "Continue" | translate }}</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div
+    [ngClass]="
+      _companyService.productListing == 'grid' ? 'tac  ' : 'ion-padding tac'
+    "
+    *ngIf="
+      (!cartData?.data?.products || cartData?.data?.products?.length == 0) &&
+      !searchText &&
+      cartData != null
+    "
+  >
+    <div class="main-empty-div">
+      <img src="assets/images/empty-cart.svg" class="empty-cart-img" />
+      <div class="empty-cart">{{ "Your cart is empty" | translate }}<br /></div>
+      <div class="empty-cart-sub">
+        {{
+          "You have not added anything to your cart. Go ahead & explore Search."
+            | translate
+        }}<br />
+      </div>
+      <ion-button (click)="goToSearch()" class="tac round-button v2Btn">
+        {{ "Go Search" | translate }}
+      </ion-button>
+    </div>
+  </div>
+
+  <div
+    class="ion-padding"
+    *ngIf="
+      (!cartData?.data?.products || cartData?.data?.products?.length == 0) &&
+      searchText &&
+      cartData != null
+    "
+  >
+    {{ "No Products Found" | translate }}
+  </div>
+
+  <!-- grid skeleton  -->
+  <div *ngIf="cartData == null && view == 'page'" [ngClass]="contentClass">
+    <ion-grid>
+      <ion-row *ngFor="let data of _configService.arrayOne(15)">
+        <ion-col size="1" *ngFor="let data of _configService.arrayOne(12)">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="padd15">
+        <ion-col size="12" class="paddingBottom0">
+          <div class="mar16 displayAmount fr total paddingBottom0">
+            <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="paddingBottom0">
+          <div class="mar16 displayAmount fr total paddingBottom0">
+            <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="paddingBottom0">
+          <div class="mar16 displayAmount fr total paddingBottom0 grandTotal">
+            <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- end -->
+
+  <!-- skeleton -->
+  <div *ngIf="cartData == null && view != 'page'">
+    <div class="cart-form">
+      <div class="cart-item-container cart-section">
+        <ion-card
+          *ngFor="let data of _configService.arrayOne(8)"
+          class="cartMarginNone"
+        >
+          <ion-card-header class="marPad0">
+            <ion-row class="cartImg ion-justify-content-between">
+              <ion-col size="3" class="cartImg">
+                <ion-skeleton-text
+                  animated
+                  style="height: 120px"
+                ></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="9" class="cartImg marPad0">
+                <h6 class="marPad0 cartTitle">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </h6>
+                <div class="absBottom5 disInline">
+                  <ion-row>
+                    <ion-col size="3">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ion-label class="tar quantity">
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </ion-label>
+                    </ion-col>
+                    <ion-col size="3">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="marPad0">
+                <div class="right0">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0">
+                <div class="right0">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0">
+                <div class="absBottom0 right0 marPad0">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </div>
+    </div>
+    <ion-row class="padd15">
+      <ion-col size="12" class="paddingBottom0">
+        <div class="mar16 displayAmount fr total paddingBottom0">
+          <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+        </div>
+      </ion-col>
+      <ion-col size="12" class="paddingBottom0">
+        <div class="mar16 displayAmount fr total paddingBottom0">
+          <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+        </div>
+      </ion-col>
+      <ion-col size="12" class="paddingBottom0">
+        <div class="mar16 displayAmount fr total paddingBottom0 grandTotal">
+          <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div class="mar16">
+      <ion-skeleton-text animated style="height: 35px"></ion-skeleton-text>
+    </div>
+  </div>
+</div>

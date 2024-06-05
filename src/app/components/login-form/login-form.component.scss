@@ -1,0 +1,674 @@
+ion-segment {
+  --background: #fff;
+}
+
+.logo {
+  width: 100%;
+  text-align: center;
+}
+.login_container {
+  display: flex;
+  // width: 511px;
+  // padding: 52px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.signUpError {
+  color: red;
+  text-align: left;
+  font-size: 10px;
+}
+.aspecoLoginContent {
+  width: 511px !important;
+  padding: 20px;
+  --background: transparent !important;
+  border: 1px solid #ccb0ac !important;
+}
+.segmentAspeco {
+  --background: transparent;
+}
+.aspecoButton::part(native) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f18676;
+  gap: 18px;
+}
+.submitBtnAspeco::part(native) {
+  background: transparent !important;
+  border: 1px solid #ccb0ac;
+  color: #fff;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+.createAc_container {
+  display: flex;
+  width: 511px;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid #ccb0ac;
+  background: transparent;
+}
+.wid_full {
+  width: 100%;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.logIn::part(native) {
+  background: #f18676;
+}
+.border_otp_code {
+  border: 1px solid #f18676;
+  color: #fff;
+  text-align: center;
+}
+.nextBtn::part(native) {
+  background: #f18676;
+}
+.forgotPwdBtn::part(native) {
+  border: 1px solid #ccb0ac;
+}
+.pinBoxAspeco {
+  background: transparent;
+}
+.loginHeaderAspeco {
+  color: #f18676;
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-bottom: 24px;
+}
+ion-intl-tel-input::part(input) {
+  background: transparent;
+}
+
+.aspecoSegment {
+  --background: transparent !important;
+}
+.pd_80 {
+  padding: 9px 80px !important;
+}
+.ng-dropdown-panel {
+  position: relative !important;
+}
+ng-select ::ng-deep .ng-dropdown-panel {
+  background-color: #f0f0f0;
+  position: relative !important;
+  color: #333;
+}
+// ion-intl-tel-input ::ng-deep .internationalTelephones {
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   background: transparent;
+//   border: 0px solid #efefef;
+//   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+//   border-radius: 4px;
+//   color: #fff;
+// }
+::ng-deep .internationalTelephones {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  background: transparent !important;
+  border: 0px solid #efefef !important;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+}
+// ion-intl-tel-input .internationalTelephones ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+//   box-sizing: border-box !important;
+//   display: block !important;
+//   max-height: 240px !important;
+//   overflow-y: auto !important;
+//   background: gray;
+//   border: 1px solid #ccb0ac;
+//   border-radius: 0px;
+//   padding: 0px 6px;
+// }
+
+::ng-deep .internationalTelephones .ng-dropdown-panel .ng-dropdown-panel-items {
+  box-sizing: border-box !important;
+  display: block !important;
+  max-height: 240px !important;
+  overflow-y: auto !important;
+  background: #000 !important;
+  border: 1px solid #ccb0ac !important;
+  border-radius: 0 !important;
+  padding: 0 6px !important;
+}
+
+::ng-deep .internationalTelephones .ng-value-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectBoxAspeco .ng-input > input {
+  text-align: center !important;
+}
+
+.selectBoxAspeco ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+  box-sizing: border-box !important;
+  display: block !important;
+  max-height: 240px !important;
+  overflow-y: auto !important;
+  background: transparent;
+  border: 1px solid #bbc0ac;
+  border-radius: 8px;
+  padding: 0px 6px;
+  color: #fff;
+}
+.posRel {
+  position: relative;
+}
+.inventoryDiamondImage {
+  width: 65px;
+  height: auto;
+}
+.inventoryDiamondImageDiv {
+  position: absolute;
+  top: -10px;
+  z-index: 2;
+}
+.flexC {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.selectBoxAspeco .ng-select ::ng-deep .ng-value-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectBoxAspeco ::ng-deep .ng-option:hover {
+  background-color: #f18676;
+  color: #000;
+}
+
+.selectBoxAspeco ::ng-deep .ng-clear-wrapper {
+  color: #fff;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-left: 10px;
+
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.selectBoxAspeco ::ng-deep .ng-value {
+  color: #fff;
+}
+.aspecoFieldBox {
+  border: 1px solid #ccb0ac;
+  // display: flex;
+  padding: 17px;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+}
+.mr_rt_20 {
+  margin-right: 20px;
+}
+.formIntl {
+  width: -webkit-fill-available !important ;
+}
+.white_color {
+  color: #fff;
+}
+.mr_bt_18 {
+  margin-bottom: 18px;
+}
+.notaMemberAspeco {
+  color: #ccb0ac;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px; /* 162.5% */
+}
+.createAccountAspeco {
+  color: #f18676;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px; /* 162.5% */
+}
+.loginSegmentAspeco {
+  display: flex;
+  padding: 17px;
+  justify-content: center;
+  border: 1px solid #ccb0ac;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+
+  /* --background: #ffffff 0% 0% no-repeat padding-box; */
+  /* border: 1px solid #959595 !important; */
+  /* border-radius: 7px; */
+  --opacity: 1;
+  --background-checked: transparent;
+  --color-checked: #f18676;
+  --color: #fff;
+  --indicator-color: #f18676;
+  /* margin: 5px; */
+  /* text-transform: none;*/
+}
+
+.pinBox {
+  max-width: 320px;
+
+  .removeScroll {
+    --background: white;
+    text-align: center;
+  }
+}
+
+.distribution-selection {
+  width: 100%;
+  height: 40px;
+  text-align: center;
+}
+
+// .selectBox {
+//   width: 100%;
+//   height: 40px;
+//   text-align: center;
+// }
+
+.marTop20 {
+  margin-top: 7px;
+}
+
+.native-input[disabled] {
+  opacity: 0.7 !important;
+}
+
+.marTop60 {
+  margin-top: 60px;
+}
+
+.padd {
+  padding: 20px 16vw;
+}
+
+ion-item {
+  border-bottom: none !important;
+}
+
+.padd10 {
+  padding: 5px 10px;
+}
+
+.width {
+  // min-width: 400px;
+  max-width: 600px;
+}
+
+.recaptcha {
+  margin-top: 35px;
+  margin-left: 10px;
+}
+
+.border-primary {
+  border: 1px solid var(--ion-color-primary) !important;
+}
+
+.border_color{
+  border: 1px solid #ccb0ac;
+  text-align: center;
+}
+.loginCard {
+  margin: 0;
+  padding: 5px;
+}
+
+.max500 {
+  max-width: 500px;
+}
+
+.logoLogin {
+  max-width: 120px;
+  text-align: center;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 10px !important;
+}
+
+.width-32 {
+  width: 90%;
+  float: right;
+}
+
+@media screen and (max-width: 560px) {
+  .onPageTitle {
+    text-align: center;
+  }
+
+  .pageContentTitle {
+    text-align: left;
+  }
+}
+
+.onPageTitle {
+  color: #5d5757;
+  text-align: center;
+}
+
+.loginSegment {
+  --background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #959595 !important;
+  border-radius: 7px;
+  --opacity: 1;
+  --background-checked: #acacac 0% 0% no-repeat padding-box;
+  --color-checked: #ffffff;
+  --indicator-color: none;
+  margin: 5px;
+  text-transform: none;
+}
+
+@media (min-width: 1200px) and (max-width: 1310px) {
+  .kgLoginCard {
+    width: 77% !important;
+  }
+}
+
+@media (min-width: 1311px) and (max-width: 1600px) {
+  // .loginSegment {
+  //   font-size: smaller;
+  // }
+  .kgLoginCard {
+    width: 70% !important;
+  }
+}
+
+.mobileInput {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #a9a9a9;
+  border-radius: 6px;
+  opacity: 1;
+}
+
+.kgLoginCard {
+  //top: 150px;
+  top: 100px;
+  width: 55%;
+  display: block;
+  margin-left: 5.2vw;
+  border-radius: 18px;
+  overflow: hidden;
+  -webkit-box-shadow: 0px 2px 26px -6px #b9b7b7;
+  -moz-box-shadow: 0px 2px 26px -6px #b9b7b7;
+  box-shadow: 0px 2px 26px -6px #b9b7b7;
+  padding: 10px;
+}
+
+.loginHeader {
+  height: 45px;
+  text-align: center;
+  letter-spacing: 0px;
+  color: #555555;
+  opacity: 1;
+  font-size: 33px;
+  text-transform: none;
+  font-family: 'Trajan Pro Regular';
+}
+
+.notaMember {
+  color: #7d7d7d;
+}
+
+.createAccount {
+  color: #000000;
+}
+
+.intlCss {
+  height: 50px;
+}
+
+::ng-deep .ion-intl-tel-input-code {
+  margin-left: 5px;
+}
+
+::ng-deep .ion-intl-tel-input-number {
+  margin-right: 32px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-left: 10px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container {
+  display: grid !important;
+}
+
+::ng-deep
+  .ng-select
+  .ng-select-container
+  .ng-value-container
+  .ng-input
+  > input {
+  padding-top: 2px !important;
+}
+
+.selectBox {
+  ::ng-deep .ng-select {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
+  ::ng-deep .ng-value {
+    margin: auto !important;
+  }
+
+  ::ng-deep .ng-has-value {
+    .ng-placeholder {
+      display: none;
+    }
+  }
+
+  ::ng-deep .ng-placeholder {
+    margin: auto !important;
+  }
+
+  ::ng-deep .ng-select .ng-select-container {
+    height: 40px !important;
+  }
+
+  ::ng-deep .ng-dropdown-panel {
+    background-color: aliceblue !important;
+    //margin-top: 25px !important;
+
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1050;
+    display: block;
+    // top: 42px;
+    border-radius: 8px;
+  }
+
+  ::ng-deep .ng-dropdown-panel div.ng-option-marked {
+    background-color: var(--ion-color-primary) !important;
+    color: #ffffff;
+  }
+
+  ::ng-deep .ng-dropdown-panel div.scroll-host::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::ng-deep .ng-dropdown-panel div.scroll-host::-webkit-scrollbar-thumb {
+    background-color: var(--ion-color-primary);
+  }
+
+  ::ng-deep .ng-input {
+    height: 21px !important;
+    margin: auto !important;
+    padding: 4px !important;
+  }
+
+  ::ng-deep .ng-value-container .ng-value {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: initial !important;
+  }
+
+  ::ng-deep .ng-input > input {
+    text-align: center !important;
+  }
+
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items {
+    box-sizing: border-box !important;
+    display: block !important;
+    height: 78px !important;
+    max-height: 240px !important;
+    overflow-y: auto !important;
+    background: #fff;
+    border: 2px solid #00a5c8;
+    border-radius: 8px;
+    padding: 0px 6px;
+  }
+
+  ::ng-deep
+    .ng-select.ng-select-single
+    .ng-select-container
+    .ng-value-container,
+  .ng-select.ng-select-single
+    .ng-select-container
+    .ng-value-container
+    .ng-value {
+    height: 37px !important;
+  }
+
+  ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    padding: 4px !important;
+    border-top: 1px solid #0000001a;
+  }
+
+  // ::ng-deep .ng-select.ng-select-searchable .ng-select-container .ng-value-container .ng-input {
+  //   opacity: 1;
+  //   margin: auto;
+  //   height: 57px;
+  // }
+
+  // ::ng-deep .ng-select.ng-select-searchable .ng-select-container .ng-value-container .ng-input {
+  //   /* left: 0; */
+  //   /* position: absolute; */
+  //   /* width: 100%; */
+  //   text-align: center !important;
+  //   margin: auto !important;
+  //   /* padding: 5px; */
+  //   margin-top: 8px !important;
+  // }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+  .kgLoginCard {
+    top: 0px !important;
+    width: 55% !important;
+  }
+}
+@media screen and (min-width: 676px) and (max-width: 1199px) and (orientation: landscape) {
+  .loginSegmentAspeco {
+    --indicator-color: transparent;
+  }
+  .inventoryDiamondImageDiv {
+    position: absolute;
+    top: -10px;
+    z-index: 2;
+  }
+}
+@media (min-width: 300px) and (max-width: 992px) {
+  .loginSegmentAspeco {
+    --indicator-color: transparent;
+  }
+}
+@media (min-width: 300px) and (max-width: 575px) {
+  .loginSegmentAspeco {
+    --indicator-color: transparent;
+    padding: 10px;
+  }
+  .aspecoLoginContent {
+    width: auto !important;
+    padding: 5px;
+    margin: 10px;
+  }
+  .mr_bt_18 {
+    margin-bottom: 12px;
+  }
+  .mr_rt_20 {
+    margin-right: 12px;
+  }
+  .loginHeaderAspeco {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .aspecoFieldBox {
+    padding: 6px 10px !important;
+  }
+
+  //  .ion-intl-tel-input-number ion-input {
+  //    height: unset;
+
+  // }
+  .inventoryDiamondImageDiv {
+    top: -12px;
+    z-index: 2;
+  }
+  .createAc_container {
+    width: auto;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 410px) {
+  .aspecoLoginContent {
+    width: 85% !important;
+    padding: 0px;
+    margin: 5px;
+  }
+  .loginSegmentAspeco {
+    padding: 5px;
+  }
+  .forgotPwdBtn {
+    font-size: 11px;
+  }
+  .logIn {
+    font-size: 11px;
+  }
+  .inventoryDiamondImageDiv {
+    top: -17px;
+    z-index: 2;
+  }
+  .loginHeaderAspeco {
+    margin-top: 30px;
+  }
+  .createAc_container {
+    margin: 4px;
+  }
+}

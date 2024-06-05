@@ -1,0 +1,5 @@
+<ion-button [color]="colorName" [expand]="expand" type="submit" class="ion-float-right" [disabled]="check"
+  (click)="click.emit()">
+  <ion-spinner *ngIf="check" slot="start"></ion-spinner>
+  {{ text }}
+</ion-button>

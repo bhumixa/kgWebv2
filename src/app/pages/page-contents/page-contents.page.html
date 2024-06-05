@@ -1,0 +1,52 @@
+<app-header showBackButton="true"></app-header>
+
+<ion-content>
+  <div id="pageContentTitleDiv"> </div>
+  <ion-row [ngClass]="_companyService.productListing == 'grid'? 'mtp25': ''">
+
+  </ion-row>
+  <div *ngIf="loadSkeleton">
+    <div class="center-div">
+      <ion-skeleton-text animated style="height:30px;width:150px"></ion-skeleton-text>
+    </div>
+    <div class="ffWhitney clsMainData" *ngFor="let data of _configServiceService.arrayOne(20)">
+      <ion-skeleton-text animated style="height:20px"> </ion-skeleton-text>
+    </div>
+  </div>
+ 
+  <div *ngIf="!loadSkeleton"
+    [ngClass]="_companyService.productListing == 'grid'? 'marPad0': 'minHeightMinus120 contentDiv'">
+
+    <ion-row [ngStyle]="{'visibility' :  _companyService.productListing == 'grid' ? 'hidden' : 'visible'}">
+      
+      <ion-col class="pageContentTitle">
+        {{ title }}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <!-- <div class='row'>
+          <div class='diamond-div'>
+            <div class='tac'>
+              <div class='diamond-image'> </div>
+            </div>
+          </div>
+          <div class='about-div'>
+            <h1 class='title'> Legacy </h1>
+            <div class='pb-pt-10'>
+              <p>  EC9011/ 12, Bharat Diamond Bourse </p><p>  Mumbai 400051, Maharashtra, India  </p><p>  +912269103333 </p><p> info@kgirdharlal.com </p>
+            </div>
+          </div>
+        </div> -->
+
+        <div [innerHtml]="data"
+          [ngClass]="_companyService.productListing == 'grid'? '': 'ffWhitney clsMainData innerHtml'"></div>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <app-footer *ngIf="!hideFooter"></app-footer>
+
+
+
+</ion-content>

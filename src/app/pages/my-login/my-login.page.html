@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dealer Club Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h3 class="onPageTitle">
+    &nbsp;
+  </h3>
+
+  <div class="logo">
+    <!-- <img src="assets/login-page-logo.png" /> -->
+  </div>
+  <ion-segment class="mt5 mb10" value="mb">
+    <ion-segment-button value="mb">
+      <ion-icon name="call"></ion-icon>
+      <ion-label>
+        Mobile no
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid class="tac marPad0 width mAuto">
+    <ion-row class="marPad0 w100 tac">
+      <ion-col class="tac" size="12">
+        <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+          placeholder="Enter your phone number" required></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="pinBox">
+      <ion-col class="tac fs12">
+        <ion-label>
+          We have sent you an SMS with the code.
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="pinBox">
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" tabindex="1" (keyup)="moveFocus(b)"
+          (ionFocus)="OTP1 = OTP7" [(ngModel)]="OTP1"></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" #b (keyup)="moveFocus(c)"
+          (ionFocus)="OTP2 = OTP7" (keyup)="moveFocus(c)" [(ngModel)]="OTP2"></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" #c tabindex="3" (keyup)="moveFocus(d)"
+          (ionFocus)="OTP3 = OTP7" [(ngModel)]="OTP3"></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" #d tabindex="4" (keyup)="moveFocus(e)"
+          (ionFocus)="OTP4 = OTP7" [(ngModel)]="OTP4"></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" #e tabindex="5" (keyup)="moveFocus(f)"
+          (ionFocus)="OTP5 = OTP7" [(ngModel)]="OTP5"></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input type="tel" class="removeScroll border-primary" maxlength="1" #f tabindex="6" (ionFocus)="OTP6 = OTP7"
+          [(ngModel)]="OTP6"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="tal" *ngIf="false && pinBox">
+        <ion-label (click)="getOTPCall()" class="fs12 underLine cursor">
+          Get OTP via Call
+        </ion-label>
+      </ion-col>
+      <ion-col class="text-right" *ngIf="pinBox">
+        <ion-label (click)="resendOtp()" class="fs12 underLine cursor">
+          Resend OTP?
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="width marPad0">
+      <ion-col size="12" class="marPad0">
+        <div color="primary" (click)="verifyOtp_1()" class="mt25" *ngIf="!pinBox">
+          <ion-button type="submit" class="fr" [disabled]="buttonDisabled">
+            <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+            Next
+          </ion-button>
+        </div>
+        <div color="primary" class="mt25" *ngIf="pinBox">
+          <ion-button type="submit" class="fr" [disabled]="buttonDisabled" (click)="verifyOtp()">
+            <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+            Verify
+          </ion-button>
+        </div>
+        <div color="primary" (click)="cancelLogin()" *ngIf="pinBox" class="mt25">
+          <ion-button type="submit" class="fr" fill="outline" [disabled]="buttonDisabled">
+            Cancel
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

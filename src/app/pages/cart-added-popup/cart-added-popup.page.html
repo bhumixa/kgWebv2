@@ -1,0 +1,31 @@
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="popUptype=='cart'">
+      <ion-col text-endc class="marPad0">
+        <ion-icon name="close" class="pIcon" (click)="closeModal()"></ion-icon>
+      </ion-col>      
+    </ion-row>
+
+    <ion-row *ngIf="popUptype=='cart'">
+      <ion-col size="12" class="tac marPad0" >
+        <ion-icon name="checkmark-circle-outline" class="font"></ion-icon> <br/>
+        <p class="txt">Item added to cart</p>
+      </ion-col>
+      <ion-col size="12" class="tac marPad0" >
+        <ion-button (click)="goToCheckout()" class="round-button v2Btn" color="primary"> Go to Checkout </ion-button>
+        <ion-button (click)="closeModal()" class="round-button v2Btn mb0" color="primary" fill="clear" >Continue Shopping</ion-button>
+        <!-- <a href="javascript:void(0);"  class="remove-cart-link" (click)="removeFromCart()">
+          Remove from Cart
+        </a> -->
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="popUptype=='reject'">
+      <ion-col size="12" class="tac marPad0" >
+        <p class="txt">{{stone}} Rejected </p>
+      </ion-col>
+      
+    </ion-row>
+    
+  </ion-grid>
+</ion-content>

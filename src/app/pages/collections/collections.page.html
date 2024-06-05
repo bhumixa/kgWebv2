@@ -1,0 +1,120 @@
+<app-header
+  showBackButton="true"
+  [pageName]="defaultpageName"
+  [searchPage]="showSearchPage"
+></app-header>
+
+<ion-content
+  class="ion-padding"
+  *ngIf="!query"
+  [scrollEvents]="true"
+  (ionScroll)="logScrolling($event)"
+>
+  <ion-row class="clsFooterRow" *ngIf="!!header">
+    <ion-col>
+      <div [innerHtml]="header" class="ffWhitney clsMainData"></div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="toHideInSmallScreen">
+    <ion-col class="marPad0 tar" *ngIf="!!collectionOrderOptions">
+      <ion-button fill="clear" class="colorBlack" (click)="showSortBy($event)">
+        Sort By
+        <span
+          *ngIf="!!collectionOrderBy && !!collectionOrderBy.name"
+          class="btnActiveClass"
+          >: {{collectionOrderBy.name}}</span
+        >
+        <ion-icon name="chevron-down"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <app-collection-component
+    showSegment="true"
+    [products]="products"
+    [showSkeleton]="showSkeleton"
+    [collectionName]="collectionName"
+  ></app-collection-component>
+  <ion-infinite-scroll (ionInfinite)="doInfiniteNew($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <app-footer></app-footer>
+</ion-content>
+
+<ion-content
+  *ngIf="!!query"
+  [scrollEvents]="true"
+  (ionScroll)="logScrolling($event)"
+>
+  <ion-row class="clsFooterRow" *ngIf="!!header">
+    <ion-col>
+      <div [innerHtml]="header" class="ffWhitney clsMainData"></div>
+    </ion-col>
+  </ion-row>
+  <ng-container *ngIf="!postQuery && dataLoaded">
+    <app-elastic-search
+      *ngIf="_companyService.productListing != 'grid'"
+      [query]="query"
+    ></app-elastic-search>
+    <app-elastic-search
+      *ngIf="_companyService.productListing == 'grid'"
+      [query]="query"
+    ></app-elastic-search>
+  </ng-container>
+
+  <ng-container *ngIf="postQuery && dataLoaded">
+    <app-elastic-search
+      *ngIf="_companyService.productListing != 'grid'"
+      [postQueryObj]="postQueryObj"
+    ></app-elastic-search>
+    <app-elastic-search
+      *ngIf="_companyService.productListing == 'grid'"
+      [postQueryObj]="postQueryObj"
+    ></app-elastic-search>
+  </ng-container>
+
+  <!-- <app-elastic-search [query]="query" [filters]="filters"></app-elastic-search> -->
+
+  <ng-container *ngIf="postQuery && dataLoaded">
+    <app-footer class="toHideInSmallScreen"></app-footer>
+  </ng-container>
+  <!-- <app-elastic-search *ngIf="_companyService.productListing != 'grid'" [filters]="query" [orderBy]="orderByFromServer?orderByFromServer:null"></app-elastic-search>
+  <app-elastic-search *ngIf="_companyService.productListing == 'grid'" [query]="query" [orderBy]="orderByFromServer?orderByFromServer:null"></app-elastic-search>
+  <app-footer class="toHideInSmallScreen"></app-footer> -->
+  <!-- <app-search-component [query]="query"></app-search-component> -->
+  <!-- <app-elastic-search [filters]="query" [query]="query"></app-elastic-search> -->
+</ion-content>
+
+<!-- <ion-footer class="mh50p smallFilters" *ngIf="!!query || (!!collectionOrderOptions && collectionOrderOptions.length>0)">
+  <ion-toolbar class="tac">
+    <ion-row *ngIf="!showFilterMenu">
+      <ion-col *ngIf="!!collectionOrderOptions && collectionOrderOptions.length>0">
+        <ion-button fill="clear" class="w100 h100" (click)="showSortBy(null)">
+          <ion-icon name="swap-vertical"></ion-icon>
+          Sort By
+        </ion-button>
+      </ion-col>
+      <ion-col *ngIf="!!query && !!esFilters && esFilters.length > 0">
+        <ion-button fill="clear" class="w100 h100" (click)="showFilterForSmallScreen()">
+          <ion-icon name="list" class="mr5p"></ion-icon>
+          Filter
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="showFilterMenu && !!esFilters && esFilters.length > 0">
+      <ion-col>
+        <ion-button fill="clear" class="w100 h100" (click)="showFilterForSmallScreen()"> CLOSE </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button fill="clear" class="w100 h100" (click)="showFilterForSmallScreen()"> APPLY </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer> -->
+
+<ion-button (click)="scrollContent()" class="top" [style.display]="display">
+  <ion-icon name="caret-up-outline"></ion-icon>
+</ion-button>

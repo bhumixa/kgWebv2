@@ -1,0 +1,4121 @@
+<div *ngIf="!quickBuyVerify && showImage" style="height: 100%">
+  <!-- for kg login -->
+  <ion-row *ngIf="formType == 'kglogin'" class="kgLoginForm">
+    <ion-col size="12">
+      <!-- for mobile view -->
+      <div *ngIf="isLoginForm" class="kgLoginMobile ion-hide-sm-up">
+        <ion-grid>
+          <h4 class="loginHeader">{{ "Login" | translate }}</h4>
+          <ion-segment
+            class="mt5 mb10"
+            [(ngModel)]="loginVia"
+            (ionChange)="changeTab()"
+          >
+            <ion-segment-button value="mb" class="loginSegment">
+              <ion-label> {{ "Contact Number" | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="em"
+              *ngIf="!checkoutAsGuest"
+              class="loginSegment"
+            >
+              <ion-label>{{ "Email Address" | translate }}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-row
+            *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+            class="marPad0 tac"
+          >
+            <ion-col class="tac" size="12">
+              <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput" required
+                placeholder="Enter Mobile"></ion-input> -->
+              <form class="mobileInput">
+                <ion-intl-tel-input
+                  id="phone-number"
+                  name="Mobile"
+                  [(ngModel)]="Mobile"
+                  inputPlaceholder="{{ 'Enter Mobile' | translate }}"
+                  defaultCountryiso="in"
+                  #phoneNumberControl="ngModel"
+                >
+                </ion-intl-tel-input>
+              </form>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+            class="marPad0 tac"
+          >
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="email"
+                name="email"
+                [(ngModel)]="email"
+                class="mobileInput"
+                placeholder="{{ 'Enter Email' | translate }}"
+                (ngModelChange)="checkEmail($event)"
+              >
+              </ion-input>
+            </ion-col>
+            <div class="validation-errors" *ngIf="emailError">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ emailError | translate }}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+            <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+          </ion-row>
+          <ion-row *ngIf="showPinCode" class="marPad0 tac">
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="text"
+                name="pincode"
+                [(ngModel)]="pincode"
+                class="bgLightBlue border tal input"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <!-- <ion-row *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD" class="marTop20 marPad0">
+          <ion-label class="label">Password</ion-label>
+        </ion-row> -->
+          <ion-row
+            *ngIf="
+              !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+            "
+            class="marPad0 tac"
+          >
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="password"
+                name="password"
+                [(ngModel)]="password"
+                placeholder="Enter Password"
+                maxlength="20"
+                class="mobileInput"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="
+              !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+            "
+            class="marPad0 w100 tac"
+          >
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button v2Btn"
+                expand="block"
+                (click)="login()"
+                [disabled]="buttonDisabled"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label>{{ "Login" | translate }}</label>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button v2Btn"
+                expand="block"
+                fill="outline"
+                (click)="forgotPassword()"
+                [disabled]="forgotButtonDisabled"
+              >
+                <ion-spinner
+                  *ngIf="forgotButtonDisabled"
+                  slot="start"
+                ></ion-spinner>
+                <label>{{ "Forgot Password?" | translate }}</label>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid *ngIf="verifyNumber" class="width mAuto">
+          <ion-row class="padd10">
+            <ion-label>{{
+              "Password length must be greater than 5 characters" | translate
+            }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-label *ngIf="!forgetPWD">{{
+              "Password" | translate
+            }}</ion-label>
+            <ion-label *ngIf="forgetPWD">{{
+              "New Password" | translate
+            }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-col>
+              <ion-input
+                class="input"
+                type="password"
+                name="password"
+                [(ngModel)]="password"
+                maxlength="20"
+                placeholder="{{ 'Enter your password' | translate }}"
+                class="bgLightBlue border tal input"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-label>{{ "Verify Password" | translate }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-col>
+              <ion-input
+                class="input"
+                type="password"
+                name="password"
+                [(ngModel)]="verifyPassword"
+                maxlength="20"
+                placeholder="{{ 'Verify password' | translate }}"
+                class="bgLightBlue border tal input"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col
+              size="12"
+              *ngIf="!userExist && !forgetPWD && updatePassword"
+            >
+              <ion-button
+                (click)="updatePwd()"
+                [disabled]="buttonDisabled"
+                class="v2Btn"
+                expand="block"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+              </ion-button>
+            </ion-col>
+            <ion-col
+              size="12"
+              *ngIf="!userExist && !forgetPWD && !updatePassword"
+            >
+              <ion-button
+                (click)="createUser()"
+                [disabled]="buttonDisabled"
+                class="v2Btn"
+                expand="block"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="pinBox colorBlack width mAuto" *ngIf="pinBox">
+          <ion-row *ngIf="!fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label>
+                {{ "We have sent you an SMS with the code." | translate }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label>
+                {{
+                  "We have sent you an OTP to reset your password." | translate
+                }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                tabindex="1"
+                #a
+                (keyup)="moveFocus($event, b, '')"
+                (ionFocus)="OTP1 = OTP7"
+                [(ngModel)]="OTP1"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #b
+                (keyup)="moveFocus($event, c, a)"
+                (ionFocus)="OTP2 = OTP7"
+                [(ngModel)]="OTP2"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #c
+                tabindex="3"
+                (keyup)="moveFocus($event, d, b)"
+                (ionFocus)="OTP3 = OTP7"
+                [(ngModel)]="OTP3"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #d
+                tabindex="4"
+                (keyup)="moveFocus($event, e, c)"
+                (ionFocus)="OTP4 = OTP7"
+                [(ngModel)]="OTP4"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #e
+                tabindex="5"
+                (keyup)="moveFocus($event, f, d)"
+                (ionFocus)="OTP5 = OTP7"
+                [(ngModel)]="OTP5"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #f
+                tabindex="6"
+                (keyup)="moveFocus($event, '', e)"
+                (ionFocus)="OTP6 = OTP7"
+                [(ngModel)]="OTP6"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="tal" *ngIf="getOTPCallEnable">
+              <ion-label (click)="getOTPCall()" class="underLine cursor">
+                Get OTP via Call
+              </ion-label>
+            </ion-col>
+            <ion-col class="text-right">
+              <ion-label (click)="resendOtp()" class="underLine cursor">
+                {{ "Resend OTP? | translate" }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="!checkoutAsGuest" class="marPad0 w100 tac">
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button v2Btn"
+                expand="block"
+                type="submit"
+                [disabled]="buttonDisabled"
+                (click)="verifyOtp()"
+                *ngIf="fromForgetPWD && userExist"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Next" | translate }}
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" class="tac">
+              <ion-button
+                type="submit"
+                class="v2Btn"
+                expand="block"
+                fill="outline"
+                [disabled]="buttonDisabled"
+                (click)="cancelForgetPWD()"
+                *ngIf="userExist"
+              >
+                {{ "Cancel" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid>
+          <ion-row *ngIf="!verifyNumber && !userExist">
+            <ion-col size="12" class="tac">
+              <ion-button
+                color="primary"
+                type="submit"
+                expand="block"
+                class="v2Btn"
+                (click)="signIn(false)"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Sign In" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="!checkoutAsGuest">
+            <ion-col size="12" class="tac">
+              <ion-button
+                color="secondary"
+                type="submit"
+                expand="block"
+                class="v2Btn"
+                (click)="loginAsGuest()"
+                *ngIf="showLoginAsGuest"
+              >
+                {{ "Login as Guest" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="width tar" *ngIf="!hideCreateAccount">
+            <ion-col size="12" class="tac">
+              <ion-button
+                fill="clear"
+                type="submit"
+                expand="block"
+                (click)="createAccountClick()"
+                class="v2Btn"
+              >
+                <span class="notaMember">
+                  {{ "Not a member?" | translate }} &nbsp;</span
+                >
+                <span class="createAccount">
+                  {{ "Create Account" | translate }}
+                </span>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <!-- for web view -->
+      <ion-card *ngIf="isLoginForm" class="kgLoginCard ion-hide-sm-down">
+        <ion-card-content>
+          <ion-grid>
+            <h4 class="loginHeader">{{ "Login" | translate }}</h4>
+            <ion-segment
+              class="mt5 mb10"
+              [(ngModel)]="loginVia"
+              (ionChange)="changeTab()"
+            >
+              <ion-segment-button value="mb" class="loginSegment">
+                <ion-label> {{ "Contact Number" | translate }}</ion-label>
+              </ion-segment-button>
+              <ion-segment-button
+                value="em"
+                *ngIf="!checkoutAsGuest"
+                class="loginSegment"
+              >
+                <ion-label>{{ "Email Address" | translate }}</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+
+            <ion-row
+              *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+              class="marPad0 w100 tac"
+            >
+              <!-- <ion-col class="tal" size="2">
+                <select [(ngModel)]="countryCode">
+                  <option [value]="c.code" *ngFor="let c of countries">{{c.name}}</option>
+                </select>
+              </ion-col>
+              <ion-col class="tac" size="10">
+                <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput" required
+                  placeholder="Enter Mobile"></ion-input>
+              </ion-col> -->
+              <ion-col class="tac">
+                <form class="mobileInput">
+                  <ion-intl-tel-input
+                    id="phone-number"
+                    name="Mobile"
+                    [(ngModel)]="Mobile"
+                    inputPlaceholder="{{ 'Enter Mobile' | translate }}"
+                    defaultCountryiso="in"
+                    #phoneNumberControl="ngModel"
+                  >
+                  </ion-intl-tel-input>
+                </form>
+              </ion-col>
+            </ion-row>
+
+            <ion-row
+              *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+              class="marPad0 w100 tac"
+            >
+              <ion-col size="12" class="tac">
+                <ion-input
+                  type="email"
+                  name="email"
+                  [(ngModel)]="email"
+                  class="mobileInput"
+                  id="login_email"
+                  placeholder="{{ 'Enter Email' | translate }}"
+                  (ngModelChange)="checkEmail($event)"
+                >
+                </ion-input>
+              </ion-col>
+              <div class="validation-errors" *ngIf="emailError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ emailError | translate }}
+                </div>
+              </div>
+            </ion-row>
+
+            <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+              <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+            </ion-row>
+            <ion-row *ngIf="showPinCode" class="marPad0 w100 tac">
+              <ion-col size="12" class="tac">
+                <ion-input
+                  type="text"
+                  name="pincode"
+                  [(ngModel)]="pincode"
+                  class="bgLightBlue border tal input"
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <!-- <ion-row *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD" class="marTop20 marPad0">
+            <ion-label class="label">Password</ion-label>
+          </ion-row> -->
+            <ion-row
+              *ngIf="
+                !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+              "
+              class="marPad0 w100 tac"
+            >
+              <ion-col size="12" class="tac">
+                <ion-input
+                  type="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  placeholder="Enter Password"
+                  maxlength="20"
+                  class="mobileInput"
+                  #login_password
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              *ngIf="
+                !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+              "
+              class="marPad0 w100 tac"
+            >
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button v2Btn"
+                  expand="block"
+                  (click)="login()"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label>{{ "Login" | translate }}</label>
+                </ion-button>
+              </ion-col>
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button v2Btn"
+                  expand="block"
+                  fill="outline"
+                  (click)="forgotPassword()"
+                  [disabled]="forgotButtonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="forgotButtonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label>{{ "Forgot Password?" | translate }}</label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-grid *ngIf="verifyNumber" class="width mAuto">
+            <ion-row class="marTop20 padd10">
+              <ion-label>{{
+                "Password length must be greater than 5 characters" | translate
+              }}</ion-label>
+            </ion-row>
+            <ion-row class="marTop20 padd10">
+              <ion-label *ngIf="!forgetPWD">{{
+                "Password" | translate
+              }}</ion-label>
+              <ion-label *ngIf="forgetPWD">{{
+                "New Password" | translate
+              }}</ion-label>
+            </ion-row>
+            <ion-row class="padd10">
+              <ion-col>
+                <ion-input
+                  class="input"
+                  type="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  maxlength="20"
+                  placeholder="{{ 'Enter your password' | translate }}"
+                  class="bgLightBlue border tal input"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="marTop20 padd10">
+              <ion-label>{{ "Verify Password" | translate }}</ion-label>
+            </ion-row>
+            <ion-row class="padd10">
+              <ion-col>
+                <ion-input
+                  class="input"
+                  type="password"
+                  name="password"
+                  [(ngModel)]="verifyPassword"
+                  maxlength="20"
+                  placeholder="{{ 'Verify password' | translate }}"
+                  class="bgLightBlue border tal input"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                size="12"
+                *ngIf="!userExist && !forgetPWD && updatePassword"
+              >
+                <ion-button
+                  (click)="updatePwd()"
+                  expand="block"
+                  class="v2Btn"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+                </ion-button>
+              </ion-col>
+              <ion-col
+                size="12"
+                *ngIf="!userExist && !forgetPWD && !updatePassword"
+              >
+                <ion-button
+                  (click)="createUser()"
+                  expand="block"
+                  class="v2Btn"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-grid class="pinBox colorBlack width mAuto" *ngIf="pinBox">
+            <ion-row *ngIf="!fromForgetPWD">
+              <ion-col class="tac">
+                <ion-label>
+                  {{ "We have sent you an SMS with the code." | translate }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="fromForgetPWD">
+              <ion-col class="tac">
+                <ion-label>
+                  {{
+                    "We have sent you an OTP to reset your password."
+                      | translate
+                  }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  tabindex="1"
+                  #a
+                  (keyup)="moveFocus($event, b, '')"
+                  (ionFocus)="OTP1 = OTP7"
+                  [(ngModel)]="OTP1"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  #b
+                  (keyup)="moveFocus($event, c, a)"
+                  (ionFocus)="OTP2 = OTP7"
+                  [(ngModel)]="OTP2"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  #c
+                  tabindex="3"
+                  (keyup)="moveFocus($event, d, b)"
+                  (ionFocus)="OTP3 = OTP7"
+                  [(ngModel)]="OTP3"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  #d
+                  tabindex="4"
+                  (keyup)="moveFocus($event, e, c)"
+                  (ionFocus)="OTP4 = OTP7"
+                  [(ngModel)]="OTP4"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  #e
+                  tabindex="5"
+                  (keyup)="moveFocus($event, f, d)"
+                  (ionFocus)="OTP5 = OTP7"
+                  [(ngModel)]="OTP5"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border-primary"
+                  maxlength="1"
+                  #f
+                  tabindex="6"
+                  (keyup)="moveFocus($event, '', e)"
+                  (ionFocus)="OTP6 = OTP7"
+                  [(ngModel)]="OTP6"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="tal" *ngIf="getOTPCallEnable">
+                <ion-label (click)="getOTPCall()" class="underLine cursor">
+                  Get OTP via Call
+                </ion-label>
+              </ion-col>
+              <ion-col class="text-right">
+                <ion-label (click)="resendOtp()" class="underLine cursor">
+                  {{ "Resend OTP? | translate" }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!checkoutAsGuest" class="marPad0 w100 tac">
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button v2Btn"
+                  expand="block"
+                  type="submit"
+                  [disabled]="buttonDisabled"
+                  (click)="verifyOtp()"
+                  *ngIf="fromForgetPWD && userExist"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  {{ "Next" | translate }}
+                </ion-button>
+              </ion-col>
+              <ion-col size="6" class="tac">
+                <ion-button
+                  type="submit"
+                  class="v2Btn"
+                  expand="block"
+                  fill="outline"
+                  [disabled]="buttonDisabled"
+                  (click)="cancelForgetPWD()"
+                  *ngIf="userExist"
+                >
+                  {{ "Cancel" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <!-- <ion-row class="width marPad0"  *ngIf="!checkoutAsGuest">
+              <ion-col size="12" class="marPad0">
+                <div color="primary" (click)="verifyOtp()" class="mt25 login-button v2Btn" *ngIf="fromForgetPWD && userExist">
+                  <ion-button type="submit" class="fr" [disabled]="buttonDisabled">
+                    <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                    Next
+                  </ion-button>
+                </div>
+                <div color="primary" (click)="cancelForgetPWD()" class="mt25 " *ngIf="userExist">
+                  <ion-button type="submit" class="fr" fill="outline" [disabled]="buttonDisabled">
+                    Cancel
+                  </ion-button>
+                </div>                
+              </ion-col>
+            </ion-row> -->
+          </ion-grid>
+          <ion-grid>
+            <ion-row *ngIf="!verifyNumber && !userExist">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  color="primary"
+                  type="submit"
+                  expand="block"
+                  class="v2Btn"
+                  (click)="signIn(false)"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  {{ "Sign In" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="!checkoutAsGuest">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  color="secondary"
+                  type="submit"
+                  expand="block"
+                  class="v2Btn"
+                  (click)="loginAsGuest()"
+                  *ngIf="showLoginAsGuest"
+                >
+                  {{ "Login as Guest" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="width tar" *ngIf="!hideCreateAccount">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  fill="clear"
+                  type="submit"
+                  expand="block"
+                  (click)="createAccountClick()"
+                  class="v2Btn"
+                >
+                  <span class="notaMember">
+                    {{ "Not a member?" | translate }} &nbsp;</span
+                  >
+                  <span class="createAccount">
+                    {{ "Create Account" | translate }}
+                  </span>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="kgLoginCard" *ngIf="!isLoginForm">
+        <h3 class="onPageTitle">
+          <ion-icon
+            name="arrow-back"
+            (click)="backToLoginPage()"
+            class="fl"
+          ></ion-icon>
+          {{ "Create Account" | translate }}
+        </h3>
+
+        <ion-grid class="tac marPad0">
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <ion-input
+                (ionBlur)="unCheckFocus('name')"
+                type="text"
+                maxlength="20"
+                name="name"
+                [(ngModel)]="name"
+                class="mobileInput"
+                placeholder="{{ 'Enter your name' | translate }}"
+              >
+              </ion-input>
+              <div class="validation-errors" *ngIf="nameError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Name is Required" | translate }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col class="tac" size="12">
+              <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput"
+                placeholder="Enter your Mobile" required></ion-input> -->
+              <form class="mobileInput">
+                <ion-intl-tel-input
+                  id="phone-number"
+                  (ionBlur)="unCheckFocus('mobile')"
+                  name="Mobile"
+                  [(ngModel)]="Mobile"
+                  inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                  defaultCountryiso="in"
+                  #phoneNumberControl="ngModel"
+                >
+                </ion-intl-tel-input>
+              </form>
+              <div class="validation-errors" *ngIf="mobileError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Mobile Number is Required" | translate }}
+                </div>
+              </div>
+              <!-- <span class="signUpError" *ngIf="mobileError"> Mobile required </span> -->
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="email"
+                name="email"
+                (ionBlur)="unCheckFocus('email')"
+                [(ngModel)]="email"
+                class="mobileInput"
+                (ngModelChange)="checkEmail($event)"
+                placeholder="{{ 'Enter your email' | translate }}"
+                #ca_email
+              >
+              </ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="emailError && !!email; else otherEmailError"
+            >
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ emailError | translate }}
+              </div>
+            </div>
+            <ng-template #otherEmailError>
+              <div class="validation-errors" *ngIf="emailInError && !email">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Email is Required" | translate }}
+                </div>
+              </div>
+            </ng-template>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="password"
+                name="password"
+                (ionBlur)="unCheckFocus('password')"
+                [(ngModel)]="newPassword"
+                class="mobileInput"
+                maxlength="20"
+                placeholder="{{ 'Enter your password' | translate }}"
+                minlength="6"
+                #password="ngModel"
+              ></ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="password?.dirty || password?.touched"
+            >
+              <div
+                class="error-message"
+                *ngIf="
+                  password?.errors?.['minlength'] && password?.invalid;
+                  else otherPwdError
+                "
+              >
+                Password must be at least 6 character/digit long
+              </div>
+              <ng-template #otherPwdError>
+                <div class="validation-errors" *ngIf="pwdError && !newPassword">
+                  <div class="error-message">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    {{ "Password is Required" | translate }}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <ion-input
+                type="password"
+                name="verifyPassword"
+                (ionBlur)="unCheckFocus('verifyPassword')"
+                [(ngModel)]="verifyPassword"
+                [disabled]="!newPassword"
+                class="mobileInput"
+                maxlength="20"
+                placeholder="{{ 'Verify password' | translate }}"
+                #varifyPassword="ngModel"
+              ></ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="
+                verifyPassword && verifyPassword !== newPassword;
+                else otherValidError
+              "
+            >
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ "Please Enter Correct Password" | translate }}
+              </div>
+            </div>
+            <ng-template #otherValidError>
+              <div class="validation-errors" *ngIf="validPwdError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Verify Password is Required" | translate }}
+                </div>
+              </div>
+            </ng-template>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <!-- <ng-select
+                class="mobileInput selectBox"
+                [(ngModel)]="selectedDistributor"
+                placeholder="Select Distribution Center"
+                (change)="distributioncenterSelected($event)"
+              >
+                <ng-option
+                  [ngValue]="distributioncenter"
+                  *ngFor="let distributioncenter of distributioncenters"
+                >
+                  {{ distributioncenter.companyName }}
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Mumbai'"
+                  >
+                    <span *ngIf="distributioncenter.city == 'Mumbai'">
+                      <img
+                        src="assets/images/in.png"
+                        class="flag"
+                        width="16px"
+                      />
+                    </span>
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'New York'"
+                  >
+                    <img src="assets/images/ny.png" class="flag" width="16px" />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Dubai'"
+                  >
+                    <img
+                      src="assets/images/dubai.png"
+                      class="flag"
+                      width="16px"
+                    />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Antwerp'"
+                  >
+                    <img src="assets/images/ae.png" class="flag" width="16px" />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Hong Kong'"
+                  >
+                    <img src="assets/images/hk.png" class="flag" width="16px" />
+                  </span>
+                </ng-option>
+              </ng-select> -->
+            </ion-col>
+            <div class="validation-errors" *ngIf="distErr">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ "Distribution Center is Required" | translate }}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac">
+              <!-- <ng-select
+                class="mobileInput selectBox"
+                [(ngModel)]="selectedSalesPerson"
+                placeholder="Select Sales Person"
+                (change)="salesPersonSelection($event)"
+              >
+                <ng-option
+                  [value]="salesPerson"
+                  *ngFor="let salesPerson of distributorSalesperson"
+                >
+                  {{ salesPerson.name }}
+                  <span
+                    class="flag-icon flag-icon-{{ salesPerson.flagClass }}"
+                  ></span>
+                </ng-option>
+              </ng-select> -->
+            </ion-col>
+            <div class="validation-errors" *ngIf="salesPersonErr">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                Sales Person is Required
+              </div>
+            </div>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="pinBox colorBlack" *ngIf="pinBox">
+          <ion-row *ngIf="!fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label>
+                {{ "We have sent you an SMS with the code." | translate }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label>
+                {{
+                  "We have sent you an OTP to reset your password." | translate
+                }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                tabindex="1"
+                #a
+                (keyup)="moveFocus($event, b, '')"
+                (ionFocus)="OTP1 = OTP7"
+                [(ngModel)]="OTP1"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #b
+                (keyup)="moveFocus($event, c, a)"
+                (ionFocus)="OTP2 = OTP7"
+                [(ngModel)]="OTP2"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #c
+                tabindex="3"
+                (keyup)="moveFocus($event, d, b)"
+                (ionFocus)="OTP3 = OTP7"
+                [(ngModel)]="OTP3"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #d
+                tabindex="4"
+                (keyup)="moveFocus($event, e, c)"
+                (ionFocus)="OTP4 = OTP7"
+                [(ngModel)]="OTP4"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #e
+                tabindex="5"
+                (keyup)="moveFocus($event, f, d)"
+                (ionFocus)="OTP5 = OTP7"
+                [(ngModel)]="OTP5"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border-primary"
+                maxlength="1"
+                #f
+                tabindex="6"
+                (keyup)="moveFocus($event, '', e)"
+                (ionFocus)="OTP6 = OTP7"
+                [(ngModel)]="OTP6"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="text-right">
+              <ion-label (click)="resendOtp()" class="underLine cursor">
+                {{ "Resend OTP? | translate" }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="width tar">
+          <ion-button
+            type="submit"
+            class="login-button v2Btn"
+            [disabled]="btnDisabled"
+            id="signupBtn"
+            expand="block"
+            (click)="signUpContinue(false)"
+          >
+            Continue
+          </ion-button>
+        </ion-grid>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <!-- other companies -->
+  <span *ngIf="!formType">
+    <ion-card
+      class="loginCard"
+      text-center
+      *ngIf="isLoginForm"
+      style="height: 100%"
+    >
+      <div class="logoLogin toHideInSmallScreen" *ngIf="!hideLogoOnSignup">
+        <!-- <cl-image
+          public-id="/logo/{{ databaseServiceService.refCompanyId }}"
+          format="png"
+          class="logoLogin"
+          secure="true"
+        >
+          <cl-transformation></cl-transformation>
+        </cl-image> -->
+      </div>
+      <h3 class="onPageTitle" *ngIf="!verifyNumber || userExist">
+        {{ welcomeText }}
+      </h3>
+
+      <h3 class="onPageTitle" *ngIf="verifyNumber">Choose Password</h3>
+      <ion-segment
+        color="primary"
+        [(ngModel)]="loginVia"
+        (ionChange)="changeTab()"
+      >
+        <ion-segment-button value="mb">
+          <ion-icon name="call"></ion-icon>
+          <ion-label> {{ "Mobile no" | translate }} </ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="em" *ngIf="!checkoutAsGuest">
+          <ion-icon name="mail"></ion-icon>
+          <ion-label>{{ "Email" | translate }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- <ion-item class="colorBlack"> -->
+      <ion-grid class="tac marPad0 width mAuto">
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label">{{ "Phone No" | translate }}</ion-label>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+          class="marPad0 w100 tac"
+        >
+          <ion-col class="tac" size="12">
+            <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+              placeholder="Enter your Mobile" required></ion-input> -->
+            <form class="bgLightBlue border tal input">
+              <ion-intl-tel-input
+                id="phone-number"
+                name="Mobile"
+                [(ngModel)]="Mobile"
+                inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                defaultCountryiso="in"
+                #phoneNumberControl="ngModel"
+              >
+              </ion-intl-tel-input>
+            </form>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label">{{ "Email" | translate }}</ion-label>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="bgLightBlue border tal input"
+              (ngModelChange)="checkEmail($event)"
+              placeholder="{{ 'Enter email to continue' | translate }}"
+            ></ion-input>
+          </ion-col>
+          <div class="validation-errors" *ngIf="emailError">
+            <div class="error-message">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ emailError | translate }}
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- <ion-input type="number" [(ngModel)]="Mobile"></ion-input> -->
+
+        <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+          <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+        </ion-row>
+        <ion-row *ngIf="showPinCode" class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="text"
+              name="pincode"
+              [(ngModel)]="pincode"
+              class="bgLightBlue border tal input"
+            >
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label">{{ "Password" | translate }}</ion-label>
+        </ion-row>
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="******"
+              maxlength="20"
+              class="bgLightBlue border tal input"
+            >
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-button
+              class="login-button fr"
+              (click)="login()"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label>{{ "Login" | translate }}</label>
+            </ion-button>
+            <ion-button
+              class="login-button fl"
+              fill="outline"
+              (click)="forgotPassword()"
+              [disabled]="forgotButtonDisabled"
+            >
+              <ion-spinner
+                *ngIf="forgotButtonDisabled"
+                slot="start"
+              ></ion-spinner>
+              <label>{{ "Forgot Password?" | translate }}</label>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- </ion-item> -->
+      <ion-grid *ngIf="verifyNumber" class="width mAuto">
+        <ion-row class="marTop20 padd10">
+          <ion-label>{{
+            "Password length must be greater than 5 characters" | translate
+          }}</ion-label>
+        </ion-row>
+        <ion-row class="marTop20 padd10">
+          <ion-label *ngIf="!forgetPWD">{{ "Password" | translate }}</ion-label>
+          <ion-label *ngIf="forgetPWD">{{
+            "New Password" | translate
+          }}</ion-label>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-input
+              class="input"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              maxlength="20"
+              placeholder="{{ 'Enter your password' | translate }}"
+              class="bgLightBlue border tal input"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="marTop20 padd10">
+          <ion-label>{{ "Verify Password" | translate }}</ion-label>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-input
+              class="input"
+              type="password"
+              name="password"
+              [(ngModel)]="verifyPassword"
+              maxlength="20"
+              placeholder="{{ 'Verify password' | translate }}"
+              class="bgLightBlue border tal input"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-button
+              *ngIf="!userExist && !forgetPWD && updatePassword"
+              (click)="updatePwd()"
+              class="fr"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button
+              *ngIf="!userExist && !forgetPWD && !updatePassword"
+              (click)="createUser()"
+              class="fr"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="pinBox colorBlack width mAuto" *ngIf="pinBox">
+        <ion-row *ngIf="!fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{ "We have sent you an SMS with the code." | translate }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{
+                "We have sent you an OTP to reset your password." | translate
+              }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              tabindex="1"
+              #a
+              (keyup)="moveFocus($event, b, '')"
+              (ionFocus)="OTP1 = OTP7"
+              [(ngModel)]="OTP1"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #b
+              (keyup)="moveFocus($event, c, a)"
+              (ionFocus)="OTP2 = OTP7"
+              [(ngModel)]="OTP2"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #c
+              tabindex="3"
+              (keyup)="moveFocus($event, d, b)"
+              (ionFocus)="OTP3 = OTP7"
+              [(ngModel)]="OTP3"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #d
+              tabindex="4"
+              (keyup)="moveFocus($event, e, c)"
+              (ionFocus)="OTP4 = OTP7"
+              [(ngModel)]="OTP4"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #e
+              tabindex="5"
+              (keyup)="moveFocus($event, f, d)"
+              (ionFocus)="OTP5 = OTP7"
+              [(ngModel)]="OTP5"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #f
+              tabindex="6"
+              (keyup)="moveFocus($event, '', e)"
+              (ionFocus)="OTP6 = OTP7"
+              [(ngModel)]="OTP6"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="tal" *ngIf="getOTPCallEnable">
+            <ion-label (click)="getOTPCall()" class="underLine cursor">
+              Get OTP via Call
+            </ion-label>
+          </ion-col>
+          <ion-col class="text-right">
+            <ion-label (click)="resendOtp()" class="underLine cursor">
+              {{ "Resend OTP? | translate" }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid class="width" *ngIf="!checkoutAsGuest">
+        <ion-row class="width marPad0">
+          <ion-col size="12" class="marPad0">
+            <div
+              color="primary"
+              (click)="verifyOtp()"
+              class="mt25"
+              *ngIf="fromForgetPWD && userExist"
+            >
+              <ion-button type="submit" class="fr" [disabled]="buttonDisabled">
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Next" | translate }}
+              </ion-button>
+            </div>
+            <div
+              color="primary"
+              (click)="cancelForgetPWD()"
+              class="mt25"
+              *ngIf="userExist"
+            >
+              <ion-button
+                type="submit"
+                class="fr"
+                fill="outline"
+                [disabled]="buttonDisabled"
+              >
+                {{ "Cancel" | translate }}
+              </ion-button>
+            </div>
+            <div
+              color="primary"
+              class="mt25"
+              *ngIf="!verifyNumber && !userExist"
+            >
+              <ion-button
+                type="submit"
+                class="fr"
+                [disabled]="buttonDisabled"
+                (click)="signIn(false)"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Sign In" | translate }}
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!checkoutAsGuest">
+        <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <ion-button
+              type="submit"
+              color="danger"
+              (click)="loginAsGuest()"
+              *ngIf="showLoginAsGuest"
+            >
+              {{ "Login as Guest" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!!checkoutAsGuest">
+        <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <!-- <ion-button type="submit" fill="outline" (click)="cancelCheckOutAsGuest()">
+            Cancel
+          </ion-button> -->
+            <ion-button
+              type="submit"
+              (click)="checkoutAsGuestFun()"
+              *ngIf="!pinBox"
+            >
+              Continue as Guest
+            </ion-button>
+            <ion-button
+              type="submit"
+              (click)="checkoutAsGuestFunLogin()"
+              *ngIf="pinBox"
+            >
+              {{ "Verify" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!hideCreateAccount">
+        <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <ion-button
+              fill="clear"
+              type="submit"
+              (click)="createAccountClick()"
+            >
+              {{ "Create Account" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card class="loginCard width mAuto" *ngIf="!isLoginForm">
+      <h3 class="onPageTitle">
+        <ion-icon
+          name="arrow-back"
+          (click)="backToLoginPage()"
+          class="fl"
+        ></ion-icon>
+        {{ "Create Account" | translate }}
+      </h3>
+
+      <ion-grid class="tac marPad0">
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="text"
+              name="name"
+              [(ngModel)]="name"
+              class="bgLightBlue border tal input"
+              placeholder="{{ 'Enter your name' | translate }}"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col class="tac" size="12">
+            <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+              placeholder="Enter your Mobile" required></ion-input> -->
+            <form class="bgLightBlue border tal input">
+              <ion-intl-tel-input
+                id="phone-number"
+                name="Mobile"
+                [(ngModel)]="Mobile"
+                inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                defaultCountryiso="in"
+                #phoneNumberControl="ngModel"
+              >
+              </ion-intl-tel-input>
+            </form>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="bgLightBlue border tal input"
+              (ngModelChange)="checkEmail($event)"
+              placeholder="{{ 'Enter your email' | translate }}"
+            ></ion-input>
+          </ion-col>
+          <div class="validation-errors" *ngIf="emailError">
+            <div class="error-message">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ emailError | translate }}
+            </div>
+          </div>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              class="bgLightBlue border tal input"
+              maxlength="20"
+              placeholder="{{ 'Enter your password' | translate }}"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="pinBox colorBlack" *ngIf="pinBox">
+        <ion-row *ngIf="!fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{ "We have sent you an SMS with the code." | translate }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{
+                "We have sent you an OTP to reset your password." | translate
+              }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              tabindex="1"
+              #a
+              (keyup)="moveFocus($event, b, '')"
+              (ionFocus)="OTP1 = OTP7"
+              [(ngModel)]="OTP1"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #b
+              (keyup)="moveFocus($event, c, a)"
+              (ionFocus)="OTP2 = OTP7"
+              [(ngModel)]="OTP2"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #c
+              tabindex="3"
+              (keyup)="moveFocus($event, d, b)"
+              (ionFocus)="OTP3 = OTP7"
+              [(ngModel)]="OTP3"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #d
+              tabindex="4"
+              (keyup)="moveFocus($event, e, c)"
+              (ionFocus)="OTP4 = OTP7"
+              [(ngModel)]="OTP4"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #e
+              tabindex="5"
+              (keyup)="moveFocus($event, f, d)"
+              (ionFocus)="OTP5 = OTP7"
+              [(ngModel)]="OTP5"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #f
+              tabindex="6"
+              (keyup)="moveFocus($event, '', e)"
+              (ionFocus)="OTP6 = OTP7"
+              [(ngModel)]="OTP6"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="text-right">
+            <ion-label (click)="resendOtp()" class="underLine cursor">
+              {{ "Resend OTP? | translate" }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width tar" (keydown)="keyPressed($event)">
+        <ion-button type="submit" (click)="signUpContinue()">
+          Continue
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card
+      class="loginCard mt10Imp"
+      *ngIf="checkoutAsGuestEnable && !checkoutAsGuest"
+    >
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="checkoutAsGuestFun1()">
+          Checkout as Guest
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card
+      class="loginCard mt10Imp"
+      *ngIf="checkoutAsGuestWithoutOTPEnable && !checkoutAsGuest"
+    >
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="checkoutAsGuestFun1()">
+          Checkout as Guest
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card class="loginCard mt10Imp" *ngIf="!!checkoutAsGuest">
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="cancelCheckOutAsGuest()">
+          {{ "Have an account? Please sign in" | translate }}
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+  </span>
+</div>
+
+<div *ngIf="quickBuyVerify && showImage" style="height: 100%">
+  <ion-card class="loginCard" text-center *ngIf="isLoginForm">
+    <div class="logoLogin toHideInSmallScreen">
+      <!-- <cl-image
+        public-id="/logo/{{ databaseServiceService.refCompanyId }}"
+        format="png"
+        class="logoLogin"
+      >
+        <cl-transformation></cl-transformation>
+      </cl-image> -->
+    </div>
+    <h3 class="onPageTitle" *ngIf="!verifyNumber || userExist">
+      {{ welcomeText | translate }}
+    </h3>
+
+    <h3 class="onPageTitle" *ngIf="verifyNumber">Choose Password</h3>
+
+    <ion-grid class="tac marPad0 width mAuto">
+      <ion-row class="marTop20 marPad0">
+        <ion-label class="label">{{ "Mobile no" | translate }}</ion-label>
+      </ion-row>
+      <ion-row class="marPad0 w100 tac">
+        <ion-col size="12" class="tac">
+          <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+            placeholder="Enter your Mobile" required></ion-input> -->
+          <form class="bgLightBlue border tal input">
+            <ion-intl-tel-input
+              id="phone-number"
+              name="Mobile"
+              [(ngModel)]="Mobile"
+              inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+              defaultCountryiso="in"
+              #phoneNumberControl="ngModel"
+            >
+            </ion-intl-tel-input>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-grid class="pinBox colorBlack" *ngIf="pinBox">
+    <ion-row>
+      <ion-col class="tac">
+        <ion-label>
+          {{ "We have sent you an SMS with the code." | translate }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          tabindex="1"
+          #a
+          (keyup)="moveFocus($event, b, '')"
+          (ionFocus)="OTP1 = OTP7"
+          [(ngModel)]="OTP1"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #b
+          (keyup)="moveFocus($event, c, a)"
+          (ionFocus)="OTP2 = OTP7"
+          [(ngModel)]="OTP2"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #c
+          tabindex="3"
+          (keyup)="moveFocus($event, d, b)"
+          (ionFocus)="OTP3 = OTP7"
+          [(ngModel)]="OTP3"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #d
+          tabindex="4"
+          (keyup)="moveFocus($event, e, c)"
+          (ionFocus)="OTP4 = OTP7"
+          [(ngModel)]="OTP4"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #e
+          tabindex="5"
+          (keyup)="moveFocus($event, f, d)"
+          (ionFocus)="OTP5 = OTP7"
+          [(ngModel)]="OTP5"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #f
+          tabindex="6"
+          (keyup)="moveFocus($event, '', e)"
+          (ionFocus)="OTP6 = OTP7"
+          [(ngModel)]="OTP6"
+        ></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="text-right">
+        <ion-label (click)="resendOtp()" class="underLine cursor">
+          {{ "Resend OTP? | translate" }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="width" *ngIf="!!quickBuyVerify">
+    <ion-row class="width tar">
+      <ion-col size="12" class="marPad0">
+        <!-- <ion-button type="submit" fill="outline" (click)="cancelCheckOutAsGuest()">
+          Cancel
+        </ion-button> -->
+        <ion-button type="submit" (click)="dismiss()">
+          {{ "Cancel" | translate }}
+        </ion-button>
+        <ion-button type="submit" (click)="quickBuyVerifyOTP()" *ngIf="pinBox">
+          {{ "Verify" | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div *ngIf="!quickBuyVerify && !showImage" style="height: 100%">
+  <!-- for kg login -->
+  <ion-row *ngIf="formType == 'kglogin'" class="kgLoginForm">
+    <ion-col size="12" class="login_container posRel">
+      <div class="inventoryDiamondImageDiv">
+        <img
+          src="../../../assets/images/inventoryDiamond.png"
+          class="inventoryDiamondImage"
+        />
+      </div>
+      <!-- for mobile view -->
+      <div
+        *ngIf="isLoginForm"
+        class="kgLoginMobile ion-hide-sm-up aspecoLoginContent"
+      >
+        <ion-grid>
+          <div class="flexC">
+            <h4 class="loginHeaderAspeco">Login</h4>
+          </div>
+          <ion-segment
+            class="mt5 mr_bt_18 segmentAspeco"
+            [(ngModel)]="loginVia"
+            (ionChange)="changeTab()"
+          >
+            <ion-segment-button
+              value="mb"
+              class="capitalize loginSegmentAspeco mr_rt_20"
+            >
+              <ion-label> {{ "Contact Number" | translate }} </ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="em"
+              *ngIf="!checkoutAsGuest"
+              class="loginSegmentAspeco capitalize"
+            >
+              <ion-label>{{ "Email Address" | translate }}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-row
+            *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+            class="marPad0 tac"
+          >
+            <ion-col class="tac aspecoFieldBox mr_bt_18" size="12">
+              <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput" required
+                placeholder="Enter Mobile"></ion-input> -->
+              <form class="formIntl">
+                <ion-intl-tel-input
+                  class="internationalTelephones"
+                  id="phone-number"
+                  name="Mobile"
+                  [(ngModel)]="Mobile"
+                  inputPlaceholder="{{ 'Enter Mobile' | translate }}"
+                  defaultCountryiso="in"
+                  #phoneNumberControl="ngModel"
+                >
+                </ion-intl-tel-input>
+              </form>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+            class="marPad0 tac"
+          >
+            <ion-col size="12" class="tac aspecoFieldBox mr_bt_18">
+              <ion-input
+                type="email"
+                name="email"
+                [(ngModel)]="email"
+                class="white_color"
+                placeholder="{{ 'Enter Email' | translate }}"
+                (ngModelChange)="checkEmail($event)"
+              >
+              </ion-input>
+            </ion-col>
+            <div class="validation-errors" *ngIf="emailError">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ emailError | translate }}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+            <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+          </ion-row>
+          <ion-row *ngIf="showPinCode" class="marPad0 tac">
+            <ion-col size="12" class="tac aspecoFieldBox mr_bt_18">
+              <ion-input
+                type="text"
+                name="pincode"
+                [(ngModel)]="pincode"
+                class="bgLightBlue border tal input"
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <!-- <ion-row *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD" class="marTop20 marPad0">
+          <ion-label class="label">Password</ion-label>
+        </ion-row> -->
+          <ion-row
+            *ngIf="
+              !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+            "
+            class="marPad0 tac"
+          >
+            <ion-col size="12" class="tac aspecoFieldBox mr_bt_18 white_color">
+              <ion-input
+                type="password"
+                name="password"
+                [(ngModel)]="password"
+                placeholder="Enter Password"
+                maxlength="20"
+                class=""
+              >
+              </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="
+              !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+            "
+            class="marPad0 w100 tac"
+          >
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button v2Btn logIn"
+                expand="block"
+                (click)="login()"
+                [disabled]="buttonDisabled"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label>{{ "Login" | translate }}</label>
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button forgotPwdBtn v2Btn"
+                expand="block"
+                fill="outline"
+                (click)="forgotPassword()"
+                [disabled]="forgotButtonDisabled"
+              >
+                <ion-spinner
+                  *ngIf="forgotButtonDisabled"
+                  slot="start"
+                ></ion-spinner>
+                <label class="white_color">{{
+                  "Forgot Password?" | translate
+                }}</label>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid *ngIf="verifyNumber" class="width mAuto">
+          <ion-row class="padd10">
+            <ion-label>{{
+              "Password length must be greater than 5 characters" | translate
+            }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-label *ngIf="!forgetPWD">{{
+              "Password" | translate
+            }}</ion-label>
+            <ion-label *ngIf="forgetPWD">{{
+              "New Password" | translate
+            }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-col>
+              <ion-input
+                class="input"
+                type="password"
+                name="password"
+                [(ngModel)]="password"
+                maxlength="20"
+                placeholder="{{ 'Enter your password' | translate }}"
+                class="bgLightBlue border tal input"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-label>{{ "Verify Password" | translate }}</ion-label>
+          </ion-row>
+          <ion-row class="padd10">
+            <ion-col>
+              <ion-input
+                class="input"
+                type="password"
+                name="password"
+                [(ngModel)]="verifyPassword"
+                maxlength="20"
+                placeholder="{{ 'Verify password' | translate }}"
+                class="bgLightBlue border tal input"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col
+              size="12"
+              *ngIf="!userExist && !forgetPWD && updatePassword"
+            >
+              <ion-button
+                (click)="updatePwd()"
+                [disabled]="buttonDisabled"
+                class="v2Btn"
+                expand="block"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+              </ion-button>
+            </ion-col>
+            <ion-col
+              size="12"
+              *ngIf="!userExist && !forgetPWD && !updatePassword"
+            >
+              <ion-button
+                (click)="createUser()"
+                [disabled]="buttonDisabled"
+                class="v2Btn"
+                expand="block"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="pinBoxAspeco colorBlack width mAuto" *ngIf="pinBox">
+          <ion-row *ngIf="!fromForgetPWD">
+            <ion-col class="tac white_color">
+              <ion-label>
+                {{ "We have sent you an SMS with the code." | translate }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="fromForgetPWD">
+            <ion-col class="tac white_color">
+              <ion-label>
+                {{
+                  "We have sent you an OTP to reset your password." | translate
+                }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                tabindex="1"
+                #a
+                (keyup)="moveFocus($event, b, '')"
+                (ionFocus)="OTP1 = OTP7"
+                [(ngModel)]="OTP1"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                #b
+                (keyup)="moveFocus($event, c, a)"
+                (ionFocus)="OTP2 = OTP7"
+                [(ngModel)]="OTP2"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                #c
+                tabindex="3"
+                (keyup)="moveFocus($event, d, b)"
+                (ionFocus)="OTP3 = OTP7"
+                [(ngModel)]="OTP3"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                #d
+                tabindex="4"
+                (keyup)="moveFocus($event, e, c)"
+                (ionFocus)="OTP4 = OTP7"
+                [(ngModel)]="OTP4"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                #e
+                tabindex="5"
+                (keyup)="moveFocus($event, f, d)"
+                (ionFocus)="OTP5 = OTP7"
+                [(ngModel)]="OTP5"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_otp_code"
+                maxlength="1"
+                #f
+                tabindex="6"
+                (keyup)="moveFocus($event, '', e)"
+                (ionFocus)="OTP6 = OTP7"
+                [(ngModel)]="OTP6"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="tal" *ngIf="getOTPCallEnable">
+              <ion-label
+                (click)="getOTPCall()"
+                class="underLine cursor white_color"
+              >
+                Get OTP via Call
+              </ion-label>
+            </ion-col>
+            <ion-col class="text-right">
+              <ion-label
+                (click)="resendOtp()"
+                class="underLine cursor white_color"
+              >
+                {{ "Resend OTP? | translate" }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="!checkoutAsGuest" class="marPad0 w100 tac">
+            <ion-col size="6" class="tac">
+              <ion-button
+                class="login-button v2Btn logIn"
+                expand="block"
+                type="submit"
+                [disabled]="buttonDisabled"
+                (click)="verifyOtp()"
+                *ngIf="fromForgetPWD && userExist"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Next" | translate }}
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" class="tac">
+              <ion-button
+                type="submit"
+                class="v2Btn forgotPwdBtn white_color"
+                expand="block"
+                fill="outline"
+                [disabled]="buttonDisabled"
+                (click)="cancelForgetPWD()"
+                *ngIf="userExist"
+              >
+                {{ "Cancel" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid>
+          <ion-row *ngIf="!verifyNumber && !userExist">
+            <ion-col size="12" class="tac">
+              <ion-button
+                color="primary"
+                type="submit"
+                expand="block"
+                class="v2Btn aspecoButton"
+                (click)="signIn(false)"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Sign In" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <!-- <ion-row *ngIf="!checkoutAsGuest">
+            <ion-col size="12" class="tac">
+              <ion-button
+                color="secondary"
+                type="submit"
+                expand="block"
+                class="v2Btn"
+                (click)="loginAsGuest()"
+                *ngIf="showLoginAsGuest"
+              >
+                Login as Guest
+              </ion-button>
+            </ion-col>
+          </ion-row> -->
+
+          <ion-row class="width tar" *ngIf="!hideCreateAccount">
+            <ion-col size="12" class="tac">
+              <ion-button
+                fill="clear"
+                type="submit"
+                expand="block"
+                (click)="createAccountClick()"
+                class="v2Btn"
+              >
+                <span class="notaMemberAspeco">
+                  {{ "Not a member?" | translate }} &nbsp;</span
+                >
+                <span class="createAccountAspeco">
+                  {{ "Create Account" | translate }}
+                </span>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <!-- for web view -->
+      <ion-card *ngIf="isLoginForm" class="ion-hide-sm-down aspecoLoginContent">
+        <ion-card-content>
+          <ion-grid>
+            <h4 class="loginHeaderAspeco">Login</h4>
+            <ion-segment
+              class="mt5 mr_bt_18 aspecoSegment"
+              [(ngModel)]="loginVia"
+              (ionChange)="changeTab()"
+            >
+              <ion-segment-button
+                value="mb"
+                class="capitalize loginSegmentAspeco mr_rt_20"
+              >
+                <ion-label> {{ "Contact Number" | translate }}</ion-label>
+              </ion-segment-button>
+              <ion-segment-button
+                value="em"
+                *ngIf="!checkoutAsGuest"
+                class="loginSegmentAspeco capitalize"
+              >
+                <ion-label>{{ "Email Address" | translate }}</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+
+            <ion-row
+              *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+              class="marPad0 w100 tac"
+            >
+              <!-- <ion-col class="tal" size="2">
+                <select [(ngModel)]="countryCode">
+                  <option [value]="c.code" *ngFor="let c of countries">{{c.name}}</option>
+                </select>
+              </ion-col>
+              <ion-col class="tac" size="10">
+                <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput" required
+                  placeholder="Enter Mobile"></ion-input>
+              </ion-col> -->
+              <ion-col class="tac aspecoFieldBox mr_bt_18">
+                <form class="formIntl">
+                  <ion-intl-tel-input
+                    class="internationalTelephones"
+                    id="phone-number"
+                    name="Mobile"
+                    [(ngModel)]="Mobile"
+                    inputPlaceholder="{{ 'Enter Mobile' | translate }}"
+                    defaultCountryiso="in"
+                    #phoneNumberControl="ngModel"
+                  >
+                  </ion-intl-tel-input>
+                </form>
+              </ion-col>
+            </ion-row>
+
+            <ion-row
+              *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+              class="marPad0 w100 tac"
+            >
+              <ion-col size="12" class="tac aspecoFieldBox mr_bt_18">
+                <ion-input
+                  type="email"
+                  name="email"
+                  [(ngModel)]="email"
+                  class="white_color"
+                  id="login_email"
+                  placeholder="{{ 'Enter Email' | translate }}"
+                  (ngModelChange)="checkEmail($event)"
+                >
+                </ion-input>
+              </ion-col>
+              <div class="validation-errors" *ngIf="emailError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ emailError | translate }}
+                </div>
+              </div>
+            </ion-row>
+
+            <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+              <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+            </ion-row>
+            <ion-row *ngIf="showPinCode" class="marPad0 w100 tac">
+              <ion-col size="12" class="tac aspecoFieldBox mr_bt_18">
+                <ion-input
+                  type="text"
+                  name="pincode"
+                  [(ngModel)]="pincode"
+                  class="bgLightBlue border tal input"
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+
+            <!-- <ion-row *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD" class="marTop20 marPad0">
+            <ion-label class="label">Password</ion-label>
+          </ion-row> -->
+            <ion-row
+              *ngIf="
+                !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+              "
+              class="marPad0 w100 tac"
+            >
+              <ion-col
+                size="12"
+                class="tac aspecoFieldBox mr_bt_18 white_color"
+              >
+                <ion-input
+                  type="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  placeholder="Enter Password"
+                  maxlength="20"
+                  class=""
+                  #login_password
+                >
+                </ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              *ngIf="
+                !checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD
+              "
+              class="marPad0 w100 tac"
+            >
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button v2Btn logIn"
+                  expand="block"
+                  (click)="login()"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label>{{ "Login" | translate }}</label>
+                </ion-button>
+              </ion-col>
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button forgotPwdBtn v2Btn"
+                  expand="block"
+                  fill="outline"
+                  (click)="forgotPassword()"
+                  [disabled]="forgotButtonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="forgotButtonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label class="white_color">{{
+                    "Forgot Password?" | translate
+                  }}</label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-grid *ngIf="verifyNumber" class="width mAuto">
+            <ion-row class="marTop20 padd10">
+              <ion-label>{{
+                "Password length must be greater than 5 characters" | translate
+              }}</ion-label>
+            </ion-row>
+            <ion-row class="marTop20 padd10">
+              <ion-label *ngIf="!forgetPWD">{{
+                "Password" | translate
+              }}</ion-label>
+              <ion-label *ngIf="forgetPWD">{{
+                "New Password" | translate
+              }}</ion-label>
+            </ion-row>
+            <ion-row class="padd10">
+              <ion-col>
+                <ion-input
+                  class="input"
+                  type="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  maxlength="20"
+                  placeholder="{{ 'Enter your password' | translate }}"
+                  class="bgLightBlue border tal input"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="marTop20 padd10">
+              <ion-label>{{ "Verify Password" | translate }}</ion-label>
+            </ion-row>
+            <ion-row class="padd10">
+              <ion-col>
+                <ion-input
+                  class="input"
+                  type="password"
+                  name="password"
+                  [(ngModel)]="verifyPassword"
+                  maxlength="20"
+                  placeholder="{{ 'Verify password' | translate }}"
+                  class="bgLightBlue border tal input"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col
+                size="12"
+                *ngIf="!userExist && !forgetPWD && updatePassword"
+              >
+                <ion-button
+                  (click)="updatePwd()"
+                  expand="block"
+                  class="v2Btn"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+                </ion-button>
+              </ion-col>
+              <ion-col
+                size="12"
+                *ngIf="!userExist && !forgetPWD && !updatePassword"
+              >
+                <ion-button
+                  (click)="createUser()"
+                  expand="block"
+                  class="v2Btn"
+                  [disabled]="buttonDisabled"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-grid class="pinBoxAspeco colorBlack width mAuto" *ngIf="pinBox">
+            <ion-row *ngIf="!fromForgetPWD">
+              <ion-col class="tac white_color">
+                <ion-label>
+                  {{ "We have sent you an SMS with the code." | translate }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="fromForgetPWD">
+              <ion-col class="tac white_color">
+                <ion-label>
+                  {{
+                    "We have sent you an OTP to reset your password."
+                      | translate
+                  }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  tabindex="1"
+                  #a
+                  (keyup)="moveFocus($event, b, '')"
+                  (ionFocus)="OTP1 = OTP7"
+                  [(ngModel)]="OTP1"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  #b
+                  (keyup)="moveFocus($event, c, a)"
+                  (ionFocus)="OTP2 = OTP7"
+                  [(ngModel)]="OTP2"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  #c
+                  tabindex="3"
+                  (keyup)="moveFocus($event, d, b)"
+                  (ionFocus)="OTP3 = OTP7"
+                  [(ngModel)]="OTP3"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  #d
+                  tabindex="4"
+                  (keyup)="moveFocus($event, e, c)"
+                  (ionFocus)="OTP4 = OTP7"
+                  [(ngModel)]="OTP4"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  #e
+                  tabindex="5"
+                  (keyup)="moveFocus($event, f, d)"
+                  (ionFocus)="OTP5 = OTP7"
+                  [(ngModel)]="OTP5"
+                ></ion-input>
+              </ion-col>
+
+              <ion-col size="2">
+                <ion-input
+                  type="tel"
+                  class="removeScroll border_otp_code"
+                  maxlength="1"
+                  #f
+                  tabindex="6"
+                  (keyup)="moveFocus($event, '', e)"
+                  (ionFocus)="OTP6 = OTP7"
+                  [(ngModel)]="OTP6"
+                ></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="tal" *ngIf="getOTPCallEnable">
+                <ion-label
+                  (click)="getOTPCall()"
+                  class="underLine cursor white_color"
+                >
+                  Get OTP via Call
+                </ion-label>
+              </ion-col>
+              <ion-col class="text-right">
+                <ion-label
+                  (click)="resendOtp()"
+                  class="underLine cursor white_color"
+                >
+                  {{ "Resend OTP? | translate" }}
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!checkoutAsGuest" class="marPad0 w100 tac">
+              <ion-col size="6" class="tac">
+                <ion-button
+                  class="login-button v2Btn logIn"
+                  expand="block"
+                  type="submit"
+                  [disabled]="buttonDisabled"
+                  (click)="verifyOtp()"
+                  *ngIf="fromForgetPWD && userExist"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  {{ "Next" | translate }}
+                </ion-button>
+              </ion-col>
+              <ion-col size="6" class="tac">
+                <ion-button
+                  type="submit"
+                  class="v2Btn forgotPwdBtn white_color"
+                  expand="block"
+                  fill="outline"
+                  [disabled]="buttonDisabled"
+                  (click)="cancelForgetPWD()"
+                  *ngIf="userExist"
+                >
+                  {{ "Cancel" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <!-- <ion-row class="width marPad0"  *ngIf="!checkoutAsGuest">
+              <ion-col size="12" class="marPad0">
+                <div color="primary" (click)="verifyOtp()" class="mt25 login-button v2Btn" *ngIf="fromForgetPWD && userExist">
+                  <ion-button type="submit" class="fr" [disabled]="buttonDisabled">
+                    <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                    Next
+                  </ion-button>
+                </div>
+                <div color="primary" (click)="cancelForgetPWD()" class="mt25 " *ngIf="userExist">
+                  <ion-button type="submit" class="fr" fill="outline" [disabled]="buttonDisabled">
+                    Cancel
+                  </ion-button>
+                </div>                
+              </ion-col>
+            </ion-row> -->
+          </ion-grid>
+          <ion-grid>
+            <ion-row *ngIf="!verifyNumber && !userExist">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  color="primary"
+                  type="submit"
+                  expand="block"
+                  class="v2Btn aspecoButton"
+                  (click)="signIn(false)"
+                >
+                  <ion-spinner
+                    *ngIf="buttonDisabled"
+                    slot="start"
+                  ></ion-spinner>
+                  {{ "Sign In" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <!-- <ion-row *ngIf="!checkoutAsGuest">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  color="secondary"
+                  type="submit"
+                  expand="block"
+                  class="v2Btn submitBtnAspeco"
+                  (click)="loginAsGuest()"
+                  *ngIf="showLoginAsGuest"
+                >
+                  Login as Guest
+                </ion-button>
+              </ion-col>
+            </ion-row> -->
+
+            <ion-row class="width tar" *ngIf="!hideCreateAccount">
+              <ion-col size="12" class="tac">
+                <ion-button
+                  fill="clear"
+                  type="submit"
+                  expand="block"
+                  (click)="createAccountClick()"
+                  class="v2Btn"
+                >
+                  <span class="notaMemberAspeco">
+                    {{ "Not a member?" | translate }} &nbsp;</span
+                  >
+                  <span class="createAccountAspeco">
+                    {{ "Create Account" | translate }}
+                  </span>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="createAc_container" *ngIf="!isLoginForm">
+        <h3 class="loginHeaderAspeco wid_full">
+          <ion-icon
+            name="arrow-back"
+            (click)="backToLoginPage()"
+            class="fl"
+          ></ion-icon>
+          {{ "Create Account" | translate }}
+        </h3>
+
+        <ion-grid class="tac marPad0">
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <ion-input
+                (ionBlur)="unCheckFocus('name')"
+                type="text"
+                maxlength="20"
+                name="name"
+                [(ngModel)]="name"
+                class="white_color"
+                placeholder="{{ 'Enter your name' | translate }}"
+              >
+              </ion-input>
+            </ion-col>
+            <div class="validation-errors" *ngIf="nameError">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon> Name is
+                Required
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col class="tac aspecoFieldBox pd_80 mr_bt_18" size="12">
+              <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="mobileInput"
+                placeholder="Enter your Mobile" required></ion-input> -->
+              <form class=" ">
+                <ion-intl-tel-input
+                  class="internationalTelephones"
+                  id="phone-number"
+                  (ionBlur)="unCheckFocus('mobile')"
+                  name="Mobile"
+                  [(ngModel)]="Mobile"
+                  inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                  defaultCountryiso="in"
+                  #phoneNumberControl="ngModel"
+                >
+                </ion-intl-tel-input>
+              </form>
+
+              <!-- <span class="signUpError" *ngIf="mobileError"> Mobile required </span> -->
+            </ion-col>
+            <div class="validation-errors" *ngIf="mobileError">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon> Mobile
+                {{ "Number is Required" | translate }}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <ion-input
+                type="email"
+                name="email"
+                (ionBlur)="unCheckFocus('email')"
+                [(ngModel)]="email"
+                class="white_color"
+                (ngModelChange)="checkEmail($event)"
+                placeholder="{{ 'Enter your email' | translate }}"
+                #ca_email
+              >
+              </ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="emailError && !!email; else otherEmailError"
+            >
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ emailError | translate }}
+              </div>
+            </div>
+            <ng-template #otherEmailError>
+              <div class="validation-errors" *ngIf="emailInError && !email">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Email is Required" | translate }}
+                </div>
+              </div>
+            </ng-template>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <ion-input
+                type="password"
+                name="password"
+                (ionBlur)="unCheckFocus('password')"
+                [(ngModel)]="newPassword"
+                class="white_color"
+                maxlength="20"
+                placeholder="{{ 'Enter your password' | translate }}"
+                minlength="6"
+                #password="ngModel"
+              ></ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="password?.dirty || password?.touched"
+            >
+              <div
+                class="error-message"
+                *ngIf="
+                  password?.errors?.['minlength'] && password?.invalid;
+                  else otherPwdError
+                "
+              >
+                {{
+                  "Password must be at least 6 characters/digits long"
+                    | translate
+                }}
+              </div>
+              <ng-template #otherPwdError>
+                <div class="validation-errors" *ngIf="pwdError && !newPassword">
+                  <div class="error-message">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    {{ "Password is Required" | translate }}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <ion-input
+                type="password"
+                name="verifyPassword"
+                (ionBlur)="unCheckFocus('verifyPassword')"
+                [(ngModel)]="verifyPassword"
+                [disabled]="!newPassword"
+                class="white_color"
+                maxlength="20"
+                placeholder="{{ 'Verify password' | translate }}"
+                #varifyPassword="ngModel"
+              ></ion-input>
+            </ion-col>
+            <div
+              class="validation-errors"
+              *ngIf="
+                verifyPassword && verifyPassword !== newPassword;
+                else otherValidError
+              "
+            >
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon> Please
+                Enter Correct Password
+              </div>
+            </div>
+            <ng-template #otherValidError>
+              <div class="validation-errors" *ngIf="validPwdError">
+                <div class="error-message">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ "Verify Password is Required" | translate }}
+                </div>
+              </div>
+            </ng-template>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <!-- <ng-select
+                class="selectBoxAspeco"
+                [(ngModel)]="selectedDistributor"
+                [placeholder]="
+                  showPlaceholder ? 'Select Distribution Center' : ''
+                "
+                (change)="distributioncenterSelected($event)"
+              >
+                <ng-option
+                  [value]="distributioncenter"
+                  *ngFor="let distributioncenter of distributioncenters"
+                >
+                  {{ distributioncenter.companyName }}
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Mumbai'"
+                  >
+                    <span *ngIf="distributioncenter.city == 'Mumbai'">
+                      <img
+                        src="assets/images/in.png"
+                        class="flag"
+                        width="16px"
+                      />
+                    </span>
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'New York'"
+                  >
+                    <img src="assets/images/ny.png" class="flag" width="16px" />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Dubai'"
+                  >
+                    <img
+                      src="assets/images/dubai.png"
+                      class="flag"
+                      width="16px"
+                    />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Antwerp'"
+                  >
+                    <img src="assets/images/ae.png" class="flag" width="16px" />
+                  </span>
+                  <span
+                    style="text-transform: capitalize"
+                    *ngIf="distributioncenter.city == 'Hong Kong'"
+                  >
+                    <img src="assets/images/hk.png" class="flag" width="16px" />
+                  </span>
+                </ng-option>
+              </ng-select> -->
+            </ion-col>
+            <div class="validation-errors" *ngIf="distErr">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ "Distribution Center is Required" | translate }}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-row class="marPad0 w100 tac">
+            <ion-col size="12" class="tac aspecoFieldBox pd_80 mr_bt_18">
+              <!-- <ng-select
+                class="selectBoxAspeco"
+                [(ngModel)]="selectedSalesPerson"
+                [placeholder]="
+                  showPlaceholderForSales ? 'Select Sales Person' : ''
+                "
+                (change)="salesPersonSelection($event)"
+              >
+                <ng-option
+                  [value]="salesPerson"
+                  *ngFor="let salesPerson of distributorSalesperson"
+                >
+                  {{ salesPerson.name }}
+                  <span
+                    class="flag-icon flag-icon-{{ salesPerson.flagClass }}"
+                  ></span>
+                </ng-option>
+              </ng-select> -->
+            </ion-col>
+            <div class="validation-errors" *ngIf="salesPersonErr">
+              <div class="error-message">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                Sales Person is Required
+              </div>
+            </div>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="pinBoxAspeco colorBlack" *ngIf="pinBox">
+          <ion-row *ngIf="!fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label class="white_color">
+                {{ "We have sent you an SMS with the code." | translate }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="fromForgetPWD">
+            <ion-col class="tac">
+              <ion-label class="white_color">
+                {{
+                  "We have sent you an OTP to reset your password." | translate
+                }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                tabindex="1"
+                #a
+                (keyup)="moveFocus($event, b, '')"
+                (ionFocus)="OTP1 = OTP7"
+                [(ngModel)]="OTP1"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                #b
+                (keyup)="moveFocus($event, c, a)"
+                (ionFocus)="OTP2 = OTP7"
+                [(ngModel)]="OTP2"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                #c
+                tabindex="3"
+                (keyup)="moveFocus($event, d, b)"
+                (ionFocus)="OTP3 = OTP7"
+                [(ngModel)]="OTP3"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                #d
+                tabindex="4"
+                (keyup)="moveFocus($event, e, c)"
+                (ionFocus)="OTP4 = OTP7"
+                [(ngModel)]="OTP4"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                #e
+                tabindex="5"
+                (keyup)="moveFocus($event, f, d)"
+                (ionFocus)="OTP5 = OTP7"
+                [(ngModel)]="OTP5"
+              ></ion-input>
+            </ion-col>
+
+            <ion-col size="2">
+              <ion-input
+                type="tel"
+                class="removeScroll border_color white_color"
+                maxlength="1"
+                #f
+                tabindex="6"
+                (keyup)="moveFocus($event, '', e)"
+                (ionFocus)="OTP6 = OTP7"
+                [(ngModel)]="OTP6"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="text-right">
+              <ion-label (click)="resendOtp()" class="underLine cursor">
+                {{ "Resend OTP? | translate" }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="width tar">
+          <ion-button
+            type="submit"
+            class="login-button logIn v2Btn"
+            [disabled]="btnDisabled"
+            id="signupBtn"
+            expand="block"
+            (click)="signUpContinue(false)"
+          >
+            Continue
+          </ion-button>
+        </ion-grid>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <!-- other companies -->
+  <span *ngIf="!formType">
+    <ion-card
+      class="loginCard"
+      text-center
+      *ngIf="isLoginForm"
+      style="height: 100%"
+    >
+      <div class="logoLogin toHideInSmallScreen" *ngIf="!hideLogoOnSignup">
+        <!-- <cl-image
+          public-id="/logo/{{ databaseServiceService.refCompanyId }}"
+          format="png"
+          class="logoLogin"
+          secure="true"
+        >
+          <cl-transformation></cl-transformation>
+        </cl-image> -->
+      </div>
+      <h3 class="" *ngIf="!verifyNumber || userExist">
+        {{ welcomeText }}
+      </h3>
+
+      <h3 class="" *ngIf="verifyNumber">{{ "Choose Password" | translate }}</h3>
+      <ion-segment
+        color="primary"
+        [(ngModel)]="loginVia"
+        (ionChange)="changeTab()"
+      >
+        <ion-segment-button value="mb">
+          <ion-icon name="call"></ion-icon>
+          <ion-label> {{ "Mobile no" | translate }} </ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="em" *ngIf="!checkoutAsGuest">
+          <ion-icon name="mail"></ion-icon>
+          <ion-label>{{ "Email" | translate }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- <ion-item class="colorBlack"> -->
+      <ion-grid class="tac marPad0 width mAuto">
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label"> {{ "Phone No" | translate }}</ion-label>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'mb'"
+          class="marPad0 w100 tac"
+        >
+          <ion-col class="tac" size="12">
+            <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+              placeholder="Enter your Mobile" required></ion-input> -->
+            <form class="bgLightBlue border tal input">
+              <ion-intl-tel-input
+                class="internationalTelephones"
+                id="phone-number"
+                name="Mobile"
+                [(ngModel)]="Mobile"
+                inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                defaultCountryiso="in"
+                #phoneNumberControl="ngModel"
+              >
+              </ion-intl-tel-input>
+            </form>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label">{{ "Email" | translate }}</ion-label>
+        </ion-row>
+
+        <ion-row
+          *ngIf="(!verifyNumber || userExist) && loginVia == 'em'"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="bgLightBlue border tal input"
+              (ngModelChange)="checkEmail($event)"
+              placeholder="{{ 'Enter email to continue' | translate }}"
+            ></ion-input>
+          </ion-col>
+          <div class="validation-errors" *ngIf="emailError">
+            <div class="error-message">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ emailError | translate }}
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- <ion-input type="number" [(ngModel)]="Mobile"></ion-input> -->
+
+        <ion-row *ngIf="showPinCode" class="marTop20 marPad0">
+          <ion-label class="label">{{ "Pincode" | translate }}</ion-label>
+        </ion-row>
+        <ion-row *ngIf="showPinCode" class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="text"
+              name="pincode"
+              [(ngModel)]="pincode"
+              class="bgLightBlue border tal input"
+            >
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marTop20 marPad0"
+        >
+          <ion-label class="label">{{ "Password" | translate }}</ion-label>
+        </ion-row>
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="******"
+              maxlength="20"
+              class="bgLightBlue border tal input"
+            >
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row
+          *ngIf="!checkoutAsGuest && userExist && !forgetPWD && !fromForgetPWD"
+          class="marPad0 w100 tac"
+        >
+          <ion-col size="12" class="tac">
+            <ion-button
+              class="login-button logIn fr"
+              (click)="login()"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label>{{ "Login" | translate }}</label>
+            </ion-button>
+            <ion-button
+              class="login-button forgotPwdBtn fl"
+              fill="outline"
+              (click)="forgotPassword()"
+              [disabled]="forgotButtonDisabled"
+            >
+              <ion-spinner
+                *ngIf="forgotButtonDisabled"
+                slot="start"
+              ></ion-spinner>
+              <label class="white_color">{{
+                "Forgot Password?" | translate
+              }}</label>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- </ion-item> -->
+      <ion-grid *ngIf="verifyNumber" class="width mAuto">
+        <ion-row class="marTop20 padd10">
+          <ion-label>{{
+            "Password length must be greater than 5 characters" | translate
+          }}</ion-label>
+        </ion-row>
+        <ion-row class="marTop20 padd10">
+          <ion-label *ngIf="!forgetPWD">{{ "Password" | translate }}</ion-label>
+          <ion-label *ngIf="forgetPWD">{{
+            "New Password" | translate
+          }}</ion-label>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-input
+              class="input"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              maxlength="20"
+              placeholder="{{ 'Enter your password' | translate }}"
+              class="bgLightBlue border tal input"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="marTop20 padd10">
+          <ion-label>{{ "Verify Password" | translate }}</ion-label>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-input
+              class="input"
+              type="password"
+              name="password"
+              [(ngModel)]="verifyPassword"
+              maxlength="20"
+              placeholder="{{ 'Verify password' | translate }}"
+              class="bgLightBlue border tal input"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="padd10">
+          <ion-col>
+            <ion-button
+              *ngIf="!userExist && !forgetPWD && updatePassword"
+              (click)="updatePwd()"
+              class="fr"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button
+              *ngIf="!userExist && !forgetPWD && !updatePassword"
+              (click)="createUser()"
+              class="fr"
+              [disabled]="buttonDisabled"
+            >
+              <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+              <label *ngIf="verifyNumber">{{ "Save" | translate }}</label>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="pinBoxAspeco colorBlack width mAuto" *ngIf="pinBox">
+        <ion-row *ngIf="!fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{ "We have sent you an SMS with the code." | translate }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{
+                "We have sent you an OTP to reset your password." | translate
+              }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              tabindex="1"
+              #a
+              (keyup)="moveFocus($event, b, '')"
+              (ionFocus)="OTP1 = OTP7"
+              [(ngModel)]="OTP1"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #b
+              (keyup)="moveFocus($event, c, a)"
+              (ionFocus)="OTP2 = OTP7"
+              [(ngModel)]="OTP2"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #c
+              tabindex="3"
+              (keyup)="moveFocus($event, d, b)"
+              (ionFocus)="OTP3 = OTP7"
+              [(ngModel)]="OTP3"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #d
+              tabindex="4"
+              (keyup)="moveFocus($event, e, c)"
+              (ionFocus)="OTP4 = OTP7"
+              [(ngModel)]="OTP4"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #e
+              tabindex="5"
+              (keyup)="moveFocus($event, f, d)"
+              (ionFocus)="OTP5 = OTP7"
+              [(ngModel)]="OTP5"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #f
+              tabindex="6"
+              (keyup)="moveFocus($event, '', e)"
+              (ionFocus)="OTP6 = OTP7"
+              [(ngModel)]="OTP6"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="tal" *ngIf="getOTPCallEnable">
+            <ion-label (click)="getOTPCall()" class="underLine cursor">
+              Get OTP via Call
+            </ion-label>
+          </ion-col>
+          <ion-col class="text-right">
+            <ion-label (click)="resendOtp()" class="underLine cursor">
+              {{ "Resend OTP? | translate" }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid class="width" *ngIf="!checkoutAsGuest">
+        <ion-row class="width marPad0">
+          <ion-col size="12" class="marPad0">
+            <div
+              color="primary"
+              (click)="verifyOtp()"
+              class="mt25"
+              *ngIf="fromForgetPWD && userExist"
+            >
+              <ion-button type="submit" class="fr" [disabled]="buttonDisabled">
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Next" | translate }}
+              </ion-button>
+            </div>
+            <div
+              color="primary"
+              (click)="cancelForgetPWD()"
+              class="mt25"
+              *ngIf="userExist"
+            >
+              <ion-button
+                type="submit"
+                class="fr"
+                fill="outline"
+                [disabled]="buttonDisabled"
+              >
+                {{ "Cancel" | translate }}
+              </ion-button>
+            </div>
+            <div
+              color="primary"
+              class="mt25"
+              *ngIf="!verifyNumber && !userExist"
+            >
+              <ion-button
+                type="submit"
+                class="fr"
+                [disabled]="buttonDisabled"
+                (click)="signIn(false)"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ "Sign In" | translate }}
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!checkoutAsGuest">
+        <!-- <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <ion-button
+              type="submit"
+              color="danger"
+              (click)="loginAsGuest()"
+              *ngIf="showLoginAsGuest"
+            >
+              Login as guest
+            </ion-button>
+          </ion-col>
+        </ion-row> -->
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!!checkoutAsGuest">
+        <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <!-- <ion-button type="submit" fill="outline" (click)="cancelCheckOutAsGuest()">
+            Cancel
+          </ion-button> -->
+            <ion-button
+              type="submit"
+              (click)="checkoutAsGuestFun()"
+              *ngIf="!pinBox"
+            >
+              Continue as Guest
+            </ion-button>
+            <ion-button
+              type="submit"
+              (click)="checkoutAsGuestFunLogin()"
+              *ngIf="pinBox"
+            >
+              {{ "Verify" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width" *ngIf="!hideCreateAccount">
+        <ion-row class="width tar">
+          <ion-col size="12" class="marPad0">
+            <ion-button
+              fill="clear"
+              type="submit"
+              (click)="createAccountClick()"
+            >
+              {{ "Create Account" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card class="loginCard width mAuto" *ngIf="!isLoginForm">
+      <h3 class="">
+        <ion-icon
+          name="arrow-back"
+          (click)="backToLoginPage()"
+          class="fl"
+        ></ion-icon>
+        {{ "Create Account" | translate }}
+      </h3>
+
+      <ion-grid class="tac marPad0">
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="text"
+              name="name"
+              [(ngModel)]="name"
+              class="bgLightBlue border tal input"
+              placeholder="{{ 'Enter your name' | translate }}"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col class="tac" size="12">
+            <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+              placeholder="Enter your Mobile" required></ion-input> -->
+            <form class="bgLightBlue border tal input">
+              <ion-intl-tel-input
+                class="internationalTelephones"
+                id="phone-number"
+                name="Mobile"
+                [(ngModel)]="Mobile"
+                inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+                defaultCountryiso="in"
+                #phoneNumberControl="ngModel"
+              >
+              </ion-intl-tel-input>
+            </form>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="bgLightBlue border tal input"
+              (ngModelChange)="checkEmail($event)"
+              placeholder="{{ 'Enter your email' | translate }}"
+            ></ion-input>
+          </ion-col>
+          <div class="validation-errors" *ngIf="emailError">
+            <div class="error-message">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ emailError | translate }}
+            </div>
+          </div>
+        </ion-row>
+
+        <ion-row class="marPad0 w100 tac">
+          <ion-col size="12" class="tac">
+            <ion-input
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              class="bgLightBlue border tal input"
+              maxlength="20"
+              placeholder="{{ 'Enter your password' | translate }}"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="pinBoxAspeco colorBlack" *ngIf="pinBox">
+        <ion-row *ngIf="!fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{ "We have sent you an SMS with the code." | translate }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fromForgetPWD">
+          <ion-col class="tac">
+            <ion-label>
+              {{
+                "We have sent you an OTP to reset your password." | translate
+              }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              tabindex="1"
+              #a
+              (keyup)="moveFocus($event, b, '')"
+              (ionFocus)="OTP1 = OTP7"
+              [(ngModel)]="OTP1"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #b
+              (keyup)="moveFocus($event, c, a)"
+              (ionFocus)="OTP2 = OTP7"
+              [(ngModel)]="OTP2"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #c
+              tabindex="3"
+              (keyup)="moveFocus($event, d, b)"
+              (ionFocus)="OTP3 = OTP7"
+              [(ngModel)]="OTP3"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #d
+              tabindex="4"
+              (keyup)="moveFocus($event, e, c)"
+              (ionFocus)="OTP4 = OTP7"
+              [(ngModel)]="OTP4"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #e
+              tabindex="5"
+              (keyup)="moveFocus($event, f, d)"
+              (ionFocus)="OTP5 = OTP7"
+              [(ngModel)]="OTP5"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="2">
+            <ion-input
+              type="tel"
+              class="removeScroll border-primary"
+              maxlength="1"
+              #f
+              tabindex="6"
+              (keyup)="moveFocus($event, '', e)"
+              (ionFocus)="OTP6 = OTP7"
+              [(ngModel)]="OTP6"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="text-right">
+            <ion-label (click)="resendOtp()" class="underLine cursor">
+              {{ "Resend OTP? | translate" }}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid class="width tar" (keydown)="keyPressed($event)">
+        <ion-button type="submit" (click)="signUpContinue()">
+          Continue
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card
+      class="loginCard mt10Imp"
+      *ngIf="checkoutAsGuestEnable && !checkoutAsGuest"
+    >
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="checkoutAsGuestFun1()">
+          Checkout as Guest
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card
+      class="loginCard mt10Imp"
+      *ngIf="checkoutAsGuestWithoutOTPEnable && !checkoutAsGuest"
+    >
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="checkoutAsGuestFun1()">
+          Checkout as Guest
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+
+    <ion-card class="loginCard mt10Imp" *ngIf="!!checkoutAsGuest">
+      <ion-grid class="width tac">
+        <ion-button type="submit" (click)="cancelCheckOutAsGuest()">
+          {{ "Have an account? Please sign in" | translate }}
+        </ion-button>
+      </ion-grid>
+    </ion-card>
+  </span>
+</div>
+
+<div *ngIf="quickBuyVerify && !showImage" style="height: 100%">
+  <ion-card class="loginCard" text-center *ngIf="isLoginForm">
+    <div class="logoLogin toHideInSmallScreen">
+      <!-- <cl-image
+        public-id="/logo/{{ databaseServiceService.refCompanyId }}"
+        format="png"
+        class="logoLogin"
+      >
+        <cl-transformation></cl-transformation>
+      </cl-image> -->
+    </div>
+    <h3 class="" *ngIf="!verifyNumber || userExist">
+      {{ welcomeText }}
+    </h3>
+
+    <h3 class="" *ngIf="verifyNumber">Choose Password</h3>
+
+    <ion-grid class="tac marPad0 width mAuto">
+      <ion-row class="marTop20 marPad0">
+        <ion-label class="label">{{ "Mobile no" | translate }}</ion-label>
+      </ion-row>
+      <ion-row class="marPad0 w100 tac">
+        <ion-col size="12" class="tac">
+          <!-- <ion-input type="tel" name="mobile" [(ngModel)]="Mobile" class="bgLightBlue border tal input "
+            placeholder="Enter your Mobile" required></ion-input> -->
+          <form class="bgLightBlue border tal input">
+            <ion-intl-tel-input
+              class="internationalTelephones"
+              id="phone-number"
+              name="Mobile"
+              [(ngModel)]="Mobile"
+              inputPlaceholder="{{ 'Enter your Mobile' | translate }}"
+              defaultCountryiso="in"
+              #phoneNumberControl="ngModel"
+            >
+            </ion-intl-tel-input>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-grid class="pinBoxAspeco colorBlack" *ngIf="pinBox">
+    <ion-row>
+      <ion-col class="tac">
+        <ion-label>
+          {{ "We have sent you an SMS with the code." | translate }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          tabindex="1"
+          #a
+          (keyup)="moveFocus($event, b, '')"
+          (ionFocus)="OTP1 = OTP7"
+          [(ngModel)]="OTP1"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #b
+          (keyup)="moveFocus($event, c, a)"
+          (ionFocus)="OTP2 = OTP7"
+          [(ngModel)]="OTP2"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #c
+          tabindex="3"
+          (keyup)="moveFocus($event, d, b)"
+          (ionFocus)="OTP3 = OTP7"
+          [(ngModel)]="OTP3"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #d
+          tabindex="4"
+          (keyup)="moveFocus($event, e, c)"
+          (ionFocus)="OTP4 = OTP7"
+          [(ngModel)]="OTP4"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #e
+          tabindex="5"
+          (keyup)="moveFocus($event, f, d)"
+          (ionFocus)="OTP5 = OTP7"
+          [(ngModel)]="OTP5"
+        ></ion-input>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-input
+          type="tel"
+          class="removeScroll border-primary"
+          maxlength="1"
+          #f
+          tabindex="6"
+          (keyup)="moveFocus($event, '', e)"
+          (ionFocus)="OTP6 = OTP7"
+          [(ngModel)]="OTP6"
+        ></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="text-right">
+        <ion-label (click)="resendOtp()" class="underLine cursor">
+          {{ "Resend OTP? | translate" }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="width" *ngIf="!!quickBuyVerify">
+    <ion-row class="width tar">
+      <ion-col size="12" class="marPad0">
+        <!-- <ion-button type="submit" fill="outline" (click)="cancelCheckOutAsGuest()">
+          Cancel
+        </ion-button> -->
+        <ion-button type="submit" (click)="dismiss()">
+          {{ "Cancel" | translate }}
+        </ion-button>
+        <ion-button type="submit" (click)="quickBuyVerifyOTP()" *ngIf="pinBox">
+          {{ "Verify" | translate }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

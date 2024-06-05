@@ -1,0 +1,59 @@
+<app-header showBackButton="false"></app-header>
+
+<!-- <ion-content> -->
+<ion-card class="card">
+  <h2 class="tac">Account Delete Request</h2>
+  <form
+    class="form"
+    [formGroup]="deleteAccountReqForm"
+    (ngSubmit)="onRequest($event)"
+  >
+    <ion-label for="name">
+      Name
+      <ion-input
+        id="name"
+        type="text"
+        placeholder="Enter Customer Name"
+        class="input_field"
+        formControlName="name"
+      ></ion-input>
+    </ion-label>
+    <ion-label for="email">
+      Email
+      <ion-input
+        id="email"
+        type="email"
+        placeholder="Enter Customer Email Id"
+        class="input_field"
+        formControlName="email"
+      ></ion-input>
+    </ion-label>
+    <ion-label for="mobile">
+      Mobile No.
+      <ion-input
+        id="mobile"
+        type="number"
+        placeholder="Enter Customer Mobile Number"
+        class="input_field"
+        formControlName="mobile"
+      ></ion-input>
+    </ion-label>
+    <ion-label for="remarks">
+      Remarks
+      <ion-textarea
+        id="remarks"
+        type="text"
+        placeholder="Enter Remarks"
+        rows="5"
+        class="input_field"
+        formControlName="remarks"
+      ></ion-textarea>
+    </ion-label>
+    <div class="tac">
+      <ion-button type="submit" [disabled]="!deleteAccountReqForm.valid"
+        >Submit Request</ion-button
+      >
+    </div>
+  </form>
+</ion-card>
+<!-- </ion-content> -->

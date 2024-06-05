@@ -1,0 +1,16 @@
+<app-header
+  *ngIf="!showHideHeader"
+  showBackButton="true"
+  [pageTitle]="productTitle"
+></app-header>
+<ion-content fullscreen class="bg-content">
+  <app-product-summary-comp
+    (dataLoadedFn)="load($event)"
+  ></app-product-summary-comp>
+  <app-footer *ngIf="!showHideHeader && !hideFooter"></app-footer>
+</ion-content>
+<!-- <ion-footer>
+  <ion-toolbar>
+    <app-footer *ngIf="!showHideHeader"></app-footer>
+  </ion-toolbar>
+</ion-footer> -->

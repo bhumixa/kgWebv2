@@ -1,0 +1,177 @@
+<app-header showBackButton="true" pageTitle="My Profile"></app-header>
+
+<ion-content>
+  <div [ngClass]="contentClass">
+    <div [ngClass]="!onMobile ? 'paddingVw marVw contentDiv' : ''">
+      <!-- skeleton -->
+      <ion-card *ngIf="!userData">
+        <ion-card-content>
+          <ion-row [ngClass]="!onMobile ? 'padRow' : ''">
+            <ion-col size="12">
+              <div class="userImageDiv">
+                <ion-skeleton-text animated class="setting-avtar-skel"> </ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col size="12" class="userImageDiv">
+              <ion-row class="mar10 ">
+                <ion-skeleton-text animated class="w105-skel"> </ion-skeleton-text>
+              </ion-row>
+              <ion-row class="mar10 ">
+                <ion-skeleton-text animated class="w105-skel"> </ion-skeleton-text>
+              </ion-row>
+              <ion-row class="mar10">
+                <ion-skeleton-text animated class="w105-skel"> </ion-skeleton-text>
+              </ion-row>
+              <ion-row class="mar10">
+                <ion-skeleton-text animated class="w105-skel"> </ion-skeleton-text>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-skeleton-text animated class="h35-skel"> </ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col >
+              <ion-skeleton-text animated class="h35-skel"> </ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <!-- end -->
+
+      <div *ngFor="let pData of pageData">
+        <ion-row *ngIf="pData.showSectionName && showCompanyProfile">
+          <ion-col class="tac sectionName">
+            <ion-label>{{ pData.name | translate }} </ion-label>
+            <ng-container *ngIf="pData.name == 'Company Profile' ">
+              <img *ngIf="isVerified" alt=""
+                src="https://res.cloudinary.com/kgdiamonds/image/upload/v1637660280/checked_nv2wsi.png"
+                class="verifiedAccount" />
+              <span class="unVerified" *ngIf="pending"> (Verification Pending: Email kyc&#64;kgirdharlal.com for help)
+              </span>
+            </ng-container>
+          </ion-col>
+
+
+        </ion-row>
+        <ion-card *ngIf="userData && userData.data && pData.shop_section[0].name == 'Userprofile'">
+          <ion-card-content>
+            <ion-input type="file" accept="image/*" (change)="fromweb($event)" style="display: none;"></ion-input>
+            <ion-row *ngIf="userData.isSuccess">
+              <ion-col size="6" 
+                [ngClass]="mobileView ? 'tac' : ''">
+                <div *ngIf="!imageURL" [ngClass]="!mobileView ? 'userImageDiv' : ''" >
+                  <img src="assets/icon/user.png"
+                    class="profile-image cursor" alt="" (click)="userType == 'Customer' ? imageUpload() : ''"  /> <br />
+                  <ion-icon class="cursor" *ngIf="userType == 'Customer' && mobileView" style="width: 6em;height: 1.5em;"
+                    name="camera" (click)="userType == 'Customer' ? imageUpload() : ''" ></ion-icon>
+                  <ion-icon class="cursor" *ngIf="userType == 'Customer' && !mobileView" style="width: 7em;height: 1.5em;"
+                    name="camera" (click)="userType == 'Customer' ? imageUpload() : ''" ></ion-icon>
+                </div>
+                <div *ngIf="imageURL" [ngClass]="!mobileView ? 'userImageDiv' : ''" >
+                  <img [src]="imageURL" class="profile-image cursor" alt=""  (click)="userType == 'Customer' ? imageUpload() : ''" /><br />
+                  <ion-icon class="cursor" *ngIf="mobileView" style="width: 3em;height: 1.5em;" name="camera" (click)="userType == 'Customer' ? imageUpload() : ''" ></ion-icon>
+                  <ion-icon class="cursor" *ngIf="!mobileView" style="width: 7em;height: 1.5em;" name="camera" (click)="userType == 'Customer' ? imageUpload() : ''" ></ion-icon>
+
+                </div>
+
+                <div [ngClass]="!mobileView ? 'userImageDiv' : 'inline'">
+                  <ion-row class="mar10 bold">
+                    <label>{{ customerLevel }}</label>
+                  </ion-row>
+
+                  <ion-row class="mar10 bold" *ngIf="userData.data.CompanyName != 'storefront'">
+                    <label>{{ userData.data.CompanyName }}</label>
+                  </ion-row>
+                  <ion-row class="mar10 bold">
+                    <label>{{ userData.data.contactNo2 }}</label>
+                  </ion-row>
+                  <ion-row class="mar10 bold" *ngIf="userData.data.name != userData.data.contactNo2">
+                    <label>{{ userData.data.name }}</label>
+                  </ion-row>
+                  <ion-row class="mar10" *ngIf="userData.data.username != userData.data.contactNo2">
+                    <label>{{ userData.data.username }}</label>
+                  </ion-row>
+                  <ion-row class="mar10">
+                    <label>{{ userData.data.email }}</label>
+                  </ion-row>
+                </div>
+              </ion-col>
+              <ion-col size="6" *ngIf="userType == 'Customer' && !!customerLevel">
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-button (click)="userType == 'Customer' ? updateProfile(userData.data) : ''"
+                      [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn ion-float-right': 'ion-float-right'">
+                      {{"Edit Profile" | translate}}</ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-button (click)="changePassword()"
+                      [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn ion-float-right': 'ion-float-right'">
+                      {{"Change Password" | translate}} </ion-button>
+                  </ion-col>
+                </ion-row>
+                <!--  <label>{{ userData.data.CompanyName }}</label>-->
+              </ion-col>
+            </ion-row>
+            <!--  -->
+          </ion-card-content>
+        </ion-card>
+
+        
+        <!-- (ionChange)="changeTab($event)"  [ngClass]="showFullMenu ? 'sideMenu' : ''"-->
+        <ion-card *ngIf="pData.shop_section[0].name == 'Companyprofile' && showCompanyProfile">
+          <ion-segment scrollable class="mar10" [(ngModel)]="userActions" mode="ios" class="profile-segment">
+            <ion-segment-button value="general">
+              <ion-label [ngClass]="(!userKycDetail || !userKycDetail.general) ?'redLabel':''">
+                {{"General" | translate}}*
+              </ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="company">
+              <ion-label [ngClass]="(!userKycDetail ||!userKycDetail.company) ? 'redLabel' : ''">{{"Company" | translate}}*</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="account">
+              <ion-label [ngClass]="(!userKycDetail ||!userKycDetail.userAccount)  ? 'redLabel' : ''">{{"Account" | translate}}*
+              </ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="kyc">
+              <ion-label [ngClass]="(!userKycDetail ||!userKycDetail.userKYC)  ? 'redLabel' : ''">{{"KYC" | translate}}*</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="references">
+              <ion-label>{{"References" | translate}}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+          <ion-grid>
+            <ion-row *ngIf="userActions == 'general'">
+              <div class="my_typeform">
+                <app-dia-comp-general-info></app-dia-comp-general-info>
+              </div>
+            </ion-row>
+            <ion-row *ngIf="userActions == 'company'" class="w100">
+              <app-addresses class="w100" [displayCompany]="true"></app-addresses>
+            </ion-row>
+            <ion-row *ngIf="userActions == 'account'">
+              <div class="my_typeform">
+                <app-dia-comp-user-account></app-dia-comp-user-account>
+              </div>
+            </ion-row>
+            <ion-row *ngIf="userActions == 'kyc'">
+              <div class="my_typeform">
+                <app-dia-comp-user-kyc></app-dia-comp-user-kyc>
+              </div>
+            </ion-row>
+            <ion-row *ngIf="userActions == 'references'">
+              <div class="my_typeform">
+                <app-dia-comp-user-references></app-dia-comp-user-references>
+              </div>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
+    </div>
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>

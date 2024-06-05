@@ -1,0 +1,334 @@
+<ion-grid>
+  <ion-row>
+    <ion-col class="p0">
+      <ion-card class="stone_grid_card">
+        <ion-card-content>
+          <ion-grid style="width: 100%">
+            <ion-row class="marPad0 stomeImg">
+              <ion-col class="tac marPad0 imgFrame">
+                <div class="stone-image-detail">
+                  <span class="stone-image-detail_1">
+                    {{ stoneDetails['cts'] | number : '1.2-2' }} CTS
+                  </span>
+                  <span class="stone-image-detail_2">
+                    {{ stoneDetails['ColorCode'] }}
+                  </span>
+                  <span class="stone-image-detail_3">
+                    {{ stoneDetails['ClarityCode'] }}
+                  </span>
+                </div>
+                <div>
+                  <img
+                    #stoneImage
+                    [src]="stoneDetails.idealImage"
+                    alt=""
+                    class="stoneImage image"
+                    [ngClass]="hideImage ? 'position-a card-image' : ''"
+                    (error)="handleError($event)"
+                    (mouseover)="playVideo()"
+                  />
+
+                  <ion-spinner name="dots" *ngIf="loading"> </ion-spinner>
+
+                  <!-- <span
+                    class="play-video-icon-container"
+                    (mouseover)="playVideo()"
+                    *ngIf="!showVideo && !loading"
+                    id="play_{{ stoneDetails['stoneName'] }}"
+                  >
+                    <ion-img
+                      *ngIf="showImage"
+                      src="assets/images/playBtn.png"
+                      alt="playBtn"
+                    ></ion-img>
+                    <ion-img
+                      *ngIf="!showImage"
+                      src="assets/images/aspecoPlayIcon.png"
+                      alt="playBtn"
+                    ></ion-img>
+                  </span> -->
+                  <ng-container *ngIf="showVideo">
+                    <iframe
+                      *ngIf="stoneDetails.videoPlayLink"
+                      [src]="stoneDetails.videoPlayLink"
+                      id="videoIframe"
+                      class="card-videoiframe stoneImage"
+                      [ngClass]="!hideImage ? 'position-a' : ''"
+                      (load)="iframeLoaded(stoneDetails['stoneName'])"
+                      scrolling="no"
+                    ></iframe>
+                  </ng-container>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row class="stone-Details">
+              <ion-col class="p0">
+                <ion-grid>
+                  <ion-row class="border-bottom">
+                    <ion-col
+                      sizeSm="6"
+                      sizeLg="9"
+                      sizeXl="9"
+                      class="p0 stoneText price_container"
+                    >
+                      <!-- <div class="stoneText">{{stoneDetails.rfid}}</div> -->
+                      <span>
+                        <b *ngIf="!!stoneDetails['Rapnet_pluspercarat']"
+                          >/Ct.:&nbsp;</b
+                        >
+                        <span class="price">{{
+                          stoneDetails['Rapnet_pluspercarat']
+                            | currency : 'CAD' : 'symbol-narrow'
+                        }}</span>
+                      </span>
+                      <span
+                        *ngIf="!!stoneDetails['Rapnet_plus']"
+                        class="price_container_devider"
+                        >|&nbsp;</span
+                      >
+                      <span>
+                        <b *ngIf="!!stoneDetails['Rapnet_plus']">Amt:&nbsp;</b>
+                        <span class="price">{{
+                          stoneDetails['Rapnet_plus']
+                            | currency : 'CAD' : 'symbol-narrow'
+                        }}</span>
+                      </span>
+                    </ion-col>
+                    <ion-col
+                      sizeSm="6"
+                      sizeLg="3"
+                      sizeXl="3"
+                      class="flex-end p0"
+                    >
+                      <div class="d-flex container_icons">
+                        <span
+                          class="video"
+                          (click)="openVideo(); $event.stopPropagation()"
+                        >
+                          <ion-icon name="videocam-outline"></ion-icon>
+                        </span>
+                        <ng-container *ngIf="stoneDetails.refCartID">
+                          <img
+                            src="assets/images/cart.png"
+                            class="inCartImage"
+                          />
+                        </ng-container>
+                        <ng-container *ngIf="!stoneDetails.refCartID">
+                          <span
+                            class="cart"
+                            (click)="addToCart(); $event.stopPropagation()"
+                          >
+                            <ion-icon name="cart-outline"></ion-icon>
+                          </span>
+                        </ng-container>
+                        <span class="document">
+                          <!-- <ion-icon
+                            name="document-text-outline"
+                            (click)="goToDNA(); $event.stopPropagation()"
+                          ></ion-icon> -->
+                          <img
+                            src="assets/images/document.png"
+                            (click)="goToDNA(); $event.stopPropagation()"
+                            class="inCartImage"
+                          />
+                        </span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <span (click)="goToDNA(); $event.stopPropagation()">
+                    <ion-row class="border-bottom">
+                      <ion-col class="p0 border-right pTpB stoneText">
+                        {{ stoneDetails['CutCode'] }}
+                        {{ stoneDetails['PolishCode'] }}
+                        {{ stoneDetails['SymmetryCode'] }}
+                        {{ stoneDetails['FluorescenceCode'] }}
+                      </ion-col>
+                      <ion-col class="p0 flex-end pTpB stoneText">
+                        {{ stoneDetails['Length'] }} *
+                        {{ stoneDetails['Width'] }} *
+                        {{ stoneDetails['TotDepthMm'] }}
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="border-bottom">
+                      <ion-col class="p0 border-right pTpB stoneText">
+                        <b>Disc&nbsp;:&nbsp;</b
+                        >{{ stoneDetails['Rapnet_plusDiscountPercent'] }}%
+                      </ion-col>
+                      <ion-col
+                        class="p0 flex-end pTpB stoneText"
+                        *ngIf="
+                          !!stoneDetails['TablePer'] &&
+                            stoneDetails['TotDepth'];
+                          else TAnTD
+                        "
+                      >
+                        <b>TA&nbsp;:&nbsp;</b> {{ stoneDetails['TablePer'] }}% -
+                        <b>TD&nbsp;:&nbsp;</b> {{ stoneDetails['TotDepth'] }}%
+                      </ion-col>
+                      <ng-template #TAnTD>
+                        <ion-col class="p0 flex-end pTpB stoneText">
+                          -
+                        </ion-col>
+                      </ng-template>
+                    </ion-row>
+                  </span>
+                  <ion-row class="fixedHeight">
+                    <ion-col
+                      class="p0 border-right pTpB stoneText"
+                      *ngIf="stoneDetails['stoneName']"
+                      (click)="goToDNA(); $event.stopPropagation()"
+                    >
+                      <!-- <div class="prise GIAtext">
+                          {{ stoneDetails["lab"] }}
+                        </div> -->
+                      <b>SID&nbsp;:&nbsp;</b>
+                      <!-- [ngClass]="stoneDetails['stoneName'].length > 8 ? 'tooltip' : '' " -->
+                      <span
+                        ><ion-label
+                          [title]="
+                            stoneDetails['stoneName'].length > 8
+                              ? stoneDetails['stoneName']
+                              : ''
+                          "
+                          class="text-ellipsis stone-id"
+                          >{{ stoneDetails['stoneName'] }}</ion-label
+                        >
+                        <!-- <ng-container
+                            *ngIf="stoneDetails['stoneName'].length > 8"
+                          >
+                            <span class="tooltiptext">{{
+                              stoneDetails['stoneName']
+                            }}</span>
+                          </ng-container> -->
+                      </span>
+                      <div
+                        style="text-transform: capitalize"
+                        *ngIf="stoneDetails['location'] == 'mumbai'"
+                        id="flag-container"
+                      >
+                        <span *ngIf="stoneDetails['location'] == 'mumbai'">
+                          <img
+                            src="assets/images/in.png"
+                            class="flag inCartImage"
+                          />
+                        </span>
+                      </div>
+                      <div
+                        style="text-transform: capitalize"
+                        *ngIf="
+                          stoneDetails['location'] == 'ny' ||
+                          stoneDetails['location'] == 'aspecony'
+                        "
+                        id="flag-container"
+                      >
+                        <img
+                          src="assets/images/ny.png"
+                          class="flag inCartImage"
+                        />
+                      </div>
+                      <div
+                        style="text-transform: capitalize"
+                        *ngIf="stoneDetails['location'] == 'dmcc'"
+                        id="flag-container"
+                      >
+                        <img
+                          src="assets/images/dubai.png"
+                          class="flag inCartImage"
+                        />
+                      </div>
+                      <div
+                        style="text-transform: capitalize"
+                        *ngIf="stoneDetails['location'] == 'aspeconv'"
+                        id="flag-container"
+                      >
+                        <img
+                          src="assets/images/ae.png"
+                          class="flag inCartImage"
+                        />
+                      </div>
+                      <div
+                        style="text-transform: capitalize"
+                        *ngIf="stoneDetails['location'] == 'hk'"
+                        id="flag-container"
+                      >
+                        <img
+                          src="assets/images/hk.png"
+                          class="flag inCartImage"
+                        />
+                      </div>
+                    </ion-col>
+                    <ion-col
+                      class="p0 pTpB stoneText disInline justify-content-beetween"
+                      *ngIf="stoneDetails['lab']"
+                      (click)="openCertificate(); $event.stopPropagation()"
+                    >
+                      <div class="prise GIAtext ml5">
+                        <b>{{ stoneDetails['lab'] }}</b>
+                      </div>
+                      <div class="d-flex pt4">
+                        <ion-label
+                          class="pr6"
+                          [title]="
+                            stoneDetails &&
+                            stoneDetails['ReportNo'] &&
+                            stoneDetails['ReportNo'].toString().length > 10
+                              ? stoneDetails['ReportNo']
+                              : ''
+                          "
+                          >{{ stoneDetails['ReportNo'] }}</ion-label
+                        >
+                        <span class="">
+                          <!-- <ion-icon name="medal-outline"></ion-icon> -->
+                          <img
+                            src="assets/images/batch.png"
+                            class="inCartImage"
+                          />
+                        </span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <!-- <ion-row class="d-flex border-bottom">
+                  <ion-col class="">
+                    <ion-row>
+                      <div class="circle">
+                      </div>
+                      <div (click)="addToCart();$event.stopPropagation()">
+                        Add to Cart
+                      </div>
+      
+                      <div class="tar" (click)="openVideo();$event.stopPropagation()">
+                        video
+                      </div>
+                    </ion-row>
+                  </ion-col>
+                  <ion-col class="">
+                    <ion-row>0.40 - j - VSl</ion-row>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="d-flex border-bottom">
+                  <ion-col class="border-right">
+                    <ion-row>cts-Col-clr</ion-row>
+                  </ion-col>
+                  <ion-col class="">
+                    <ion-row>0.40 - j - VSl</ion-row>
+                  </ion-col>
+                </ion-row> -->
+
+                  <!-- <ion-row class="marPad0">
+                  <ion-col size="4">
+      
+                  </ion-col>
+                  <ion-col size="8">
+      
+                  </ion-col>
+                </ion-row> -->
+                </ion-grid>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

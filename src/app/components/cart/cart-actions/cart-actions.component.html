@@ -1,0 +1,262 @@
+<ng-container *ngIf="actionType">
+  <ion-header>
+    <ion-toolbar class="coloredHeader">
+      <ion-title>{{row.stoneName}}
+        <ion-icon name="close" class="cursor fr mr5p largescreen" color="headerIconColor" (click)="closeModal()"></ion-icon>
+      </ion-title>
+    </ion-toolbar>
+
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-row class="noPadding mt5">
+      <ion-col size="6">
+        Offer Discount
+      </ion-col>
+      <ion-col size="6">
+        <input type="number" [(ngModel)]="row['Req Discount']" class="cellTemplateInput" [disabled]="listOffer"
+          (change)="updateValue(row['Req Discount'], 'Disc', row)" />
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="noPadding mt5">
+      <ion-col size="6">
+        Offer Price &nbsp;&nbsp;&nbsp;
+      </ion-col>
+      <ion-col size="6">
+        <input type="number" [(ngModel)]="row['Req Price']" class="cellTemplateInput" [disabled]="listOffer"
+          (change)="updateValue(row['Req Price'], 'Price', row)" />
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="noPadding mt5">
+      <ion-col size="6">
+        Offer Amount
+      </ion-col>
+      <ion-col size="6">
+        <input type="number" [(ngModel)]="row.Amount" class="cellTemplateInput" [disabled]="listOffer"
+          (change)="updateValue(row.Amount, 'Amt', row)" />
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="!page" class="round-border">
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Counter Offer Discount
+        </ion-col>
+        <ion-col size="6">
+          {{row.listDiscount}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Counter Offer Price
+        </ion-col>
+        <ion-col size="6">
+          {{row.listDiscountPrice}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Counter Offer Amount
+        </ion-col>
+        <ion-col size="6">
+          {{row.listAmount}}
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf="page" class="round-border">
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Discount
+        </ion-col>
+        <ion-col size="6">
+          {{row.Rapnet_plusDiscountPercent}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Price
+        </ion-col>
+        <ion-col size="6">
+          {{row.Rapnet_pluspercarat}}
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="noPadding mt5">
+        <ion-col size="6">
+          KG Amount
+        </ion-col>
+        <ion-col size="6">
+          {{row.Rapnet_plus}}
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+    <ion-row class="noPadding mt5 fr">
+      <ion-button color="primary" class="round-button v2Btn" (click)="submit()">
+        Ok
+      </ion-button>
+    </ion-row>
+
+
+
+
+  </ion-content>
+</ng-container>
+
+<ng-container *ngIf="!actionType">
+  <ion-header>
+    <ion-toolbar class="cart-action-header">
+      <ion-title>Select Cart Action
+        <ion-icon name="close" class="cursor fr mr5p " color="headerIconColor" (click)="closeModal()"></ion-icon>
+      </ion-title>
+    </ion-toolbar>
+
+  </ion-header>
+  
+  <ion-content>
+    <!-- <h3 class="onPageTitle clshdr" >
+      Select Cart Action
+      <ion-icon name="close" class="cursor fr mr5p largeFilters" color="headerIconColor" (click)="closeModal()"></ion-icon>
+    </h3> -->
+
+    <ion-row class="noPadding mt5">
+      <ion-col size="4" class="noPadding">
+        <ion-list class="filters" lines="none">
+          <ion-item class="cursor"
+            [ngClass]="selectedSegment == '1' ? 'ffWhitney selectedFilter' : 'itemList ffWhitney'"
+            (click)="selectedSegment = '1'"
+            *ngIf="!!userId && !!cartData?.data?.products && cartData?.data?.products.length > 0 && productType!='grid'">
+            <ion-label>Save Cart</ion-label>
+          </ion-item>
+          <ion-item class="cursor"
+            [ngClass]="selectedSegment == '2' ? 'ffWhitney selectedFilter' : 'itemList ffWhitney'"
+            (click)="selectedSegment = '2'" *ngIf="!!userId && productType!='grid'">
+            <ion-label>Load Saved Cart</ion-label>
+          </ion-item>
+          <ion-item class="cursor"
+            [ngClass]="selectedSegment == '3' ? 'ffWhitney selectedFilter' : 'itemList ffWhitney'"
+            (click)="selectedSegment = '3'" *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0">
+            <ion-label>Download Cart</ion-label>
+          </ion-item>
+          <ion-item class="cursor"
+            [ngClass]="selectedSegment == '4' ? 'ffWhitney selectedFilter' : 'itemList ffWhitney'"
+            (click)="selectedSegment = '4'" *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0">
+            <ion-label>Email Cart</ion-label>
+          </ion-item>
+          <ion-item class="cursor"
+            [ngClass]="selectedSegment == '6' ? 'ffWhitney selectedFilter' : 'itemList ffWhitney'"
+            (click)="selectedSegment = '6'">
+            <ion-label>Clear Cart</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size="8">
+        <div *ngIf="selectedSegment == '1'">
+          <h4 class="headTitle">Save Your Cart</h4>
+          <ion-row>
+            <ion-input type="text" class="bgLightBlue border tal input" placeholder="Enter Cart Name"
+              [(ngModel)]="saveCartName"> </ion-input>
+          </ion-row>
+
+          <ion-button color="primary"
+            [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn fr': 'fr'" (click)="saveCart()">
+            Save Cart
+          </ion-button>
+          <!-- <ion-button color="primary" class="fr" (click)="closeModal()"> Cancel </ion-button> -->
+        </div>
+        <div *ngIf="selectedSegment == '2'">
+          <h4 class="headTitle">Load Saved Cart</h4>
+          <div *ngIf="!!savedSearches && savedSearches.length > 0">
+            <div class="clsSavedSearches">
+              <ion-radio-group [(ngModel)]="selectedSavedCart">
+                <ion-item *ngFor="let ss of savedSearches">
+                  <ion-radio mode="md" item-left [value]="ss.id"></ion-radio>
+                  <ion-label class="ml5"> {{ ss.name }} </ion-label>
+                </ion-item>
+              </ion-radio-group>
+            </div>
+
+            <ion-button color="primary"
+              [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn fr': 'fr'"
+              (click)="loadSavedCart()">
+              Load
+            </ion-button>
+            <!-- <ion-button color="primary" class="fr" (click)="closeModal()"> Cancel </ion-button> -->
+          </div>
+          <div *ngIf="!savedSearches || savedSearches.length == 0">
+            There are no saved searches available
+          </div>
+        </div>
+        <div *ngIf="selectedSegment == '3'">
+          <h4 class="headTitle">Download Cart</h4>
+          <ion-button color="primary"
+            [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn fr': 'fr'"
+            (click)="downloadCart()">
+            Download
+          </ion-button>
+          <!-- <ion-button color="primary" class="fr" (click)="closeModal()"> Cancel </ion-button> -->
+        </div>
+        <div *ngIf="selectedSegment == '4'">
+          <h4 class="headTitle">
+            Send Email
+          </h4>
+          <ion-radio-group (ionChange)="radioGroupEmailChange($event)" [(ngModel)]="emailMeOrCustom">
+            <ion-row>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-radio mode="md" item-left value="Me"></ion-radio>
+                  <ion-label class="ml5">Me</ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-radio mode="md" item-left value="Custom"></ion-radio>
+                  <ion-label class="ml5">Custom</ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-radio-group>
+          <ion-row>
+            <ion-input type="text" class="bgLightBlue border tal input" placeholder="Enter receiver email id"
+              [(ngModel)]="emailId"> </ion-input>
+          </ion-row>
+          <ion-row>
+            <ion-textarea type="text" class="bgLightBlue border input" placeholder="Enter Message" rows="5"
+              [(ngModel)]="emailBody"></ion-textarea>
+          </ion-row>
+          <ion-button color="primary"
+            [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn fr': 'fr'" (click)="emailCart()">
+            Send
+          </ion-button>
+          <!-- <ion-button color="primary" class="fr" (click)="closeModal()"> Cancel </ion-button> -->
+        </div>
+        <div *ngIf="selectedSegment == '6'">
+          <ion-button color="primary"
+            [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn fr': 'fr'" (click)="clearCart()">
+            Clear
+          </ion-button>
+          <!-- <ion-button color="primary" class="fr" (click)="closeModal()"> Cancel </ion-button> -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+
+  <ion-footer class="mh50p smallFilters">
+    <ion-toolbar class="tac">
+      <ion-row>
+        <ion-col>
+          <ion-button fill="clear" class="w100 h100" (click)="closeModal()">
+            CLOSE
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-footer>
+</ng-container>

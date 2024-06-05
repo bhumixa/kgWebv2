@@ -1,0 +1,3827 @@
+<app-header
+  showBackButton="false"
+  *ngIf="!hideHeaderFooter"
+  pageTitle="Search"
+></app-header>
+
+<ion-content [ngClass]="mobileView? 'mobile-bg' : ''">
+  <div id="jckshow-container" *ngIf="showScroll" (click)="tradeShow()">
+    <ion-row>
+      <ion-col class="">
+        <img
+          class="header-diamond"
+          src="assets/images/small-diamond.svg"
+          alt=""
+        />
+        <span class="plain-text">{{scrollTitle}} </span>
+        <!-- <span class="colored-text"> Participate Now </span> -->
+        <ion-icon name="arrow-forward-outline" class="s-icon"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+  <app-loading></app-loading>
+  <div class="contentDiv">
+    <ion-row class="showOnlyWeb">
+      <ion-col class="onPageTitle"> {{'Stones Search' }} </ion-col>
+    </ion-row>
+    <!-- <ais-instantsearch *ngIf="!!algoliaConfig" [config]="algoliaConfig" (change)="onSearchChange($event)"> -->
+    <div *ngIf="!!showFilters" class="largeFilters">
+      <ion-row>
+        <ion-col size-md="8" size-lg="9" size-xl="10" class="option_container">
+          <ion-row *ngIf="default.search" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Search'}} </span
+                ><br class="br_display_none" />
+                <span
+                  [ngClass]="searchPara.stoneIdORCertSelected == 'stoneId'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('stoneIdORCertSelected','stoneId')"
+                  >{{"Stone ID" }}</span
+                >
+                |
+                <span
+                  [ngClass]="searchPara.stoneIdORCertSelected == 'certNo'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('stoneIdORCertSelected','certNo')"
+                  >{{"Cert No."}}</span
+                >
+              </span>
+            </ion-col>
+            <ion-col size="3" sizeSm="12" sizeLg="3">
+              <ion-textarea
+                *ngIf="searchPara.stoneIdORCertSelected == 'stoneId'"
+                type="text"
+                class="placeholderColor bgLightBlue border input border-secondary textAreaPadding search_textarea"
+                placeholder="{{'Enter Stone ID'  }}"
+                [(ngModel)]="searchPara.stoneId"
+                (input)="omit_special_char($event)"
+              >
+              </ion-textarea>
+              <ion-textarea
+                *ngIf="searchPara.stoneIdORCertSelected == 'certNo'"
+                type="text"
+                class="placeholderColor bgLightBlue border input border-secondary"
+                placeholder="{{'Enter Certificate Number'  }}"
+                (input)="omit_special_char($event)"
+                [(ngModel)]="searchPara.certNo"
+              >
+              </ion-textarea>
+            </ion-col>
+            <!-- -->
+          </ion-row>
+
+          <ion-row *ngIf="default.shape" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Shape'}}</span
+                ><br class="br_display_none" />
+                <span
+                  [ngClass]="searchPara.shapeType === 'generic' ? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('shapeType','generic')"
+                  >{{'Generic'}}</span
+                >
+                |
+                <span
+                  [ngClass]="searchPara.shapeType === 'eliteCuts' ? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('shapeType','eliteCuts')"
+                  >{{'Elite Cuts'}}</span
+                >
+                <!-- <span [ngClass]="searchPara.shapeType == 'specific'? 'clsSPTitleSelected' : 'clsSPTitle'">Generic</span> -->
+                <!-- (click)="toggleSelectionPara('shapeType','specific')"
+                          <span [ngClass]="searchPara.shapeType == 'others'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                          (click)="toggleSelectionPara('shapeType','others')">Others</span> -->
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <ng-container *ngIf="searchPara.shapeType == 'generic'">
+                <ng-container *ngFor="let para of searchPara.shapes">
+                  <div
+                    class="mix-fixed"
+                    *ngIf="searchPara.shapeType == 'generic' && para.href"
+                    (click)="toggleSelection(searchPara.shapes, para.value, 'Shape');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                  >
+                    <!-- <div class="inner-box" *ngIf="para.href">
+                  <img class="width-80" [src]="para.href" />
+                </div> -->
+                    <div class="inner-box text pad-5-10">
+                      {{ para.label }}
+                      <!-- <br> {{ para.count }} -->
+                    </div>
+                  </div>
+                  <!-- <div
+                  class="mix-fixed"
+                  *ngIf="searchPara.shapeType == 'others' && !para.href"
+                  (click)="toggleSelection(searchPara.shapes, para.value, 'Shape');"
+                  [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                >
+                  <div class="inner-box text pad-5-10">
+                    {{ para.label  }}
+                    <br> {{ para.count }}
+                  </div>
+                </div> -->
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="searchPara.shapeType == 'eliteCuts'">
+                <ng-container *ngFor="let para of searchPara.advancedShapes">
+                  <div
+                    class="mix-fixed"
+                    *ngIf="searchPara.shapeType == 'eliteCuts' && para.href"
+                    (click)="toggleSelection(searchPara.advancedShapes, para.value, 'Shape');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                  >
+                    <!-- <div class="inner-box" *ngIf="para.href">
+                  <img class="width-80" [src]="para.href" />
+                </div> -->
+                    <div class="inner-box text pad-5-10">
+                      {{ para.label }}
+                      <!-- <br> {{ para.count }} -->
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.carat" class="bottom-line align_item_c">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Carat'}}</span
+                ><br class="br_display_none" />
+                <span
+                  [ngClass]="searchPara.caratType == 'specific'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('caratType','specific')"
+                  >{{'Specific'}}</span
+                >
+                |
+                <span
+                  [ngClass]="searchPara.caratType == 'groups'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('caratType','groups')"
+                  >{{'Groups'}}</span
+                >
+              </span>
+            </ion-col>
+            <ion-col
+              size="1"
+              sizeSm="2"
+              size-md="1.5"
+              sizeLg="1"
+              *ngIf="searchPara.caratType == 'specific'"
+            >
+              <span class="carat_specific_tab_hide">
+                <ion-input
+                  #fromCaratInput
+                  (input)="numberOnly($event)"
+                  maxlength="10"
+                  type="text"
+                  class="round-input"
+                  placeholder="{{'From'}}"
+                  [(ngModel)]="searchPara.fromCarat"
+                  (ionChange)="getCount(this.searchQuery(true))"
+                >
+                </ion-input>
+              </span>
+
+              <span class="carat_specific_tab_show">
+                <ion-input
+                  (input)="numberOnly($event)"
+                  maxlength="10"
+                  type="number"
+                  class="round-input"
+                  placeholder="{{'From'}}"
+                  [(ngModel)]="searchPara.fromCarat"
+                  (ionChange)="getCount(this.searchQuery(true))"
+                >
+                </ion-input>
+              </span>
+            </ion-col>
+            <ion-col
+              size="1"
+              sizeSm="2"
+              size-md="1.5"
+              sizeLg="1"
+              *ngIf="searchPara.caratType == 'specific'"
+            >
+              <span class="carat_specific_tab_hide">
+                <ion-input
+                  (input)="numberOnly($event)"
+                  numberOnly
+                  maxlength="10"
+                  type="text"
+                  class="round-input"
+                  placeholder="{{'To'}}"
+                  [(ngModel)]="searchPara.toCarat"
+                  (ionChange)="getCount(this.searchQuery(true))"
+                  (keydown.enter)="keydownEnter()"
+                >
+                </ion-input>
+              </span>
+
+              <span class="carat_specific_tab_show">
+                <ion-input
+                  (input)="numberOnly($event)"
+                  maxlength="10"
+                  type="number"
+                  class="round-input"
+                  placeholder="{{'To'}}"
+                  [(ngModel)]="searchPara.toCarat"
+                  (ionChange)="getCount(this.searchQuery(true))"
+                >
+                </ion-input>
+              </span>
+            </ion-col>
+            <ion-button
+              (click)="addSpecificCarat(); getCount(this.searchQuery(true))"
+              [disabled]="!searchPara.fromCarat || !searchPara.toCarat"
+              *ngIf="searchPara.caratType == 'specific'"
+              class="carat_specific_add_btn"
+              >+</ion-button
+            >
+            <ng-container
+              *ngIf="!!searchPara.specificCaratGroup.length && searchPara.caratType == 'specific'"
+            >
+              <ng-container
+                *ngFor="let caratGroup of searchPara.specificCaratGroup; let i = index"
+              >
+                <div class="clsShapeImgSelected carat_specific_added">
+                  <ion-icon
+                    class="remove-specific-carat"
+                    name="close-circle-outline"
+                    (click)="onSpecificCaratRemoved($event, 'caratGroupSpecific', i)"
+                  ></ion-icon>
+                  <div class="text inner-box">
+                    {{caratGroup.from}} - {{caratGroup.to}}
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              *ngIf="searchPara.caratType == 'groups'"
+              class="overflow-auto min-width-100 display-flex group_container align_item_c"
+            >
+              <div
+                *ngFor="let para of searchPara.sizeGroups"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.sizeGroups, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.color" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">Color</span
+                ><br class="br_display_none" />
+                <span
+                  [ngClass]="searchPara.colorType == 'white'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('colorType','white')"
+                  >{{'White'}}</span
+                >
+                |
+                <span
+                  [ngClass]="searchPara.colorType == 'fancy'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('colorType','fancy'); clearLab();"
+                  >{{'Fancy'}}</span
+                >
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              *ngIf="searchPara.colorType == 'white'"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.colors"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.colors, para.value, 'Color');"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+              <!-- <app-refinement-list-button *ngIf="searchPara.shapes.length>0" class="dispContents" containsImage="true" attribute="ShapeCode" operator="or" [staticValues]="searchPara.shapes" identifier="shapes" [sortBy]="['name:asc']" (afterSelect)="afterSelect($event)"></app-refinement-list-button> -->
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="disInline"
+              *ngIf="searchPara.colorType != 'white'"
+            >
+              <div
+                *ngIf="searchPara.colorType == 'fancy'"
+                class="dispContents"
+                id="dvFancy"
+              >
+                <ion-row>
+                  <ion-col class="wpNoWrap">
+                    <!-- Intensity &nbsp;&nbsp; -->
+                    <span class="clsSPTitleHead">Intensity</span>
+                    <ionic-selectable
+                      [(ngModel)]="searchPara.selectedFancyColorIntensity"
+                      class="colorWhite savedSearchSelectable wAutoImp border-secondary"
+                      placeholder="{{'Select Intensity'  }}"
+                      [items]="searchPara.fancyColorIntensities"
+                      itemValueField="value"
+                      itemTextField="label"
+                      [canSearch]="true"
+                      [isMultiple]="true"
+                      (onChange)="onColorFancySelected($event, 'fancyColorIntensity'); getCount(this.searchQuery(true))"
+                    >
+                    </ionic-selectable>
+                  </ion-col>
+                  <ion-col class="wpNoWrap">
+                    <!-- Overtones&nbsp;&nbsp; -->
+                    <span class="clsSPTitleHead">Overtones</span>
+                    <ionic-selectable
+                      [(ngModel)]="searchPara.selectedFancyColorOvertone"
+                      class="colorWhite savedSearchSelectable wAutoImp border-secondary"
+                      placeholder="{{'Select Overtone'  }}"
+                      [items]="searchPara.fancyColorOvertones"
+                      itemValueField="value"
+                      itemTextField="label"
+                      [canSearch]="true"
+                      [isMultiple]="true"
+                      (onChange)="onColorFancySelected($event, 'fancyColorOvertone'); getCount(this.searchQuery(true))"
+                    >
+                    </ionic-selectable>
+                  </ion-col>
+                  <ion-col class="wpNoWrap">
+                    <!-- Color&nbsp;&nbsp; -->
+                    <span class="clsSPTitleHead">Color</span>
+
+                    <ionic-selectable
+                      [(ngModel)]="searchPara.selectedFancyColor"
+                      class="colorWhite savedSearchSelectable wAutoImp border-secondary"
+                      placeholder="{{'Select Fancy Color'  }}"
+                      [items]="searchPara.fancyColors"
+                      itemValueField="value"
+                      itemTextField="label"
+                      [canSearch]="true"
+                      [isMultiple]="true"
+                      (onChange)="onColorFancySelected($event, 'fancyColor'); getCount(this.searchQuery(true))"
+                    >
+                    </ionic-selectable>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.clarity" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Clarity' }}</span
+                ><br class="br_display_none" />
+                <span
+                  [ngClass]="searchPara.clarityType == 'basic'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('clarityType','basic')"
+                  >{{'Basic' }}</span
+                >
+                |
+                <span
+                  [ngClass]="searchPara.clarityType == 'advanced'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('clarityType','advanced')"
+                  >{{'Pique' }}</span
+                >
+                <!-- <span [ngClass]="searchPara.clarityType == 'parameters'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                (click)="openPdFilter()">{{'Advanced Filters'}}</span> -->
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              *ngIf="searchPara.clarityType == 'basic'"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.clarities"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.clarities, para.value, 'Clarity');"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+            <ion-col
+              size="10"
+              *ngIf="searchPara.clarityType == 'advanced'"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.advancedClarities"
+                class="mix-fixed"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <div
+                  class="inner-box text pad-5-10"
+                  (click)="toggleSelection(searchPara.advancedClarities, para.value, 'Clarity');"
+                >
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+            <ion-col
+              size="10"
+              *ngIf="searchPara.clarityType == 'parameters'"
+              (click)="selectPD()"
+            >
+              <ion-row *ngIf="!searchPara.pdObject">
+                <ion-col>{{'Click here to select PD parameters' }}</ion-col>
+              </ion-row>
+              <!-- <ion-row *ngIf="!!searchPara.pdObject">
+                <ion-col>
+                  <div *ngFor="let pd of searchPara.pdObject | keyvalue">
+                    <div *ngIf="!!pd.value && pd.value.length>0">
+                      {{pd.key }} : {{pd.value }}
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row> -->
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.description" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Description'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.descriptions"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.descriptions, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label}}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+              <span class="advanceTextCss" (click)="openPdFilter()"
+                >{{'Advanced Filters'}}</span
+              >
+            </ion-col>
+          </ion-row>
+
+          <!--|||||||||||||| DIAMOND TYPE ||||||||||||||-->
+          <ion-row *ngIf="default.diamondType" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Diamond Type' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.diamondType"
+                class="mix-fixed"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <div
+                  class="inner-box text pad-5-10"
+                  (click)="toggleSelection(searchPara.diamondType, para.value, 'Diamond Type');"
+                >
+                  {{ para.label }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.finishing" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Finishing'}}</span
+                ><br class="br_display_none" />
+                <!-- <span [ngClass]="searchPara.finishingType == 'general'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                (click)="toggleSelectionPara('finishingType','general')">General</span> |
+              <span [ngClass]="searchPara.finishingType == 'specific'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                (click)="toggleSelectionPara('finishingType','specific')">Specific</span> -->
+                <!-- <span [ngClass]="searchPara.finishingType == 'parameters'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                (click)="toggleSelectionPara('finishingType','parameters')">Measurements</span> -->
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.finishings"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.finishings, para.value, 'Finish');"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+            <ion-col size="2" class="finishing_extra"> </ion-col>
+
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <ion-row class="finishing_extra_row">
+                <div class="mix-fixed pad-5-10">
+                  <div class="inner-box text pad-5-10 bg-specific">
+                    {{'Cut' }}
+                  </div>
+                </div>
+
+                <div
+                  *ngFor="let para of searchPara.cuts"
+                  class="mix-fixed"
+                  (click)="searchPara.colorType == 'fancy'? null : toggleSelection(searchPara.cuts, para.value ,'Cut');"
+                  [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                >
+                  <div class="inner-box" *ngIf="para.href">
+                    <img class="width-80" [src]="para.href" alt="" />
+                  </div>
+                  <div class="inner-box text pad-5-10 finishingCutDivBtn">
+                    {{ para.label }}
+                    <!--<br> {{ para.count }} -->
+                  </div>
+                </div>
+              </ion-row>
+
+              <ion-row class="finishing_extra_row">
+                <div class="mix-fixed pad-5-10">
+                  <div class="inner-box text pad-5-10 bg-specific">
+                    {{'Polish'}}
+                  </div>
+                </div>
+                <div
+                  *ngFor="let para of searchPara.polishes"
+                  class="mix-fixed"
+                  (click)="toggleSelection(searchPara.polishes, para.value,'Polish');"
+                  [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                >
+                  <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                  <div class="inner-box text pad-5-10">
+                    {{ para.label }}
+                    <!--<br> {{ para.count }} -->
+                  </div>
+                </div>
+              </ion-row>
+
+              <ion-row class="finishing_extra_row">
+                <div class="mix-fixed pad-5-10">
+                  <div class="inner-box text pad-5-10 bg-specific">
+                    {{'Symmetry'}}
+                  </div>
+                </div>
+                <div
+                  *ngFor="let para of searchPara.symmetries"
+                  class="mix-fixed"
+                  (click)="toggleSelection(searchPara.symmetries, para.value, 'Symmetry');"
+                  [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                >
+                  <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                  <div class="inner-box text pad-5-10">
+                    {{ para.label}}
+                    <!--<br> {{ para.count }} -->
+                  </div>
+                </div>
+              </ion-row>
+            </ion-col>
+
+            <ion-col
+              size="10"
+              class="disInline overflow-auto"
+              *ngIf="searchPara.finishingType == 'parameters'"
+            >
+              <ion-grid id="finishing_parameters">
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'Table'}}%</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.tablePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.tablePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'Length'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.lengthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.lengthTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.heightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.heightTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10 small-font"
+                        >{{'Width' }}</span
+                      >
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.widthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.widthTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'Depth' }} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.depthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.depthTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'L/W'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.ratioFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.ratioTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'CR Angle'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownAngleFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownAngleTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'CR Height'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownHeightFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownHeightTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'Girdle' }} </span>
+                      <div class="dispContents">
+                        <ion-item lines="none">
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleFrom"
+                            class="colorWhite mt6 girdleSelection border-secondary"
+                            placeholder="{{'From'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                        <ion-item lines="none">
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleTo"
+                            class="colorWhite mt6 girdleSelection border-secondary"
+                            placeholder="{{'To'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'PAV Angle'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionAngleFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionAngleTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead m10">{{'PAV HG'}}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionHeightFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionHeightTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.fluorescence" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Fluorescence'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.fluorescences"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.fluorescences, para.value, 'Fluorescence');"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.lab" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Lab'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.labs"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.labs, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.Lotcountry" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Rough Origin'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.Lotcountry"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.Lotcountry, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label | uppercase }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!--|||||||||||||| TRACEABILITY PROTOCOL ||||||||||||||-->
+          <ion-row *ngIf="default.traceabilityProtocol" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Traceability Protocol' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              class="overflow-auto min-width-100 display-flex flex-wrap"
+            >
+              <div
+                *ngFor="let para of searchPara.traceabilityProtocol"
+                class="mix-fixed"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <div
+                  class="inner-box text pad-5-10"
+                  (click)="toggleSelection(searchPara.traceabilityProtocol, para.value, 'Traceability Protocol');"
+                >
+                  {{ para.label }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="bottom-line">
+            <ion-col class="display_f" size="2" size-sm="12" size-lg="2">
+              <span class="clsSPTitleHead my_auto"> {{'Price'}} </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              size-sm="12"
+              size-lg="10"
+              class="overflow-auto min-width-100"
+            >
+              <ion-grid
+                id="finishing_parameters"
+                class="finishing_parameters_desc"
+              >
+                <ion-row>
+                  <div class="disInline display_f">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Discount' }} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput discount_per_from to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.discountPerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('discountPer','From')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput discount_per_to to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.discountPerTo"
+                          (ionBlur)="validateFromToInput('discountPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <!-- -->
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Price/Ct' }} ($)</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event);"
+                          (ionBlur)="validateFromToInput('pricePer','From')"
+                          maxlength="10"
+                          type="text"
+                          class="price_per_from round-input tal fromToInput to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pricePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          (ionBlur)="validateFromToInput('pricePer','To')"
+                          maxlength="10"
+                          type="text"
+                          class="price_per_to round-input tal fromToInput to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pricePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <!-- -->
+                    <div class="disInline">
+                      <span class="clsSPTitleHead"
+                        >{{'Total Price'}}&nbsp;($)</span
+                      >
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput amt_per_from to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.amtPerFrom"
+                          (ionBlur)="validateFromToInput('amtPer','From')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput atm_per_to to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.amtPerTo"
+                          (ionBlur)="validateFromToInput('amtPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <!--  -->
+                  </div>
+                </ion-row>
+              </ion-grid>
+
+              <ion-grid
+                id="finishing_parameters"
+                class="finishing_parameters_tab"
+              >
+                <ion-row>
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Discount'}} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput discount_per_from to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.discountPerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('discountPer','From')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput discount_per_to to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.discountPerTo"
+                          (ionBlur)="validateFromToInput('discountPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Price/Ct'}} ($)</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event);"
+                          (ionBlur)="validateFromToInput('pricePer','From')"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="price_per_from round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pricePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          (ionBlur)="validateFromToInput('pricePer','To')"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="price_per_to round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pricePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead"
+                        >{{'Total Price'}}&nbsp;($)</span
+                      >
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput amt_per_from to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.amtPerFrom"
+                          (ionBlur)="validateFromToInput('amtPer','From')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput atm_per_to to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.amtPerTo"
+                          (ionBlur)="validateFromToInput('amtPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Measurements'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex"
+            >
+              <ion-grid
+                id="finishing_parameters"
+                class="finishing_parameters_desc"
+              >
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Depth' }} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput depthFrom to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.depthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Depth%','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput depthTo to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.depthTo"
+                          (ionBlur)="validateFromToInput('Depth%','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Table'}} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event);"
+                          (ionBlur)="validateFromToInput('Table%','from')"
+                          maxlength="10"
+                          type="text"
+                          class="tablePerFrom round-input tal fromToInput to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.tablePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          (ionBlur)="validateFromToInput('Table%','to')"
+                          maxlength="10"
+                          type="text"
+                          class="tablePerTo round-input tal fromToInput to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.tablePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <!-- -->
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'L/W Ratio' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput ratioFrom to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.ratioFrom"
+                          (ionBlur)="validateFromToInput('L/W','from')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput ratioTo to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.ratioTo"
+                          (ionBlur)="validateFromToInput('L/W','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <!--  -->
+                  </div>
+                </ion-row>
+
+                <ion-row class="flex_nowrap">
+                  <div class="disInline">
+                    <span class="clsSPTitleHead">{{'Length' }}</span>
+                    <div class="dispContents">
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input tal fromToInput lengthFrom to-from_input"
+                        placeholder="{{'From'}}"
+                        [(ngModel)]="searchPara.lengthFrom"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                        (ionBlur)="validateFromToInput('Length','from')"
+                      >
+                      </ion-input>
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input tal fromToInput lengthTo to-from_input"
+                        placeholder="{{'To'}}"
+                        [(ngModel)]="searchPara.lengthTo"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                        (ionBlur)="validateFromToInput('Length','to')"
+                      >
+                      </ion-input>
+                    </div>
+                  </div>
+                  <!-- <div class="disInline"> -->
+                  <div class="disInline">
+                    <span class="clsSPTitleHead">{{'Width' }}</span>
+                    <div class="dispContents">
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input border tal fromToInput widthFrom to-from_input"
+                        placeholder="{{'From'}}"
+                        [(ngModel)]="searchPara.widthFrom"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                        (ionBlur)="validateFromToInput('Width','from')"
+                      >
+                      </ion-input>
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input border tal fromToInput widthTo to-from_input"
+                        placeholder="{{'To'}}"
+                        [(ngModel)]="searchPara.widthTo"
+                        (ionBlur)="validateFromToInput('Width','to')"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                      >
+                      </ion-input>
+                    </div>
+                  </div>
+
+                  <div class="disInline">
+                    <span class="clsSPTitleHead">{{'Height' }}</span>
+                    <div class="dispContents">
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input border tal fromToInput heightFrom to-from_input"
+                        placeholder="{{'From'}}"
+                        [(ngModel)]="searchPara.heightFrom"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                        (ionBlur)="validateFromToInput('Height','from')"
+                      >
+                      </ion-input>
+                      <ion-input
+                        (input)="numberOnly($event)"
+                        maxlength="10"
+                        type="text"
+                        class="round-input border tal fromToInput heightTo to-from_input"
+                        placeholder="{{'To'}}"
+                        [(ngModel)]="searchPara.heightTo"
+                        (ionBlur)="validateFromToInput('Height','to')"
+                        (ngModelChange)="getCount(this.searchQuery(true))"
+                      >
+                      </ion-input>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </ion-row>
+
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Crown Angle' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput crownAngleFrom to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownAngleFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput crownAngleTo to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownAngleTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Crown Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput crownHeightFrom to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownHeightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput crownHeightTo to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownHeightTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Girdle' }}</span>
+                      <div class="dispContents">
+                        <ion-item
+                          lines="none "
+                          class="ionic_selectable_container"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleFrom"
+                            class="colorWhite girdleSelection border-secondary"
+                            placeholder="{{'From'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                        <ion-item
+                          lines="none "
+                          class="dispContents ionic_selectable_container"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleTo"
+                            class="colorWhite girdleSelection border-secondary"
+                            placeholder="{{'To'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="disInline">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Pavilion Angle' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput pavilionAngleFrom to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionAngleFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput pavilionAngleTo to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionAngleTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Pavilion Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput to-from_input"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionHeightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          id="pavilionHeightFrom"
+                          (ionBlur)="validateFromToInput('Pavilion Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="text"
+                          class="round-input border tal fromToInput to-from_input"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionHeightTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          id="pavilionHeightTo"
+                          (ionBlur)="validateFromToInput('Pavilion Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </div>
+                </ion-row>
+              </ion-grid>
+
+              <ion-grid
+                id="finishing_parameters"
+                class="finishing_parameters_tab"
+              >
+                <ion-row>
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Depth' }} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput depthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.depthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Depth%','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput depthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.depthTo"
+                          (ionBlur)="validateFromToInput('Depth%','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Table'}} %</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event);"
+                          (ionBlur)="validateFromToInput('Table%','from')"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="tablePerFrom round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.tablePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          (ionBlur)="validateFromToInput('Table%','to')"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="tablePerTo round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.tablePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'L/W Ratio' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput ratioFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.ratioFrom"
+                          (ionBlur)="validateFromToInput('L/W','from')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput ratioTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.ratioTo"
+                          (ionBlur)="validateFromToInput('L/W','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Length' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input tal fromToInput lengthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.lengthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Length','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input tal fromToInput lengthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.lengthTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Length','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Width' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput widthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.widthFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Width','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput widthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.widthTo"
+                          (ionBlur)="validateFromToInput('Width','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput heightFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.heightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput heightTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.heightTo"
+                          (ionBlur)="validateFromToInput('Height','to')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Crown Angle' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput crownAngleFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownAngleFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput crownAngleTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownAngleTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Crown Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput crownHeightFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownHeightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput crownHeightTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownHeightTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Crown Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Pavilion Angle' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput pavilionAngleFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionAngleFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput pavilionAngleTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionAngleTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Pavilion Height' }}</span>
+                      <div class="dispContents">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionHeightFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          id="pavilionHeightFrom"
+                          (ionBlur)="validateFromToInput('Pavilion Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          type="number"
+                          inputmode="decimal"
+                          class="round-input border tal fromToInput to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionHeightTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          id="pavilionHeightTo"
+                          (ionBlur)="validateFromToInput('Pavilion Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4">
+                    <div class="disInline">
+                      <span class="clsSPTitleHead">{{'Girdle' }} </span>
+                      <div class="dispContents">
+                        <ion-item
+                          lines="none "
+                          class="ionic_selectable_container"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleFrom"
+                            class="colorWhite girdleSelection border-secondary"
+                            placeholder="{{'From'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                        <ion-item
+                          lines="none "
+                          class="dispContents ionic_selectable_container"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleTo"
+                            class="colorWhite girdleSelection border-secondary"
+                            placeholder="{{'To'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col sizeSm="6" sizeLg="6" sizeXl="4" size="4"></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.internalStatus" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Internal Status' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.InternalStatus"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.InternalStatus, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <!-- 
+          <ion-row *ngIf="default.externalStatus" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">Stone Status</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.externalStatus"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.externalStatus, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+               
+                <div class="inner-box text pad-5-10">
+                  {{ para.label  }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row> -->
+
+          <ion-row *ngIf="default.transType" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Trans Type' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.TransType"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.TransType, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.users" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Users' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.Users"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.Users, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.size" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Size' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.AllSize"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.AllSize, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <div class="inner-box" *ngIf="para.href">
+                  <img class="width-80" [src]="para.href" />
+                </div>
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.location" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Location' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.location"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.location, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.box" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Box'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.Box"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.Box, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.department" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'Department'}}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.Department"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.Department, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">
+                  {{ para.label }}
+                  <!--<br> {{ para.count }} -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="default.fm" class="bottom-line">
+            <ion-col size="2" sizeSm="12" sizeLg="2" class="display_f">
+              <span class="my_auto">
+                <span class="clsSPTitleHead">{{'FM' }}</span>
+              </span>
+            </ion-col>
+            <ion-col
+              size="10"
+              sizeSm="12"
+              sizeLg="10"
+              class="overflow-auto min-width-100 display-flex flex_flow_w"
+            >
+              <div
+                *ngFor="let para of searchPara.fm"
+                class="mix-fixed"
+                (click)="toggleSelection(searchPara.fm, para.value, null);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+              >
+                <!-- <div class="inner-box" *ngIf="para.href">
+                <img class="width-80" [src]="para.href" />
+              </div> -->
+                <div class="inner-box text pad-5-10">{{ para.label }}</div>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- <ion-row>
+               <ion-col offset="8" size="4">  
+                <ion-button (click)="searchQuery()"  class="round-button v2Btn"  expand="block"> Search </ion-button>
+              </ion-col> 
+              <ion-col size="2" *ngIf="default.saveSearch">
+                <span class="clsSPTitleHead">Search</span>
+              </ion-col>
+              <ion-col size="2" class="mt6" *ngIf="default.saveSearch">
+                <ion-input type="text" class="round-input" placeholder="{{'Save Search Name'  }}"
+                  [(ngModel)]="searchPara.saveSearchName"> </ion-input>
+              </ion-col>
+              <ion-col size="2" *ngIf="default.saveSearch">
+                <ion-button (click)="insertSavedSearch();" class="round-button v2Btn" expand="block"> Save Search </ion-button>
+              </ion-col>
+              <ion-col [size]="default.saveSearch ? 6 : 12" class="tar">
+                <ion-button fill="clear" (click)="resetSearch()"  class="round-button v2Btn" > Clear </ion-button>
+                <ion-button (click)="searchQuery()"  class="round-button v2Btn"  > Search </ion-button>
+              </ion-col> 
+            </ion-row> -->
+        </ion-col>
+
+        <ion-col
+          sizeXs="12"
+          sizeSm="12"
+          sizeMd="3"
+          sizeLg="3"
+          sizeXl="2"
+          class="search_container"
+        >
+          <ion-row class="side-search-card">
+            <ion-card class="searchCard">
+              <ion-card-content class="searchCard_content">
+                <ion-grid class="p0">
+                  <ion-row>
+                    <ion-col size="12" class="p0 tac mb5">
+                      <div class="savedSearchtitle">{{'Saved Search' }}</div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="default.saveSearch">
+                    <ion-col size="12" class="p0">
+                      <ion-col class="mt6 p0" *ngIf="default.saveSearch">
+                        <ion-input
+                          type="text"
+                          class="round-input tac"
+                          placeholder="{{'Save Search Name'  }}"
+                          [(ngModel)]="searchPara.savedSearchName"
+                        >
+                        </ion-input>
+                      </ion-col>
+
+                      <ion-col *ngIf="default.saveSearch" class="marPad0">
+                        <ion-button
+                          (click)="insertSavedSearch();"
+                          class="round-button v2Btn"
+                          expand="block"
+                        >
+                          {{'Save Your Search' }}
+                        </ion-button>
+                      </ion-col>
+
+                      <ion-col>
+                        <!-- <ionic-selectable class="colorWhite savedSearchSelectable mt20 border-secondary" item-content
+                          placeholder="View Saved Search" [items]="savedSearchList" itemValueField="id"
+                          itemTextField="name" [canSearch]="true" (onChange)="resetSearch();valueChange($event)"
+                          #portComponent [(ngModel)]="selectedSearch">
+                        </ionic-selectable> -->
+                        <ionic-selectable
+                          class="colorWhite savedSearchSelectable mt6 border-secondary"
+                          item-content
+                          placeholder="{{'View Saved Search'  }}"
+                          #searchComponent
+                          [(ngModel)]="selectedSearch"
+                          itemValueField="id"
+                          itemTextField="name"
+                          [items]="savedSearchList"
+                          [canSearch]="true"
+                          (onChange)="resetSearch(); valueChange($event)"
+                        >
+                          <ion-row>
+                            <ng-template
+                              ionicSelectableItemTemplate
+                              let-search="item"
+                            >
+                              <ion-col size="10"> {{search.name }} </ion-col>
+                              <ion-col size="2" class="tar">
+                                <ion-icon
+                                  name="trash"
+                                  class="delete-search"
+                                  (click)="deleteSearch(search)"
+                                ></ion-icon>
+                              </ion-col>
+                            </ng-template>
+                          </ion-row>
+                        </ionic-selectable>
+                      </ion-col>
+                      <!-- <ionic-selectable class="colorWhite savedSearchSelectable mt5 border-secondary" item-content
+                        placeholder="{{'View Saved Search'  }}" #searchComponent [(ngModel)]="selectedSearch"
+                        itemValueField="id" itemTextField="name" [items]="savedSearchList" [canSearch]="true"
+                        (onChange)="resetSearch();valueChange($event)">
+                        
+                        <ion-row>
+                          <ng-template
+                            ionicSelectableItemTemplate
+                            let-search="item"
+                          >
+                            <ion-col size="10"> {{search.name}} </ion-col>
+                            <ion-col size="2" class="tar">
+                              <ion-icon
+                                name="trash"
+                                class="delete-search"
+                                (click)="deleteSearch(search)"
+                              ></ion-icon>
+                            </ion-col>
+                            
+                          </ng-template>
+                        </ion-row>
+                      </ionic-selectable> -->
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-row>
+          <ion-row>
+            <ion-col size-lg="3" size-xl="2">
+              <ion-row class="search-btn">
+                <ion-col size="8" class="">
+                  <ion-button
+                    (click)="searchQuery()"
+                    expand="block"
+                    class="round-button v2Btn fixedWidthBtn mw260"
+                  >
+                    {{'Search' }} ({{searchCount}}{{searchCount >= 10000 ? '+' :
+                    ''}})
+                  </ion-button>
+                </ion-col>
+                <ion-col size="4" class="cursor">
+                  <ion-button
+                    (click)="resetSearch(true)"
+                    #resetBtn
+                    expand="block"
+                    class="round-button v2Btn mw260 reset_btn"
+                    fill="none"
+                  >
+                    {{'Reset' }}
+                    <!-- <ion-icon
+                      src="../../../assets/images/reset.svg"
+                      class="reset-icon"
+                      >Reset</ion-icon
+                    > -->
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+              <!-- <div *ngIf="searchCount > 0;else searchTemplate;">
+                
+
+                <ion-button
+                  (click)="searchQuery()"
+                  class="round-clear-button"
+                  id="AddImg"
+                >
+                  as
+                </ion-button>
+              </div> -->
+
+              <!-- <ng-template #searchTemplate>
+                <ion-button
+                  (click)="searchQuery()"
+                  class="round-button v2Btn mw260"
+                  expand="block"
+                >
+                  Search ({{searchCount}})
+                </ion-button>
+              </ng-template> -->
+              <!-- <ion-button (click)="searchQuery()" class="round-button v2Btn mw260" expand="block" *ngIf="searchCount > 0"> 
+                 Search 
+                </ion-button>
+
+                <ion-button (click)="searchQuery()" class="round-button v2Btn mw260" expand="block" *ngIf="searchCount > 0"> 
+                  Search 
+                 </ion-button> -->
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="!!showFilters" class="smallFilters">
+      <ion-row class="pdbtn">
+        <ion-col>
+          <div *ngIf="default.search">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12">
+                <span
+                  [ngClass]="searchPara.stoneIdORCertSelected == 'stoneId'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('stoneIdORCertSelected','stoneId')"
+                  >{{'Enter Stone ID'}}</span
+                >
+                |
+
+                <span
+                  [ngClass]="searchPara.stoneIdORCertSelected == 'certNo'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('stoneIdORCertSelected','certNo')"
+                  >{{'Cert No.'}}</span
+                >
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="10" offset="1">
+                <ion-textarea
+                  *ngIf="searchPara.stoneIdORCertSelected == 'stoneId'"
+                  type="text"
+                  class="placeholderColor bgLightBlue border input border-primary-round white-bg"
+                  placeholder="Enter Stone ID"
+                  [(ngModel)]="searchPara.stoneId"
+                >
+                </ion-textarea>
+                <ion-textarea
+                  *ngIf="searchPara.stoneIdORCertSelected == 'certNo'"
+                  type="text"
+                  class="placeholderColor bgLightBlue border input border-primary-round white-bg"
+                  placeholder="Enter Cert No."
+                  [(ngModel)]="searchPara.certNo"
+                >
+                </ion-textarea>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.shape">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Shape'}}</span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="ion-text-center marPad0">
+              <div class="rounded-flex">
+                <ion-col
+                  size="6"
+                  class="marPad0"
+                  class="left-color-div"
+                  (click)="toggleSelectionPara('shapeType','generic')"
+                  [ngClass]="searchPara.shapeType == 'generic'? 'clsSPTitleSelected-min' : 'clsSPTitle-min white-bg'"
+                >
+                  <span>{{'Generic'}}</span>
+                </ion-col>
+                <ion-col
+                  size="6"
+                  class="marPad0"
+                  class="right-color-div"
+                  (click)="toggleSelectionPara('shapeType','eliteCuts')"
+                  [ngClass]="searchPara.shapeType == 'eliteCuts'? 'clsSPTitleSelected-min' : 'clsSPTitle-min white-bg'"
+                >
+                  <span>{{'Elite Cuts'}}</span>
+                </ion-col>
+              </div>
+            </ion-row>
+
+            <ion-row class="ion-text-center">
+              <ion-col
+                size="10"
+                offset="1"
+                class="shape-width-flex shape-width-flex_mob shape-box white-bg"
+              >
+                <ion-row class="shape-container">
+                  <ng-container *ngIf="searchPara.shapeType === 'generic'">
+                    <ng-container *ngFor="let para of searchPara.shapes">
+                      <div
+                        class="mix-fixed fl"
+                        *ngIf="searchPara.shapeType === 'generic' && para.href"
+                        (click)="toggleSelection(searchPara.shapes, para.value, 'Shape');"
+                        [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg mr3'"
+                      >
+                        <!-- <div class="inner-box" *ngIf="para.href">
+                      <img class="width-80" [src]="para.href" />
+                    </div> -->
+                        <div class="inner-box text pad-5-6">
+                          {{ para.label }}
+                        </div>
+                      </div>
+                      <!-- <div
+                      class="mix-fixed fl"
+                      *ngIf="searchPara.shapeType == 'others' && !para.href"
+                      (click)="toggleSelection(searchPara.shapes, para.value, 'Shape');"
+                      [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg mr3'"
+                    >
+                      <div class="inner-box text pad-5-6">
+                        {{ para.label  }}
+                        <br> {{ para.count }}
+                      </div>
+                    </div> -->
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="searchPara.shapeType === 'eliteCuts'">
+                    <ng-container
+                      *ngFor="let para of searchPara.advancedShapes"
+                    >
+                      <div
+                        class="mix-fixed fl"
+                        *ngIf="searchPara.shapeType === 'eliteCuts' && para.href"
+                        (click)="toggleSelection(searchPara.advancedShapes, para.value, 'Shape');"
+                        [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg mr3'"
+                      >
+                        <!-- <div class="inner-box" *ngIf="para.href">
+                      <img class="width-80" [src]="para.href" />
+                    </div> -->
+                        <div class="inner-box text pad-5-6">
+                          {{ para.label }}
+                        </div>
+                      </div>
+                      <!-- <div
+                      class="mix-fixed fl"
+                      *ngIf="searchPara.shapeType == 'others' && !para.href"
+                      (click)="toggleSelection(searchPara.shapes, para.value, 'Shape');"
+                      [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg mr3'"
+                    >
+                      <div class="inner-box text pad-5-6">
+                        {{ para.label  }}
+                        <br> {{ para.count }}
+                      </div>
+                    </div> -->
+                    </ng-container>
+                  </ng-container>
+                </ion-row>
+
+                <!-- <ion-row class="shape-text">
+                  <a href="javascript:void(0);" (click)="show = !show;toggleShapes();"
+                    class="more-btn">{{shapeMoreTxt}}</a>
+                </ion-row> -->
+              </ion-col>
+              <ion-col size="1"> </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="default.carat">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Size'}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- <ion-row class="ion-text-center mt10Imp ">
+              <ion-col size="6" offset="3">
+                <span [ngClass]="searchPara.caratType == 'specific'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('caratType','specific')">Specific</span> |
+                <span [ngClass]="searchPara.caratType == 'groups'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('caratType','groups')">Groups</span>
+              </ion-col>
+            </ion-row> -->
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col
+                size="10"
+                offset="1"
+                class="shape-width white-bg"
+                *ngIf="searchPara.caratType == 'groups'"
+              >
+                <div
+                  *ngFor="let para of searchPara.sizeGroups"
+                  class="mix-fixed fl"
+                  (click)="toggleSelection(searchPara.sizeGroups, para.value, null);"
+                  [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                >
+                  <div class="inner-box text pad-5-10">{{ para.label }}</div>
+                </div>
+              </ion-col>
+              <ion-col
+                size="10"
+                offset="1"
+                *ngIf="searchPara.caratType == 'specific'"
+                class="shape-width white-bg"
+              >
+                <ion-row class="ion-text-center mt10Imp">
+                  <ion-col size="5">
+                    <ion-input
+                      type="number"
+                      inputmode="decimal"
+                      maxlength="10"
+                      class="round-input"
+                      placeholder="{{'From'}}"
+                      [(ngModel)]="searchPara.fromCarat"
+                    >
+                    </ion-input>
+                  </ion-col>
+                  <ion-col size="2">
+                    <div class="to-text">{{'To'}}</div>
+                  </ion-col>
+                  <ion-col size="5">
+                    <ion-input
+                      type="number"
+                      inputmode="decimal"
+                      maxlength="10"
+                      class="round-input"
+                      placeholder="{{'To'}}"
+                      [(ngModel)]="searchPara.toCarat"
+                    >
+                    </ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="default.color" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Color' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center marPad0">
+              <div class="rounded-flex">
+                <ion-col
+                  size="6"
+                  class="marPad0"
+                  class="left-color-div"
+                  (click)="toggleSelectionPara('colorType','white')"
+                  [ngClass]="searchPara.colorType == 'white'? 'clsSPTitleSelected-min' : 'clsSPTitle-min white-bg'"
+                >
+                  <span>{{'White' }}</span>
+                  <!-- <div class="left-color-div"
+                  [ngClass]="searchPara.colorType == 'white'? 'clsSPTitleSelected-min' : 'clsSPTitle-min'">
+                  <span (click)="toggleSelectionPara('colorType','white')">White</span>
+                </div> -->
+                </ion-col>
+                <ion-col
+                  size="6"
+                  class="marPad0"
+                  class="right-color-div"
+                  (click)="toggleSelectionPara('colorType','fancy')"
+                  [ngClass]="searchPara.colorType == 'fancy'? 'clsSPTitleSelected-min' : 'clsSPTitle-min white-bg'"
+                >
+                  <span>{{'Fancy' }}</span>
+                  <!-- <div class="right-color-div"
+                  [ngClass]="searchPara.colorType == 'fancy'? 'clsSPTitleSelected-min' : 'clsSPTitle-min'">
+                  <span (click)="toggleSelectionPara('colorType','fancy')">{{'Fancy'}}</span>
+                </div> -->
+                </ion-col>
+              </div>
+            </ion-row>
+            <ion-row class="ion-text-center marPad0">
+              <ion-col
+                size="12"
+                *ngIf="searchPara.colorType == 'white'"
+                class="marPad0"
+              >
+                <div class="shape-width-flex shape-width-flex_mob">
+                  <div
+                    *ngFor="let para of searchPara.colors"
+                    class="mix-fixed fl"
+                    (click)="toggleSelection(searchPara.colors, para.value, 'Color');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new white-bg'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+              <div class="int-outerdiv white-bg">
+                <ion-col size="12" *ngIf="searchPara.colorType != 'white'">
+                  <div
+                    *ngIf="searchPara.colorType == 'fancy'"
+                    class="dispContents"
+                    id="dvFancy"
+                  >
+                    <ion-row>
+                      <ion-col size="5" class="mauto">
+                        <span class="clsSPTitleHead small-font"
+                          >{{'Intensity'}}</span
+                        >
+                      </ion-col>
+                      <ion-col size="6">
+                        <ionic-selectable
+                          [(ngModel)]="searchPara.selectedFancyColorIntensity"
+                          class="colorWhite wAutoImp border-secondary"
+                          placeholder="Select"
+                          [items]="searchPara.fancyColorIntensities"
+                          itemValueField="value"
+                          itemTextField="label"
+                          [canSearch]="true"
+                          (onChange)="onColorFancySelected($event, null); getCount(this.searchQuery(true))"
+                        >
+                        </ionic-selectable>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="6" class="mauto">
+                        <span class="clsSPTitleHead small-font"
+                          >{{'Overtones'}}</span
+                        >
+                      </ion-col>
+                      <ion-col size="6">
+                        <ionic-selectable
+                          [(ngModel)]="searchPara.selectedFancyColorOvertone"
+                          class="colorWhite wAutoImp border-secondary"
+                          placeholder="Select"
+                          [items]="searchPara.fancyColorOvertones"
+                          itemValueField="value"
+                          itemTextField="label"
+                          [canSearch]="true"
+                          (onChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ionic-selectable>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="6" class="mauto">
+                        <span class="clsSPTitleHead small-font"
+                          >{{'Color'}}</span
+                        >
+                      </ion-col>
+                      <ion-col size="6">
+                        <ionic-selectable
+                          [(ngModel)]="searchPara.selectedFancyColor"
+                          class="colorWhite wAutoImp border-secondary"
+                          placeholder="Select"
+                          [items]="searchPara.fancyColors"
+                          itemValueField="value"
+                          itemTextField="label"
+                          [canSearch]="true"
+                          (onChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ionic-selectable>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </ion-col>
+              </div>
+            </ion-row>
+          </div>
+          <div *ngIf="default.clarity" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Clarity'}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- <ion-row class="ion-text-center mt10Imp ">
+              <ion-col size="12">
+                <span [ngClass]="searchPara.clarityType == 'basic'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('clarityType','basic')">Basic</span> |
+                <span [ngClass]="searchPara.clarityType == 'advanced'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('clarityType','advanced')">Advanced</span> |
+                <span [ngClass]="searchPara.clarityType == 'parameters'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="openPdFilter()">By Inclusion</span>
+              </ion-col>
+            </ion-row> -->
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col
+                size="12"
+                *ngIf="searchPara.clarityType == 'basic'"
+                class="marPad0"
+              >
+                <div class="shape-width-flex">
+                  <div
+                    *ngFor="let para of searchPara.clarities"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.clarities, para.value, 'Clarity');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new white-bg'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col
+                size="12"
+                *ngIf="searchPara.clarityType == 'advanced'"
+                class="marPad0"
+              >
+                <div class="shape-width-flex">
+                  <div
+                    *ngFor="let para of searchPara.advancedClarities"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.advancedClarities, para.value, 'Clarity');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new white-bg'"
+                  >
+                    <div class="text">{{ para.label |translate }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="default.description" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Description'}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex">
+                  <div
+                    *ngFor="let para of searchPara.descriptions"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.descriptions, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new white-bg'"
+                  >
+                    <div class="text">{{ para.label|translate }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <!--|||||||||||||| DIAMOND TYPE - Mobile ||||||||||||||-->
+          <div *ngIf="default.diamondType" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Diamond Type' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.diamondType"
+                    class="mix-fixed display_f align_item_c"
+                    (click)="toggleSelection(searchPara.diamondType, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-origin' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label | uppercase }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.description" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected"
+                  >{{'Finishing'|translate}}</span
+                >
+              </ion-col>
+            </ion-row>
+            <!-- <ion-row class="ion-text-center mt10Imp ">
+              <ion-col size="12">
+                <span [ngClass]="searchPara.finishingType == 'general'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('finishingType','general')">General</span> 
+
+                <span [ngClass]="searchPara.finishingType == 'parameters'? 'clsSPTitleSelected' : 'clsSPTitle'"
+                  (click)="toggleSelectionPara('finishingType','parameters')">{{'Measurements'}}</span>
+              </ion-col>
+            </ion-row> -->
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.finishings"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.finishings, para.value, 'Finish');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new '"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="shape-width white-bg">
+                <ion-row>
+                  <ion-col size="4" class="mauto">
+                    <span class="clsSPTitleHead small-font">{{'Cut'}}</span>
+                  </ion-col>
+                  <ion-col size="8">
+                    <div
+                      *ngFor="let para of searchPara.cuts"
+                      class="mix-fixed fl"
+                      (click)="searchPara.colorType == 'fancy' ? null : toggleSelection(searchPara.cuts, para.value ,'Cut');"
+                      [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg white-bg'"
+                    >
+                      <div class="inner-box" *ngIf="para.href">
+                        <img class="width-80" [src]="para.href" alt="" />
+                      </div>
+                      <div class="inner-box text pad-5-6">{{ para.label }}</div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="4" class="mauto">
+                    <span class="clsSPTitleHead small-font">{{'Polish'}}</span>
+                  </ion-col>
+                  <ion-col size="8">
+                    <div
+                      *ngFor="let para of searchPara.polishes"
+                      class="mix-fixed fl"
+                      (click)="toggleSelection(searchPara.polishes, para.value,'Polish');"
+                      [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg '"
+                    >
+                      <div class="inner-box" *ngIf="para.href">
+                        <img class="width-80" [src]="para.href" alt="" />
+                      </div>
+                      <div class="inner-box text pad-5-6">{{ para.label }}</div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="4" class="mauto">
+                    <span class="clsSPTitleHead small-font"
+                      >{{'Symmetry' }}</span
+                    >
+                  </ion-col>
+                  <ion-col size="8">
+                    <div
+                      *ngFor="let para of searchPara.symmetries"
+                      class="mix-fixed fl"
+                      (click)="toggleSelection(searchPara.symmetries, para.value, 'Symmetry');"
+                      [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'"
+                    >
+                      <div class="inner-box" *ngIf="para.href">
+                        <img class="width-80" [src]="para.href" alt="" />
+                      </div>
+                      <div class="inner-box text pad-5-6">{{ para.label }}</div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.fluorescence" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Fluorescence' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.fluorescences"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.fluorescences, para.value, 'Fluorescence');"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.lab" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Lab' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.labs"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.labs, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="default.Lotcountry" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Rough Origin' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.Lotcountry"
+                    class="mix-fixed display_f align_item_c"
+                    (click)="toggleSelection(searchPara.Lotcountry, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-origin' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label | uppercase }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <!--|||||||||||||| TRACEABILITY PROTOCOL - Mobile ||||||||||||||-->
+          <div *ngIf="default.traceabilityProtocol" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected"
+                  >{{'Traceability Protocol' }}</span
+                >
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.traceabilityProtocol"
+                    class="mix-fixed display_f align_item_c"
+                    (click)="toggleSelection(searchPara.traceabilityProtocol, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-origin' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label | uppercase }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Price' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width white-bg">
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Discount' }}&nbsp;%</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="round-input border tal fromToInput discount_per_from to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.discountPerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          (ionBlur)="validateFromToInput('discountPer','From')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="round-input border tal fromToInput discount_per_to to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.discountPerTo"
+                          (ionBlur)="validateFromToInput('discountPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Price/Ct' }}&nbsp;($)</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          (input)="numberOnly($event);"
+                          (ionBlur)="validateFromToInput('pricePer','From')"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="price_per_from round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pricePerFrom"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          (ionBlur)="validateFromToInput('pricePer','To')"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="price_per_to round-input tal fromToInput to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pricePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Total Price'}}&nbsp;($)</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="round-input border tal fromToInput amt_per_from to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.amtPerFrom"
+                          (ionBlur)="validateFromToInput('amtPer','From')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                        <ion-input
+                          (input)="numberOnly($event)"
+                          maxlength="10"
+                          inputmode="decimal"
+                          type="number"
+                          class="round-input border tal fromToInput atm_per_to to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.amtPerTo"
+                          (ionBlur)="validateFromToInput('amtPer','To')"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Measurements'}}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width white-bg">
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Table'}} %</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          (ionBlur)="validateFromToInput('Table%','from')"
+                          class="round-input border tal fromToInput tablePerFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                          [(ngModel)]="searchPara.tablePerFrom"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          (ionBlur)="validateFromToInput('Table%','to')"
+                          class="round-input border tal fromToInput tablePerTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.tablePerTo"
+                          (ngModelChange)="getCount(this.searchQuery(true))"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Depth' }} %</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput depthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.depthFrom"
+                          (ionBlur)="validateFromToInput('Depth%','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput depthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.depthTo"
+                          (ionBlur)="validateFromToInput('Depth%','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Length' |translate }} (mm)</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput lengthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.lengthFrom"
+                          (ionBlur)="validateFromToInput('Length','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          (ionBlur)="validateFromToInput('Length','to')"
+                          class="round-input border tal fromToInput lengthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.lengthTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Width'}} (mm)</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput widthFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.widthFrom"
+                          (ionBlur)="validateFromToInput('Width','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          (ionBlur)="validateFromToInput('Width','to')"
+                          class="round-input border tal fromToInput widthTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.widthTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Height'}} (mm)</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput heightFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.heightFrom"
+                          (ionBlur)="validateFromToInput('Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput heightTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.heightTo"
+                          (ionBlur)="validateFromToInput('Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'L/W Ratio' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput ratioFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.ratioFrom"
+                          (ionBlur)="validateFromToInput('L/W','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          (ionBlur)="validateFromToInput('L/W','to')"
+                          class="round-input border tal fromToInput ratioTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.ratioTo"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Crown Angle' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput crownAngleFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownAngleFrom"
+                          (ionBlur)="validateFromToInput('Crown Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput crownAngleTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownAngleTo"
+                          (ionBlur)="validateFromToInput('Crown Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Pavilion Angle' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput pavilionAngleFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionAngleFrom"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput pavilionAngleTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionAngleTo"
+                          (ionBlur)="validateFromToInput('Pavilion Angle','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Crown Height' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput crownHeightFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.crownHeightFrom"
+                          (ionBlur)="validateFromToInput('Crown Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput crownHeightTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.crownHeightTo"
+                          (ionBlur)="validateFromToInput('Crown Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Pavilion Height' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="disInline">
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput pavilionHeightFrom to-from_input-mob"
+                          placeholder="{{'From'}}"
+                          [(ngModel)]="searchPara.pavilionHeightFrom"
+                          (ionBlur)="validateFromToInput('Pavilion Height','from')"
+                        >
+                        </ion-input>
+                        <ion-input
+                          type="number"
+                          inputmode="decimal"
+                          maxlength="10"
+                          class="round-input border tal fromToInput pavilionHeightTo to-from_input-mob"
+                          placeholder="{{'To'}}"
+                          [(ngModel)]="searchPara.pavilionHeightTo"
+                          (ionBlur)="validateFromToInput('Pavilion Height','to')"
+                        >
+                        </ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="5" class="mauto">
+                      <span class="clsSPTitleHead small-font"
+                        >{{'Girdle' }}</span
+                      >
+                    </ion-col>
+                    <ion-col size="7">
+                      <div class="dispContents">
+                        <ion-item
+                          lines="none"
+                          class="ionic_selectable_container_mob"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleFrom"
+                            class="colorWhite savedSearchSelectableMobile border-secondary"
+                            placeholder="{{'From'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                        <ion-item
+                          lines="none "
+                          class="ionic_selectable_container_mob"
+                        >
+                          <ionic-selectable
+                            [(ngModel)]="searchPara.selectedGirdleTo"
+                            class="colorWhite savedSearchSelectableMobile border-secondary"
+                            placeholder="{{'To'}}"
+                            [items]="searchPara.girdleOptions"
+                            itemValueField="value"
+                            itemTextField="label"
+                            [canSearch]="true"
+                            (onChange)="getCount(this.searchQuery(true))"
+                          >
+                          </ionic-selectable>
+                        </ion-item>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.internalStatus" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Internal Status' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.InternalStatus"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.InternalStatus, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <!-- <div *ngIf="default.externalStatus" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">Stone Status</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.externalStatus"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.externalStatus, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label  }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div> -->
+
+          <div *ngIf="default.transType" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Trans Type' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.TransType"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.TransType, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.users" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Users' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.Users"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.Users, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.size" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Size' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.AllSize"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.AllSize, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.location" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Location' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.location"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.location, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.box" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Box' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.Box"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.Box, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.department" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Department' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.Department"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.Department, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="default.fm" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'FM' }}</span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div
+                    *ngFor="let para of searchPara.fm"
+                    class="mix-fixed"
+                    (click)="toggleSelection(searchPara.fm, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'"
+                  >
+                    <div class="text">{{ para.label }}</div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <!-- <div *ngIf="default.location" class="mt10Imp">
+            <ion-row class="ion-text-center mt10Imp ">
+              <ion-col size="6" offset="3">
+                <span class="clsSPTitleSelected">{{'Location' }} </span>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-text-center mt10Imp">
+              <ion-col size="12" class="marPad0">
+                <div class="shape-width-flex white-bg">
+                  <div *ngFor="let para of searchPara.Location" class="mix-fixed"
+                    (click)="toggleSelection(searchPara.Location, para.value, null);"
+                    [ngClass]="para.isRefined ? 'clsShapeImgSelected-new' : 'clsShapeImg-new'">
+                    <div class="text">
+                      {{ para.label  }}
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div> -->
+
+          <!-- <ion-row class="m15" *ngIf="default.location">
+            <ion-col>
+              <span class="clsSPTitleHead">{{'Location' }}</span>
+            </ion-col>
+            <ion-col size="10" class="overflow-auto min-width-100 display-flex">
+              <div *ngFor="let para of searchPara.Location" class="mix-fixed"
+                (click)="toggleSelection(searchPara.Location, para.value);"
+                [ngClass]="para.isRefined ? 'clsShapeImgSelected' : 'clsShapeImg'">
+                <div class="inner-box" *ngIf="para.href">
+                  <img class="width-80" [src]="para.href">
+                </div>
+                <div class="inner-box text pad-5-10">
+                  {{ para.label  }} <br>
+                  {{ para.count }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row> -->
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row *ngIf="default.search" class="fixed-row">
+        <ion-col class="tar mr35" class="search-fixed-row">
+          <ion-button fill="clear" (click)="resetSearch();searchPara.saveSearchName = null;" class="round-button v2Btn">
+            Clear </ion-button>
+          <ion-button (click)="searchQuery()" class="round-button v2Btn"> Search </ion-button>
+        </ion-col>
+      </ion-row> -->
+    </div>
+  </div>
+  <!-- </ais-instantsearch> -->
+  <!-- <ion-row class="graybg largeFilters">
+
+  </ion-row> -->
+  <ion-row class="mt10Imp mt10Imp smallFilters"> </ion-row>
+</ion-content>
+
+<ion-footer *ngIf="mobileView">
+  <ion-row *ngIf="default.search" class="marPad0">
+    <ion-col size="6" class="marPad0">
+      <ion-button
+        fill="clear"
+        expand="full"
+        #clearBtn
+        (click)="resetSearch();searchPara.saveSearchName = null;"
+        class="footer-btn marPad0"
+      >
+        {{'Clear'}}
+      </ion-button>
+    </ion-col>
+    <ion-col size="6" class="marPad0">
+      <ion-button
+        (click)="searchQuery()"
+        expand="full"
+        class="round-button marPad0 searchBtnHeight"
+      >
+        {{'Search' }} <br />
+        ({{searchCount}}{{searchCount >= 10000 ? '+' : ''}})
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

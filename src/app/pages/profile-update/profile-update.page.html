@@ -1,0 +1,114 @@
+<app-header showBackButton="true"></app-header>
+
+<ion-content class="ion-padding">
+  <div [ngClass]="!onMobile ? 'marVw pageMinHt' : 'pageMinHt'">
+    <ion-card *ngIf="userData">
+      <ion-card-content>
+        <ion-item-group *ngIf="userData">
+          <!-- <form [formGroup]="profile_form"  (ngSubmit)="Update(profile_form.value)" class="frm"> -->
+          <form
+            [formGroup]="profile_form"
+            (ngSubmit)="onSubmit(profile_form.value)"
+            class="frm contentDiv"
+          >
+            <ion-item>
+              <ion-label position="floating" color="primary"
+                >{{"Name"| translate}}*</ion-label
+              >
+              <ion-input
+                type="text"
+                formControlName="name"
+                maxlength="30"
+              ></ion-input>
+            </ion-item>
+
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.name">
+                <div
+                  class="error-message"
+                  *ngIf="profile_form.get('name').hasError(validation.type) && (profile_form.get('name').dirty || profile_form.get('name').touched)"
+                >
+                  <ion-icon name="information-circle-outline"></ion-icon> {{
+                  validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <ion-item>
+              <ion-label position="floating" color="primary"
+                >{{"phone"| translate}}*</ion-label
+              >
+              <ion-input
+                type="text"
+                [disabled]="disabled"
+                formControlName="phone"
+                maxlength="30"
+              ></ion-input>
+            </ion-item>
+
+            <div class="validation-errors">
+              <ng-container
+                *ngFor="let validation of validation_messages.phone"
+              >
+                <div
+                  class="error-message"
+                  *ngIf="profile_form.get('phone').hasError(validation.type) && (profile_form.get('phone').dirty || profile_form.get('phone').touched)"
+                >
+                  <ion-icon name="information-circle-outline"></ion-icon> {{
+                  validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <ion-item>
+              <ion-label position="floating" color="primary"
+                >{{"Email"| translate}} *</ion-label
+              >
+              <ion-input
+                type="text"
+                [disabled]="disabled"
+                formControlName="email"
+                maxlength="40"
+              ></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container
+                *ngFor="let validation of validation_messages.email"
+              >
+                <div
+                  class="error-message"
+                  *ngIf="profile_form.get('email').hasError(validation.type) && (profile_form.get('email').dirty || profile_form.get('email').touched)"
+                >
+                  <ion-icon name="information-circle-outline"></ion-icon> {{
+                  validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <ion-row *ngIf="userData" class="tar dispBlock">
+              <ion-button
+                [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn': ''"
+                type="submit"
+                [disabled]="!profile_form.valid"
+                >{{"Update"| translate}}</ion-button
+              >
+            </ion-row>
+          </form>
+          <!-- <ion-item-divider color="light">Shipping Address</ion-item-divider> -->
+          <!-- <ion-item>
+            <ion-input required type="text" [(ngModel)]="Name" placeholder="Name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input required type="text" [(ngModel)]="Mobile" placeholder="Enter phone number"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input required type="text"  [(ngModel)]="Email" #contactemail="ngModel" placeholder="Email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"></ion-input>
+            
+          </ion-item> -->
+        </ion-item-group>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>

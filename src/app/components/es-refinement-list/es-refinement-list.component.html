@@ -1,0 +1,59 @@
+<div *ngIf="view=='horizontalView'">
+  <label class="marginLeftRight" *ngFor="let item of items" [class.hide]="item.count==0">
+    <ion-checkbox type="checkbox" [(ngModel)]="item.isRefined"
+      [checked]="item.isRefined" (click)="refine(item, $event)" ></ion-checkbox> {{ item.label }} ({{ item.count }})
+  </label>
+</div>
+<div *ngIf="view=='verticalView'">
+  <div>
+    <div>
+      <ion-searchbar #input debounce="2000" showCancelButton="focus" [placeholder]="placeholder"
+      (ionChange)="search($event)" (keyup.enter)="search($event)" [(ngModel)]="query"></ion-searchbar>
+    </div>
+    <ion-list lines="none" class="marPad0">
+      <ion-item *ngFor="let item of items; let i=index" [class.hide]="((hideItemsMoreThanShowMoreLimit && i>showMoreLimit) || item.count==0)">
+        <ion-checkbox type="checkbox" [(ngModel)]="item.isRefined" (click)="refineValue(item, $event);"
+          [checked]="item.isRefined" ></ion-checkbox>
+        <ion-label class="mLeft">
+          {{ item.label }} <span class="count" *ngIf="item.count">{{ item.count }}</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button *ngIf="hideItemsMoreThanShowMoreLimit" (click)="toggleShowMore()">Show more</ion-button>
+    <ion-button *ngIf="!hideItemsMoreThanShowMoreLimit" (click)="toggleShowMore()">Show less</ion-button>
+  </div>
+</div>
+<div *ngIf="view=='currentFilters'">
+  <ion-row *ngFor="let item of items" [class.hide]="!item.isRefined" class="currentFilterSpan">
+    <ion-col class="marPad0">
+      <ion-label [class.hide]="!item.isRefined">
+        <span class="marPad2">{{ item.label }}:</span> 
+        <span *ngFor="let v of item.values" class="marPad2 currentFilter" [class.hide]="!v.isRefined">
+          <span>
+            {{ v.value }}
+            <ion-icon name="close" (click)="removeFilter(v,item)"></ion-icon>
+          </span>
+        </span>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+</div>
+<div *ngIf="view=='diamondVerticalView'">
+  <div>
+    <div>
+      <ion-searchbar #input debounce="2000" showCancelButton="focus" [placeholder]="placeholder"
+      (ionChange)="search($event)" (keyup.enter)="search($event)" [(ngModel)]="query"></ion-searchbar>
+    </div>
+    <ion-list lines="none" class="marPad0">
+      <ion-item *ngFor="let item of items; let i=index" [class.hide]="((hideItemsMoreThanShowMoreLimit && i>showMoreLimit) || item.count==0)">
+        <ion-checkbox type="checkbox" (click)="refineValue(item, $event);"
+          [checked]="item.isRefined" ></ion-checkbox>
+        <ion-label class="mLeft">
+          {{ item.label }} <span class="count" *ngIf="item.count">{{ item.count }}</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button *ngIf="hideItemsMoreThanShowMoreLimit" (click)="toggleShowMore()">Show more</ion-button>
+    <ion-button *ngIf="!hideItemsMoreThanShowMoreLimit" (click)="toggleShowMore()">Show less</ion-button>
+  </div>
+</div>

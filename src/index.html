@@ -1,26 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async id="lnkGoogleAnalytics" src=""></script>
+    <script id="lnkGoogleAnalytics2"></script> -->
 
-<head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
+    <meta charset="utf-8" />
 
-  <base href="/" />
+    <base href="/" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * 'self' data: gap: 'unsafe-inline' 'unsafe-eval';
+      style-src * 'self' 'unsafe-inline' 'unsafe-eval' gap:;
+      script-src * 'self' 'unsafe-inline' 'unsafe-eval' gap:; frame-src *;"
+    />
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
 
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="assets/icon/favicon.png"
+      id="lnkFavicon"
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/WhitneyHTF-SemiBold.woff"
+      as="font"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/WhitneyHTF-Book.woff"
+      as="font"
+      crossorigin
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- <link rel="preconnect" href="https://checkout.razorpay.com">
+  <link rel="preconnect" href="https://api.razorpay.com"> -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.7.0/introjs.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.7.0/intro.min.js"></script>
 
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-</head>
+    <!-- Meta -->
+    <title>KG Diamond | Store powered by MobiOffice</title>
+    <meta
+      property="favicon"
+      content="https://res.cloudinary.com/kgdiamonds/image/upload/v1625656015/logo/37_footer.png"
+    />
+    <meta name="description" content="KG Diamond" />
+    <meta name="keywords" content="KG Diamond, diamond" />
+    <meta name="author" content="KG Diamond" />
+    <meta property="og:title" content="KG Diamond" />
+    <meta property="og:description" content="KG Diamond" />
+    <meta property="og:type" content="website" />
+    <meta property="og:width" content="400" />
+    <meta property="og:height" content="300" />
+    <meta property="og:image:alt" content="KG Diamond" />
+    <meta property="og:site_name" content="KG Diamond" />
+    <meta property="og:url" content="https://kgdiamonds.dealerclub.in/" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/kgdiamonds/image/upload/v1625656015/logo/37_footer.png"
+    />
+    <meta property="og:locale" content="en_IN" />
+    <!-- Meta -->
 
-<body>
-  <app-root></app-root>
-</body>
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
+    <script src="cordova.js"></script>
+
+    <div id="fb-root"></div>
+    <!--script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script-->
+    <!--script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script-->
+    <!-- <script async src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+    <!-- <script src="/node_modules/elasticsearch-browser/elasticsearch.angular.min.js"></script> -->
+
+    <!-- Facebook Pixel Code -->
+
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "243141909220075");
+      fbq("track", "PageView");
+
+      // load Branch
+      // (function (b, r, a, n, c, h, _, s, d, k) {
+      //   if (!b[n] || !b[n]._q) {
+      //     for (; s < _.length; ) c(h, _[s++]);
+      //     d = r.createElement(a);
+      //     d.async = 1;
+      //     d.src = 'https://cdn.branch.io/branch-latest.min.js';
+      //     k = r.getElementsByTagName(a)[0];
+      //     k.parentNode.insertBefore(d, k);
+      //     b[n] = h;
+      //   }
+      // })(
+      //   window,
+      //   document,
+      //   'script',
+      //   'branch',
+      //   function (b, r) {
+      //     b[r] = function () {
+      //       b._q.push([r, arguments]);
+      //     };
+      //   },
+      //   { _q: [], _v: 1 },
+      //   'addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking qrCode'.split(
+      //     ' '
+      //   ),
+      //   0
+      // );
+      // init Branch
+      // var linkData = {
+      //   campaign: 'content 123',
+      //   channel: 'facebook',
+      //   feature: 'dashboard',
+      //   stage: 'new user',
+      //   tags: ['tag1', 'tag2', 'tag3'],
+      //   alias: '',
+      //   data: {
+      //     custom_bool: true,
+      //     custom_int: Date.now(),
+      //     custom_string: 'hello',
+      //     $og_title: 'Title',
+      //     $og_description: 'Description',
+      //     $og_image_url: 'http://lorempixel.com/400/400',
+      //   },
+      // };
+      // branch.init('key_live_bunaH0TscZ16Zgs4UkY2NallyvnI6BA5');
+      // var options = { no_journeys: true, open_app: true };
+
+      // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // if (document.URL.indexOf('http://localhost') === 0 ||
+      //   document.URL.indexOf('ionic') === 0 ||
+      //   document.URL.indexOf('https://localhost') === 0) {
+      //   console.log('-->>> app')
+      // }
+
+      var Tawk_API = Tawk_API || {},
+        Tawk_LoadStart = new Date();
+      (function () {
+        var s1 = document.createElement("script"),
+          s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/64d0902dcc26a871b02db585/1h77b6dd5";
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+    </script>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=1917627451807396&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
+  </head>
+
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

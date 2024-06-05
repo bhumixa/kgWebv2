@@ -1,0 +1,2221 @@
+<app-header
+  showBackButton="true"
+  [pageName]="defaultpageName"
+  pageTitle="My Order"
+></app-header>
+<ion-content class="ffWhitney">
+  <div class="minHeightMinus120 contentDiv">
+    <!-- skeleton -->
+    <div
+      class="maxw1200"
+      *ngIf="showSkeleton && _companyService.productListing != 'grid'"
+    >
+      <ion-row>
+        <ion-col
+          size="9"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="9"
+          size-lg="9"
+        >
+          <ion-card class="marPad0">
+            <ion-card-content>
+              <ion-row>
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="h55-skel"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <ion-card class="marPad0">
+            <ion-card-content>
+              <ion-row class="addressHeader">
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text
+                    animated
+                    class="h35-skel"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <ion-card class="marPad0">
+            <ion-card-content>
+              <ion-row>
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <!-- <ion-card class=" marPad0" *ngFor="let data of _configService.arrayOne(4)">
+            <ion-card-content>
+              <ion-row>
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card> -->
+        </ion-col>
+        <ion-col
+          size="3"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="3"
+          size-lg="3"
+        >
+          <ion-skeleton-text animated class="h35-skel"></ion-skeleton-text>
+          <ion-card class="marPad0">
+            <ion-card-content>
+              <ion-row>
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <ion-skeleton-text animated class="h35-skel"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!-- end -->
+    <!-- skeleton -->
+    <div
+      class="maxw1200"
+      *ngIf="showSkeleton && _companyService.productListing == 'grid'"
+    >
+      <ion-row>
+        <ion-col
+          size="9"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="9"
+          size-lg="9"
+        >
+          <ion-row>
+            <ion-col class="tal">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="tal">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="3"> </ion-col>
+            <ion-col size="3">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let data of _configService.arrayOne(5)">
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="1">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col
+          size="3"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="3"
+          size-lg="3"
+        >
+          <ion-skeleton-text animated class="h35-skel"></ion-skeleton-text>
+          <ion-card class="marPad0">
+            <ion-card-content>
+              <ion-row>
+                <ion-col class="tal">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <ion-skeleton-text animated class="h35-skel"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!-- end -->
+    <ion-card
+      class="maxw1200 marPad0 tac mAuto"
+      *ngIf="!showSkeleton && (!cartData?.data?.products || cartData?.data?.products.length == 0)"
+    >
+      <ion-card-content>
+        <ion-row (click)="goToHomePage()">
+          <ion-col class="f13p fw600 cursor colorPrimary">
+            {{"Cart is Empty, Click to search products" | translate}}
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <div class="maxw1200" *ngIf="!showSkeleton">
+      <!-- order details -->
+
+      <ion-row
+        class="marTop10"
+        *ngIf="(view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0) || view == 'address'"
+      >
+        <ion-col>
+          <!-- <label *ngIf="view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0"
+            class="textAboveButton">
+            Next step: Choose Delivery Address
+          </label> -->
+          <ion-input
+            *ngIf="view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0"
+            [placeholder]="'Enter Order Remarks' | translate"
+            type="text"
+            [(ngModel)]="clientRemark"
+            class="brdGray w100 mw100"
+          >
+          </ion-input>
+
+          <label *ngIf="view == 'address'" class="textAboveButton">
+            {{"Next step: Choose Payment Mode" | translate}}
+          </label>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col offsetLg="9" sizeLg="3">
+          <!-- <ion-button *ngIf="view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0"
+            [ngClass]="!onMobile ? 'buttonTop' : ''" expand="block" (click)="buynow('address')"
+            [disabled]="disableContinueButton">
+            Continue
+          </ion-button>
+          <ion-button *ngIf="!!addressId && view == 'address'" [ngClass]="!onMobile ? 'buttonTop' : ''" expand="block"
+            (click)="buynow('payment')" [disabled]="disableContinueButton">
+            Continue
+          </ion-button> -->
+          <ion-button
+            [ngClass]="!onMobile ? 'buttonTop' : ''"
+            *ngIf="view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0"
+            expand="block"
+            (click)="placeOrder()"
+            [disabled]="buttonDisabled"
+          >
+            <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+            {{ payNowText | translate}}
+          </ion-button>
+          <ion-button
+            class="placeOrderBtn"
+            [ngClass]="!onMobile ? 'buttonTop' : ''"
+            *ngIf="cartData?.data.length == 0"
+            expand="block"
+            (click)="goToHomePage()"
+          >
+            {{"Add items to Cart" | translate}}
+          </ion-button>
+          <br *ngIf="!addressId" [ngClass]="!onMobile ? 'buttonTop' : ''" />
+          <br *ngIf="!addressId" [ngClass]="!onMobile ? 'buttonTop' : ''" />
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col
+          class="pageStartData mbLastRow"
+          size="9"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="9"
+          size-lg="9"
+        >
+          <!-- <ion-toolbar > -->
+          <ion-searchbar
+            *ngIf="userType == 'User' && view == 'address'"
+            placeholder="Search Customer"
+            [(ngModel)]="searchText"
+            (ionChange)="fetchCustomer()"
+            [showCancelButton]="shouldShowCancel"
+          >
+          </ion-searchbar>
+          <!-- </ion-toolbar> -->
+          <ion-row
+            class="myShoppingBag cardMaxWidth"
+            id="xfadeshow"
+            *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0 && view == 'bag'"
+          >
+            <ion-col class="tal">
+              <ion-label class="wpNoWrap">
+                {{"My Order"| translate}} ({{ cartData.data.count.TotalQuantity
+                }} {{ getItemWord() }})
+                <span *ngIf="_companyService.productListing == 'grid'">
+                  ({{cartData?.data?.totalProduct?.TotalProduct}} {{"Items"|
+                  translate}})</span
+                >
+              </ion-label>
+            </ion-col>
+            <ion-col class="tar" *ngIf="!hideStorePrice">
+              <ion-label>
+                <span *ngIf="_companyService.productListing != 'grid'">
+                  {{"Total" | translate}}:
+                </span>
+                {{ _companyService.currencySymbol }}{{
+                cartData.data.count.FinalPrice | number: ".2-2" }}
+              </ion-label>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0 && view == 'bag'"
+          >
+            <ng-container *ngIf="_companyService.productListing == 'grid'">
+              <app-dx-data-grid
+                [tableMobileId]="'manage-order-grid'"
+                class="w100"
+                [columns]="manageOrderPageColumns"
+                [rowData]="cartData?.data?.products"
+                mode="single"
+                [selected]="selected"
+                (callFunction)="selected = $event.selectedRowsData"
+                (selectStone)="singleProduct($event)"
+                [allowDeleting]="true"
+                [orderBook]="orderBook"
+                (deleteFunction)="removeCartProduct($event)"
+                [mobileView]="true"
+                [page]="'manage-order'"
+                [showCheckBox]="false"
+                [showSummary]="true"
+                (selectionViewData)="selectionViewData($event)"
+              >
+              </app-dx-data-grid>
+            </ng-container>
+            <ng-container
+              *ngIf="_companyService.productListing != 'grid' && _companyService.productListing != 'MobileList' "
+            >
+              <ion-card
+                class="marPad0"
+                *ngFor="let item of cartData.data.products | paginate: { id: 'server', itemsPerPage: limit, currentPage: page, totalItems: cartData.data.totalProduct.TotalProduct }; let i = index"
+              >
+                <!-- <ion-card-header class="cardHeader">My Shopping Cart</ion-card-header> -->
+
+                <ion-card-content class="pb-pt-0" (click)="openCart(item.id)">
+                  <ion-row>
+                    <ion-col size="2">
+                      <!-- <cl-image
+                        secure="true"
+                        public-id="/logo/{{_databaseService.refCompanyId}}"
+                        format="png"
+                        *ngIf="!item.image"
+                        class="cartImgMinHt"
+                      >
+                        <cl-transformation
+                          width="78"
+                          height="105"
+                          gravity="auto"
+                          crop="fill_pad"
+                        ></cl-transformation>
+                      </cl-image>
+                      <cl-image
+                        secure="true"
+                        [public-id]="item.image"
+                        format="jpg"
+                        *ngIf="item.image"
+                        class="cartImgMinHt"
+                      >
+                        <cl-transformation
+                          width="78"
+                          height="105"
+                          gravity="auto"
+                          crop="fill"
+                        ></cl-transformation>
+                      </cl-image> -->
+                    </ion-col>
+                    <ion-col size="9">
+                      <ion-row class="itemName" id="fadeshow">
+                        <ion-col size="9">
+                          <ion-label class="fl"
+                            >{{ item.title | translate}}</ion-label
+                          >
+                        </ion-col>
+                        <ion-col size="3" *ngIf="!hideStorePrice">
+                          <ion-label
+                            class="fr"
+                            *ngIf="item.totalDiscountPrice == 0"
+                          >
+                            {{ _companyService.currencySymbol }}{{ item.total |
+                            number: ".2-2" }}
+                          </ion-label>
+                          <!-- <ion-label class="fr total" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice==0">
+                          {{ _companyService.currencySymbol }}{{item.total * item.taxes /100 }}(GST) </ion-label> -->
+                          <!-- <ion-label class="fr total" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice!=0">
+                          {{ _companyService.currencySymbol }}{{item.totalDiscountPrice * item.taxes /100 }}(GST) </ion-label> -->
+                        </ion-col>
+                      </ion-row>
+                      <ion-row id="fadeshow1">
+                        <ion-col>
+                          <ion-label>{{ item.title | translate}}</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row
+                        class="total"
+                        id="fadeshow marPad0"
+                        *ngIf="!hideStorePrice"
+                      >
+                        <ion-col size="9" class="marPad0">
+                          <!-- <ion-label class="fl fs12">#{{ item.sku }}</ion-label> -->
+                        </ion-col>
+                        <ion-col size="3" class="marPad0">
+                          <ion-label class="fr" *ngIf="item.discountPrice != 0">
+                            {{ _companyService.currencySymbol }}{{ item.SubTotal
+                            | number: ".2-2" }}
+                          </ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <!-- <ion-row id="fadeshow1"> -->
+                      <!-- <ion-col> -->
+                      <!-- <label>#{{ item.sku }}</label> -->
+                      <!-- </ion-col> -->
+                      <!-- </ion-row> -->
+                      <ion-row class="itemName">
+                        <ion-col class="marPad0">
+                          <!-- <ion-label  class="fl" >#{{item.sku}}</ion-label> -->
+                          <ion-label
+                            *ngFor="let variantParam of item.listOfProductVariantParameter"
+                            class="pr5"
+                          >
+                            {{ variantParam.name }}: {{ variantParam.value
+                            }}</ion-label
+                          >
+                          <!-- <ion-label  *ngIf="item.totalDiscountPrice==0">{{ _companyService.currencySymbol }}{{item.total}}</ion-label><br/> -->
+                        </ion-col>
+                      </ion-row>
+                      <ion-row class="itemName">
+                        <ion-col *ngIf="!hideStorePrice">
+                          <del *ngIf="item.discount != 0"
+                            >{{ _companyService.currencySymbol }}{{ item.price |
+                            number: ".2-2" }} &nbsp;</del
+                          >
+                          {{ _companyService.currencySymbol }}{{
+                          item.discountPrice | number: ".2-2" }}
+                        </ion-col>
+                        <ion-col>
+                          <ion-label class="fr"
+                            >Qty: {{ item.quantity }}</ion-label
+                          >
+                        </ion-col>
+                      </ion-row>
+                      <!-- <ion-row id="fadeshow1" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice==0" class="total">
+                      <ion-col>
+                        <label>
+                          {{ _companyService.currencySymbol }}{{item.total * item.taxes /100 }}(GST) 
+                        </label>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row id="fadeshow1" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice!=0" class="total">
+                      <ion-col>
+                        <label>
+                          {{ _companyService.currencySymbol }}{{item.totalDiscountPrice * item.taxes /100 }}(GST) 
+                        </label>
+                      </ion-col>
+                    </ion-row> -->
+                      <!-- <ion-row id="fadeshow1" *ngIf="item.discountPrice != 0"> -->
+                      <!-- <ion-col> -->
+
+                      <!-- <label><del *ngIf="item.discount != 0">{{ _companyService.currencySymbol }}{{ item.price * item.quantity }} &nbsp;</del>  -->
+                      <!-- {{ _companyService.currencySymbol }}{{ item.discountPrice | number: ".2-2" }}</label> -->
+                      <!-- <ion-label *ngIf="item.discountPrice == 0">{{ _companyService.currencySymbol }}{{ item.SubTotal | number: ".2-2" }}</ion-label> -->
+
+                      <!-- </ion-col> -->
+                      <!-- </ion-row> -->
+                      <ion-row id="fadeshow1" *ngIf="item.discountPrice == 0">
+                        <ion-col>
+                          <label
+                            >{{ _companyService.currencySymbol }}{{
+                            item.SubTotal | number: ".2-2" }}</label
+                          >
+                        </ion-col>
+                      </ion-row>
+                      <ion-row
+                        *ngIf="!!item.selectedAddOns && item.selectedAddOns.length > 0"
+                      >
+                        <ion-col>
+                          <ion-row>
+                            <ion-col class="tal">
+                              {{"Add Ons"| translate}}:
+                            </ion-col>
+                          </ion-row>
+                          <ion-row
+                            *ngFor="let addOn of item.selectedAddOns"
+                            class="marPad0"
+                          >
+                            <ion-col size="1">
+                              <ion-img
+                                *ngIf="!addOn.image && !!companyLogo"
+                                [src]="companyLogo"
+                              ></ion-img>
+                              <ion-img
+                                *ngIf="!!addOn.image"
+                                [src]="addOn.image"
+                              ></ion-img>
+                              <!-- <cl-image secure="true"  public-id="/logo/{{_databaseService.refCompanyId}}" format="png"
+                                *ngIf="!addOn.image" >
+                                <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad">
+                                </cl-transformation>
+                              </cl-image>
+                              <cl-image secure="true"  [public-id]="addOn.image" format="jpg" *ngIf="addOn.image">
+                                <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+                              </cl-image> -->
+                            </ion-col>
+                            <ion-col size="11">
+                              <ion-label
+                                >{{ addOn.name }}
+                                <!-- - {{ _companyService.currencySymbol }}{{ addOn.addOnPrice }} -->
+                              </ion-label>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="item.price > 0" class="marPad0">
+                    <ion-col
+                      size="6"
+                      size-xs="6"
+                      size-sm="6"
+                      size-md="6"
+                      size-lg="6"
+                      class="fl marPad0"
+                    >
+                      <ion-button
+                        class="rmvButton"
+                        expand="block"
+                        fill="clear"
+                        *ngIf="!hideFavourites"
+                        (click)="addToFavorite(item)"
+                      >
+                        <ion-icon slot="start" name="heart"></ion-icon>
+                        {{"MOVE TO WISHLIST"| translate}}
+                      </ion-button>
+                    </ion-col>
+
+                    <ion-col
+                      size="6"
+                      size-xs="6"
+                      size-sm="6"
+                      size-md="6"
+                      size-lg="6"
+                      class="fr marPad0"
+                    >
+                      <ion-button
+                        class="rmvButton"
+                        expand="block"
+                        fill="clear"
+                        (click)="removeCartProduct(item); $event.stopPropagation()"
+                      >
+                        {{"REMOVE"| translate}}
+                        <ion-icon
+                          class="colorRed"
+                          slot="start"
+                          name="trash"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ng-container>
+            <ng-container
+              *ngIf="_companyService.productListing == 'MobileList'"
+            >
+              <ion-card
+                class="marPad0"
+                *ngFor="let item of cartData.data.products | paginate: { id: 'server', itemsPerPage: limit, currentPage: page, totalItems: cartData.data.totalProduct.TotalProduct }; let i = index"
+              >
+                <!-- <ion-card-header class="cardHeader">My Shopping Cart</ion-card-header> -->
+
+                <ion-card-content class="pb-pt-0" (click)="openCart(item.id)">
+                  <ion-row>
+                    <ion-col>
+                      <ion-row class="itemName" id="fadeshow">
+                        <ion-col size="9" class="marPad0">
+                          <ion-label class="fl">{{ item.title }}</ion-label>
+                        </ion-col>
+                        <ion-col
+                          size="3"
+                          *ngIf="!hideStorePrice"
+                          class="marPad0"
+                        >
+                          <ion-label
+                            class="fr"
+                            *ngIf="item.totalDiscountPrice == 0"
+                          >
+                            {{ _companyService.currencySymbol }}{{ item.total |
+                            number: ".2-2" }}
+                          </ion-label>
+                          <!-- <ion-label class="fr total" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice==0">
+                          {{ _companyService.currencySymbol }}{{item.total * item.taxes /100 }}(GST) </ion-label> -->
+                          <!-- <ion-label class="fr total" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice!=0">
+                          {{ _companyService.currencySymbol }}{{item.totalDiscountPrice * item.taxes /100 }}(GST) </ion-label> -->
+                        </ion-col>
+                      </ion-row>
+                      <ion-row id="fadeshow1">
+                        <ion-col class="marPad0">
+                          <ion-label>{{ item.title | translate }}</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row
+                        class="total"
+                        id="fadeshow marPad0"
+                        *ngIf="!hideStorePrice"
+                      >
+                        <ion-col size="9" class="marPad0">
+                          <!-- <ion-label class="fl fs12">#{{ item.sku }}</ion-label> -->
+                        </ion-col>
+                        <ion-col size="3" class="marPad0">
+                          <ion-label class="fr" *ngIf="item.discountPrice != 0">
+                            {{ _companyService.currencySymbol }}{{ item.SubTotal
+                            | number: ".2-2" }}
+                          </ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <!-- <ion-row id="fadeshow1"> -->
+                      <!-- <ion-col> -->
+                      <!-- <label>#{{ item.sku }}</label> -->
+                      <!-- </ion-col> -->
+                      <!-- </ion-row> -->
+                      <ion-row class="itemName">
+                        <ion-col class="marPad0">
+                          <!-- <ion-label  class="fl" >#{{item.sku}}</ion-label> -->
+                          <ion-label
+                            *ngFor="let variantParam of item.listOfProductVariantParameter"
+                            class="pr5"
+                          >
+                            {{ variantParam.name }}: {{ variantParam.value
+                            }}</ion-label
+                          >
+                          <!-- <ion-label  *ngIf="item.totalDiscountPrice==0">{{ _companyService.currencySymbol }}{{item.total}}</ion-label><br/> -->
+                        </ion-col>
+                      </ion-row>
+                      <ion-row class="itemName">
+                        <ion-col *ngIf="!hideStorePrice">
+                          <del *ngIf="item.discount != 0"
+                            >{{ _companyService.currencySymbol }}{{ item.price |
+                            number: ".2-2" }} &nbsp;</del
+                          >
+                          {{ _companyService.currencySymbol }}{{
+                          item.discountPrice | number: ".2-2" }}
+                        </ion-col>
+                        <ion-col>
+                          <ion-label class="fr"
+                            >Qty: {{ item.quantity }}</ion-label
+                          >
+                        </ion-col>
+                      </ion-row>
+                      <!-- <ion-row id="fadeshow1" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice==0" class="total">
+                      <ion-col>
+                        <label>
+                          {{ _companyService.currencySymbol }}{{item.total * item.taxes /100 }}(GST) 
+                        </label>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row id="fadeshow1" *ngIf="item.taxAblePrice != 0 && item.totalDiscountPrice!=0" class="total">
+                      <ion-col>
+                        <label>
+                          {{ _companyService.currencySymbol }}{{item.totalDiscountPrice * item.taxes /100 }}(GST) 
+                        </label>
+                      </ion-col>
+                    </ion-row> -->
+                      <!-- <ion-row id="fadeshow1" *ngIf="item.discountPrice != 0"> -->
+                      <!-- <ion-col> -->
+
+                      <!-- <label><del *ngIf="item.discount != 0">{{ _companyService.currencySymbol }}{{ item.price * item.quantity }} &nbsp;</del>  -->
+                      <!-- {{ _companyService.currencySymbol }}{{ item.discountPrice | number: ".2-2" }}</label> -->
+                      <!-- <ion-label *ngIf="item.discountPrice == 0">{{ _companyService.currencySymbol }}{{ item.SubTotal | number: ".2-2" }}</ion-label> -->
+
+                      <!-- </ion-col> -->
+                      <!-- </ion-row> -->
+                      <ion-row id="fadeshow1" *ngIf="item.discountPrice == 0">
+                        <ion-col>
+                          <label
+                            >{{ _companyService.currencySymbol }}{{
+                            item.SubTotal | number: ".2-2" }}</label
+                          >
+                        </ion-col>
+                      </ion-row>
+                      <ion-row
+                        *ngIf="!!item.selectedAddOns && item.selectedAddOns.length > 0"
+                      >
+                        <ion-col>
+                          <ion-row>
+                            <ion-col class="tal">
+                              {{"Add Ons"| translate}}:
+                            </ion-col>
+                          </ion-row>
+                          <ion-row
+                            *ngFor="let addOn of item.selectedAddOns"
+                            class="marPad0"
+                          >
+                            <ion-col size="1">
+                              <ion-img
+                                *ngIf="!addOn.image && !!companyLogo"
+                                [src]="companyLogo"
+                              ></ion-img>
+                              <ion-img
+                                *ngIf="!!addOn.image"
+                                [src]="addOn.image"
+                              ></ion-img>
+                              <!-- <cl-image secure="true"  public-id="/logo/{{_databaseService.refCompanyId}}" format="png"
+                                *ngIf="!addOn.image" >
+                                <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad">
+                                </cl-transformation>
+                              </cl-image>
+                              <cl-image secure="true"  [public-id]="addOn.image" format="jpg" *ngIf="addOn.image">
+                                <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+                              </cl-image> -->
+                            </ion-col>
+                            <ion-col size="11">
+                              <ion-label
+                                >{{ addOn.name }}
+                                <!-- - {{ _companyService.currencySymbol }}{{ addOn.addOnPrice }} -->
+                              </ion-label>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="item.price > 0" class="marPad0">
+                    <ion-col
+                      size="6"
+                      size-xs="6"
+                      size-sm="6"
+                      size-md="6"
+                      size-lg="6"
+                      class="fl marPad0"
+                    >
+                      <ion-button
+                        class="rmvButton"
+                        expand="block"
+                        fill="clear"
+                        *ngIf="!hideFavourites"
+                        (click)="addToFavorite(item)"
+                      >
+                        <ion-icon slot="start" name="heart"></ion-icon>
+                        {{" MOVE TO WISHLIST"| translate}}
+                      </ion-button>
+                    </ion-col>
+
+                    <ion-col
+                      size="6"
+                      size-xs="6"
+                      size-sm="6"
+                      size-md="6"
+                      size-lg="6"
+                      class="fr marPad0"
+                    >
+                      <ion-button
+                        class="rmvButton"
+                        expand="block"
+                        fill="clear"
+                        (click)="removeCartProduct(item); $event.stopPropagation()"
+                      >
+                        {{"REMOVE"| translate}}
+                        <ion-icon
+                          class="colorRed"
+                          slot="start"
+                          name="trash"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ng-container>
+            <pagination-controls
+              *ngIf="_companyService.productListing != 'grid'"
+              [maxSize]="maxSize"
+              class="w100"
+              (pageChange)="pagination($event)"
+              id="server"
+              previousLabel="Previous"
+              nextLabel="Next"
+              [responsive]="isResponsive"
+            >
+            </pagination-controls>
+          </ion-row>
+
+          <div
+            class="noDataMsg mar16"
+            *ngIf="userType == 'User' && !customer && !showUserCard && view == 'address'"
+          >
+            {{"Select the customer you want to order for."| translate}}
+          </div>
+          <div
+            *ngIf="customer && customer.length != 0 && !showUserCard && view == 'address'"
+          >
+            <ion-row
+              *ngFor="let customer of customer.data; let i = index"
+              (click)="fetchCustomerContact(customer)"
+              class="priceHeader custList"
+            >
+              <!-- <ion-item > -->
+              <ion-label
+                >{{ customer.companyName }}-{{ customer.city }}</ion-label
+              >
+              <!-- </ion-item> -->
+            </ion-row>
+          </div>
+          <!-- for User -->
+          <div *ngIf="userType == 'User' && showUserCard && view == 'address'">
+            <ion-card class="marPad0">
+              <ion-card-title
+                class="cardHeader"
+                (click)="openCart(cartData.data.products[0].id)"
+                *ngIf="cartData.data"
+              >
+                {{ cartData.data.count.TotalQuantity }}{{" item total of "|
+                translate}}{{ cartData.data.count.FinalPrice }}{{
+                _companyService.currencySymbol }}
+              </ion-card-title>
+
+              <ion-row *ngIf="view == 'address'">
+                <ion-item lines="none" class="paddleft w100">
+                  <ion-label class="bold w33"
+                    >{{"Customer"| translate}}</ion-label
+                  >
+                </ion-item>
+              </ion-row>
+              <ion-row *ngIf="view == 'address'">
+                <ion-item lines="none" class="paddleft w100">
+                  <ion-input
+                    type="text"
+                    [(ngModel)]="custName"
+                    class="w100 mw100"
+                    disabled
+                  ></ion-input>
+                </ion-item>
+              </ion-row>
+
+              <ion-row *ngIf="equals(view,'payment') && cartData.data">
+                <ion-item lines="none" class="paddleft w100">
+                  <label class="bold width50"
+                    >{{"Payment Mode"| translate}}</label
+                  >
+                </ion-item>
+              </ion-row>
+              <!-- <ion-row *ngIf="equals(view,'payment')">
+                <ion-item lines="none" class="paddleft w100">
+                  <ion-select [(ngModel)]="paymentMode" placeholder="Select Payment Mode" class="w100 mw100">
+                    <ion-select-option value="online">Online</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-row> -->
+              <ion-row *ngIf="equals(view,'payment') && cartData.data.count">
+                <ion-item
+                  lines="none"
+                  [ngClass]="payMode.name == paymentMode ? 'selectedAddress paddleft w100 itemName' : 'paddleft w100 itemName'"
+                  *ngFor="let payMode of paymentModeList"
+                  (click)="paymentModeSelected(payMode)"
+                >
+                  <ion-col>
+                    <label>{{ payMode.name | uppercase }}</label>
+                  </ion-col>
+                  <ion-col class="selectBlue tar">
+                    {{"SELECT"| translate}}
+                  </ion-col>
+                </ion-item>
+              </ion-row>
+
+              <ion-row
+                *ngIf="!!customerContact && customerContact != null && customerContact != undefined && view == 'address'"
+              >
+                <ion-item lines="none" class="paddleft w100">
+                  <ion-label>{{"Select contact"| translate}}</ion-label>
+                </ion-item>
+              </ion-row>
+              <ion-row
+                *ngIf="!!customerContact && customerContact != null && customerContact != undefined && view == 'address'"
+              >
+                <ion-item lines="none" class="paddleft w100">
+                  <app-ionic-selectable-comp
+                    class="w100"
+                    [selectedValue]="selectedCustomer"
+                    [list]="customerContact?.data"
+                  ></app-ionic-selectable-comp>
+                </ion-item>
+              </ion-row>
+            </ion-card>
+
+            <div
+              *ngIf="!!customerContact && customerContact != null && customerContact != undefined && customerContact?.data.length > 0 && view == 'address'"
+            >
+              <ion-row class="selectDeliveryAddress">
+                <ion-col *ngIf="addressTypes.length > 0" size="12">
+                  <label class="radio" *ngFor="let key of addressTypes">
+                    <input
+                      type="radio"
+                      name="keys_on_hand"
+                      [value]="key.value"
+                      [(ngModel)]="selectedAddressType"
+                      [checked]="key.selected"
+                      (change)="changeAddressType()"
+                    />
+                    {{ key.name }}
+                  </label>
+                </ion-col>
+                <ion-col>
+                  <ion-label>{{"Select Address"| translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col
+                  class="marPad0"
+                  size="6"
+                  size-sm="6"
+                  size-lg="6"
+                  size-xs="12"
+                  size-xl="6"
+                  size-md="6"
+                  *ngIf="showAddressSkeleton"
+                >
+                  <ion-card>
+                    <ion-card-content>
+                      <ion-row>
+                        <ion-col size="2">
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                        <ion-col size="10" class="tal">
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+                <ion-col
+                  class="marPad0"
+                  size="6"
+                  size-sm="6"
+                  size-lg="6"
+                  size-xs="12"
+                  size-xl="6"
+                  size-md="6"
+                  *ngIf="showAddressSkeleton"
+                >
+                  <ion-card>
+                    <ion-card-content>
+                      <ion-row>
+                        <ion-col size="2">
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                        <ion-col size="10" class="tal">
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+
+                <ng-container *ngIf="!showAddressSkeleton">
+                  <ng-container *ngIf="selectedAddressType == 'Pick Up'">
+                    <ion-col
+                      class="marPad0"
+                      size="6"
+                      size-sm="6"
+                      size-lg="6"
+                      size-xs="12"
+                      size-xl="6"
+                      size-md="6"
+                      *ngFor="let customerAdd of customerAddress"
+                    >
+                      <ion-card
+                        [ngClass]="customerAdd.isSelected ? ' marPad0 selectedAddress h250' : ' marPad0 h250'"
+                        (click)="changeDeliverAddress(customerAdd)"
+                      >
+                        <ion-card-content>
+                          <ion-row class="addressHeader">
+                            <ion-col size="2">
+                              <ion-radio-group [value]="addressId">
+                                <ion-radio
+                                  slot="start"
+                                  [value]="customerAdd.id"
+                                >
+                                </ion-radio>
+                              </ion-radio-group>
+                            </ion-col>
+                            <ion-col size="10" class="tal">
+                              {{ customerAdd.fullName }}
+                              <div *ngIf="customerAdd.defaultAddress == 1">
+                                ({{"Default"| translate}})
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                          <ion-row>
+                            <ion-col size="12" class="f13p">
+                              {{ customerAdd.house }}
+                              <br />
+                              {{ customerAdd.area }}
+                              <br />
+                              {{ customerAdd.city }} - {{ customerAdd.pinCode }}
+                              <br />
+                              {{ customerAdd.state }}
+                            </ion-col>
+                          </ion-row>
+                          <ion-row>
+                            <ion-col class="f13p">
+                              {{"Mobile"| translate}}:
+                              <b>{{ customerAdd.phoneNo }}</b>
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-content>
+                        <!-- <ion-item lines="none" class="paddleft w100">
+                  <ion-select *ngIf="customerAddress!=null && customerAddress!= undefined" [(ngModel)]="addressId" placeholder="Select your address"
+                    class="w100 mw100">
+                    <ion-select-option [value]="customerAdd.id" *ngFor="let customerAdd of customerAddress">{{
+                      customerAdd.area }} {{ customerAdd.city }} {{ customerAdd.state }} {{ customerAdd.country }} {{
+                      customerAdd.pinCode }}</ion-select-option>
+                  </ion-select>
+                </ion-item> -->
+                      </ion-card>
+                    </ion-col>
+                  </ng-container>
+
+                  <ng-container *ngIf="selectedAddressType == 'Delivery'">
+                    <ion-col
+                      class="marPad0"
+                      size="6"
+                      size-sm="6"
+                      size-lg="6"
+                      size-xs="12"
+                      size-xl="6"
+                      size-md="6"
+                      *ngFor="let customerAdd of (customerAddressForUser?.data)[0].listOfAddresses"
+                    >
+                      <ion-card
+                        [ngClass]="customerAdd.isSelected ? ' selectedAddress h250' : ' h250'"
+                        (click)="changeDeliverAddress(customerAdd)"
+                      >
+                        <ion-card-content>
+                          <ion-row class="addressHeader">
+                            <ion-col size="2">
+                              <ion-radio-group [value]="addressId">
+                                <ion-radio
+                                  slot="start"
+                                  [value]="customerAdd.id"
+                                >
+                                </ion-radio>
+                              </ion-radio-group>
+                            </ion-col>
+                            <ion-col size="10" class="tal">
+                              {{ customerAdd.fullName }}
+                              <div *ngIf="customerAdd.defaultAddress == 1">
+                                ({{"Default"| translate}})
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                          <ion-row>
+                            <ion-col size="12" class="f13p">
+                              {{ customerAdd.house }}
+                              <br />
+                              {{ customerAdd.area }}
+                              <br />
+                              {{ customerAdd.city }} - {{ customerAdd.pinCode }}
+                              <br />
+                              {{ customerAdd.state }}
+                            </ion-col>
+                          </ion-row>
+                          <br />
+                          <ion-row>
+                            <ion-col class="f13p">
+                              {{"Mobile"| translate}}:
+                              <b>{{ customerAdd.phoneNo }}</b>
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-content>
+                      </ion-card>
+                    </ion-col>
+                    <ion-col
+                      size="6"
+                      size-sm="6"
+                      size-lg="6"
+                      size-xs="12"
+                      size-xl="6"
+                      size-md="6"
+                      *ngIf="selectedAddressType == 'Delivery'"
+                    >
+                      <ion-card
+                        id="fadeshow2"
+                        class="h250 marPad0"
+                        (click)="gotoAddressPage()"
+                      >
+                        <ion-card-content>
+                          <ion-row>
+                            <ion-col class="tac vam">
+                              <ion-icon name="add-circle"></ion-icon>
+                              <br />
+                              <div class="addressHeader">
+                                {{"Add new address"| translate}}
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-content>
+                      </ion-card>
+                      <ion-card
+                        id="fadeshow3"
+                        class="marPad0"
+                        (click)="gotoAddressPage()"
+                      >
+                        <ion-card-content>
+                          <ion-row>
+                            <ion-col class="tal vam addressHeader">
+                              <label>{{"Add new address"| translate}}</label>
+                            </ion-col>
+                            <ion-col class="tar">
+                              <ion-icon name="arrow-forward"></ion-icon>
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-content>
+                      </ion-card>
+                    </ion-col>
+                  </ng-container>
+
+                  <ion-col
+                    class="marPad0"
+                    size="12"
+                    *ngIf="showPickUpInput && ShowPickUpTime"
+                    class="selectDeliveryAddress"
+                  >
+                    <ion-label>{{"Select Pick Up Time"| translate}}</ion-label>
+                    <ion-row>
+                      <ion-col
+                        size="3"
+                        size-xs="3"
+                        size-sm="3"
+                        size-md="3"
+                        size-lg="3"
+                      >
+                        <ion-select
+                          [(ngModel)]="selectedPickUpDays"
+                          cancelText="Cancel"
+                          okText="OK"
+                          (ionChange)="genPickUpDate()"
+                        >
+                          <ion-select-option
+                            *ngFor="let day of pickUpDays"
+                            [value]="day.value"
+                            >{{ day.name }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                      <ion-col
+                        size="1"
+                        size-xs="3"
+                        size-sm="3"
+                        size-md="3"
+                        size-lg="1"
+                      >
+                        <ion-select
+                          [(ngModel)]="selectedPickUpHours"
+                          cancelText="Cancel"
+                          okText="OK"
+                          (ionChange)="genPickUpDate()"
+                        >
+                          <ion-select-option
+                            *ngFor="let hour of pickUpHours"
+                            [value]="hour"
+                            >{{ hour }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                      <ion-col
+                        size="1"
+                        size-xs="3"
+                        size-sm="3"
+                        size-md="2"
+                        size-lg="1"
+                      >
+                        <ion-select
+                          [(ngModel)]="selectedPickUpMinutes"
+                          cancelText="Cancel"
+                          okText="OK"
+                          (ionChange)="genPickUpDate()"
+                        >
+                          <ion-select-option
+                            *ngFor="let mint of pickUpMinutes"
+                            [value]="mint"
+                            >{{ mint }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                      <ion-col
+                        size="2"
+                        size-xs="3"
+                        size-sm="3"
+                        size-md="3"
+                        size-lg="3"
+                      >
+                        <ion-select
+                          [(ngModel)]="selectedTimePerid"
+                          cancelText="Cancel"
+                          okText="OK"
+                          (ionChange)="genPickUpDate()"
+                        >
+                          <ion-select-option
+                            *ngFor="let tp of timePeriod"
+                            [value]="tp"
+                            >{{ tp }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <!-- <ion-datetime displayFormat="YYYY-MM-DD hh:mm" [min]="minDate" [max]="maxDate" [value]="pickUpDate"></ion-datetime> -->
+                  </ion-col>
+                </ng-container>
+              </ion-row>
+            </div>
+            <!-- <ion-col size="6" size-sm="6" size-lg="6" size-xs="12" size-xl="6" size-md="6">
+                <ion-card id="fadeshow4" class=" h250 marPad0"
+                  *ngIf="!!customerContact && customerContact != null && customerContact != undefined && customerContact?.data.length > 0 && view == 'address'"
+                  (click)="gotoAddressPage()">
+                  <ion-card-content>
+                    <ion-row>
+                      <ion-col class="tac vam">
+                        <ion-icon name="add-circle"></ion-icon>
+                        <br />
+                        <div class="addressHeader">Add new address</div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+                <ion-card id="fadeshow5" class=" marPad0"
+                  *ngIf="!!customerContact && customerContact != null && customerContact != undefined && customerContact?.data.length > 0 && view == 'address'"
+                  (click)="gotoAddressPage()">
+                  <ion-card-content>
+                    <ion-row>
+                      <ion-col class="tal vam addressHeader">
+                        <label>Add new address</label>
+                      </ion-col>
+                      <ion-col class="tar">
+                        <ion-icon name="arrow-forward"></ion-icon>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col> -->
+
+            <!-- <ion-card id="fadeshow1" class="">
+              <ion-row *ngIf="customerAddressForUser?.data[0].listOfAddresses.length>0 && view=='address'">
+                <ion-col>
+                  <ion-label>Select customer address</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="addButton" *ngIf="(customerAddressForUser?.data)[0].listOfAddresses.length > 0 && view == 'address'">
+                <ion-item lines="none" class="paddleft w100" (click)="fetchCustAddForContact()">
+
+                  <ion-select *ngIf="customerAddressForUser!=null && customerAddressForUser!= undefined"
+                    placeholder="Select customer address" class="w100 mw100" [(ngModel)]="addressId">
+                    <ion-select-option [value]="customerAdd.id"
+                      *ngFor="let customerAdd of customerAddressForUser?.data[0].listOfAddresses">{{
+                    customerAdd.area }} {{ customerAdd.city }} {{ customerAdd.state }} {{ customerAdd.country }} {{
+                    customerAdd.pinCode }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+            </ion-card> -->
+            <!-- <ion-card class="" id="fadeshow1"
+              *ngIf="customerAddressForUser?.data[0].listOfAddresses.length==0 && view=='address'"
+              (click)="gotoAddressPage()">
+              <ion-row>
+                <ion-col>
+                  <ion-label>Add your first address here </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-card> -->
+
+            <!-- <ion-card class=" marPad0" *ngIf="(customerAddressForUser?.data)[0].listOfAddresses.length == 0 && view == 'address'">
+              <ion-row>
+                <ion-col>
+                  <ion-label>Or Have us call you back?</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-card> -->
+
+            <!-- <ion-row *ngIf="userType == 'User' && !!addressId && view == 'address'">
+              <ion-col>
+                <ion-button class="placeOrderBtn mar16" [ngClass]="!onMobile ? 'button' : ''" expand="block" (click)="buynow('payment')">
+                  Pay
+                </ion-button>
+              </ion-col>
+            </ion-row> -->
+          </div>
+          <!-- for Customer -->
+          <ion-card
+            class="marPad0"
+            *ngIf="userType == 'Customer' && equals(view,'payment') && cartData && memoDays.length > 0 && orderBook == 'Memo' && !defaultMemoDay"
+          >
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col>
+                  <ion-label>Memo Days</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="equals(view,'payment')">
+                <ion-col class="radio" *ngFor="let key of memoDays">
+                  <label>
+                    <input
+                      type="radio"
+                      name="keys_on_hand"
+                      [value]="key.value"
+                      [(ngModel)]="selectedMemoDays"
+                    />
+                    {{ key.display }}
+                  </label>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card
+            class="marPad0"
+            *ngIf="userType == 'Customer' && equals(view,'payment') && cartData && orderBook == 'Memo' && defaultMemoDay"
+          >
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col>
+                  <ion-label
+                    >{{"Memo Days"| translate}}: {{ selectedMemoDays }}
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card *ngIf="equals(view,'payment') && cartData" class="marPad0">
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col class="tal">
+                  <ion-label>{{ addressLabel }}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="addressHeader" *ngIf="deliverAddress">
+                <ion-col class="tal">
+                  {{ deliverAddress.fullName }}
+                  <div *ngIf="deliverAddress.defaultAddress == 1">
+                    ({{"Default"| translate}})
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="deliverAddress">
+                <ion-col size="12" class="f13p">
+                  {{ deliverAddress.house }}
+                  <br />
+                  {{ deliverAddress.area }}
+                  <br />
+                  {{ deliverAddress.city }} - {{ deliverAddress.pinCode }}
+                  <br />
+                  {{ deliverAddress.state }}
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="deliverAddress">
+                <ion-col class="f13p">
+                  {{"Mobile"| translate}}: <b>{{ deliverAddress.phoneNo }}</b>
+                </ion-col>
+              </ion-row>
+
+              <ion-button
+                [ngClass]="!onMobile ? 'button' : ''"
+                *ngIf="!deliverAddress"
+                expand="block"
+                (click)="buynow('address')"
+              >
+                {{"Add Delivery Address"| translate}}
+              </ion-button>
+
+              <ion-row (click)="buynow('address')" *ngIf="deliverAddress">
+                <ion-col class="selectBlue f13p fw600 cursor">
+                  {{"Change Address"| translate}}
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card class="marPad0" *ngIf="equals(view,'payment') && cartData">
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col class="tal">
+                  <ion-label>{{"Delivery Via"| translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                [ngClass]="shipMode.id == shipmentMode ? 'selectedAddress paddleft w100 itemName' : 'paddleft w100 itemName'"
+                *ngFor="let shipMode of shippingMethods"
+                (click)="shipModeSelected(shipMode)"
+              >
+                <ion-col
+                  *ngIf="shipMode.name != 'Pick Up when Ready' && !showPickUpInput"
+                >
+                  <label>{{ shipMode.name | uppercase }}</label>
+                </ion-col>
+                <ion-col
+                  *ngIf="shipMode.name == 'Pick Up when Ready' && ShowPickUpTime && showPickUpInput"
+                >
+                  <label
+                    >{{"Pick Up"| translate}} : {{ selectedPickUpDays }} ({{
+                    selectedPickUpHours }}:{{ selectedPickUpMinutes }} {{
+                    selectedTimePerid }})</label
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card
+            class="marPad0"
+            *ngIf="cartData && cartData.data && equals(view,'payment') && cartData.data.count"
+          >
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col class="tal">
+                  <ion-label>{{"Payment Method"| translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                [ngClass]="payMode.name == paymentMode.name ? 'selectedAddress paddleft w100 itemName' : 'paddleft w100 itemName'"
+                *ngFor="let payMode of paymentModeList"
+                (click)="paymentModeSelected(payMode)"
+              >
+                <ion-col>
+                  <label>{{ payMode.name | uppercase }} </label>
+                  <label
+                    class="discount"
+                    *ngIf="!!payMode.flat && payMode.flat>0"
+                  >
+                    {{"Flat"| translate}} {{ payMode.flat }} {{
+                    _companyService.currencySymbol }} {{"Off"| translate}}
+                  </label>
+                  <label
+                    class="discount"
+                    *ngIf="!!payMode.flat && payMode.flat<0"
+                  >
+                    {{"Extra"| translate}} {{ -payMode.flat }} {{
+                    _companyService.currencySymbol }}
+                  </label>
+                  <label class="discount" *ngIf="!!payMode.discount">
+                    {{ payMode.discount }} % {{"Off"| translate}}
+                  </label>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card class="marPad0" *ngIf="equals(view,'payment') && cartData">
+            <ion-card-content>
+              <ion-row *ngIf="equals(view,'payment')" class="addressHeader">
+                <ion-col class="tal">
+                  <ion-label>{{"Order For"| translate}}</ion-label>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col class="itemName" (click)="buynow('bag')">
+                  <span *ngIf="_companyService.productListing == 'grid'">
+                    {{cartData?.data?.totalProduct?.TotalProduct}} Items
+                  </span>
+                  <span *ngIf="_companyService.productListing != 'grid'">
+                    {{ cartData.data.count.TotalQuantity }} {{ getItemWord() }}
+                  </span>
+                  <span *ngIf="!hideStorePrice">
+                    {{"total of"| translate}} {{ cartData.data.count.FinalPrice
+                    | number: ".0-0" }}{{ _companyService.currencySymbol }}
+                  </span>
+                </ion-col>
+              </ion-row>
+              <ion-row (click)="buynow('bag')">
+                <ion-col class="selectBlue f13p fw600 cursor">
+                  {{"Edit Cart"| translate}}
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <!-- <ion-card class="" id="fadeshow1" *ngIf="userType == 'Customer' && view == 'address'" (click)="gotoAddressPage()">
+            <ion-row *ngIf="customerAddress == undefined || customerAddress.length == 0">
+              <ion-card-header class="cardHeader w100">
+                Delivery Address
+              </ion-card-header>
+              <ion-card-content>
+                <ion-item lines="none" class="w100">
+                  Add your first address here
+                </ion-item>
+              </ion-card-content>
+            </ion-row>
+          </ion-card> -->
+
+          <!-- <ion-row *ngIf="userType == 'Customer' && view == 'address'" class="selectDeliveryAddress">
+            
+          </ion-row> -->
+
+          <ion-row
+            *ngIf="userType == 'Customer' && view == 'address'"
+            class="selectDeliveryAddress"
+          >
+            <ion-col *ngIf="addressTypes.length > 0" size="12">
+              <label class="radio" *ngFor="let key of addressTypes">
+                <input
+                  type="radio"
+                  name="keys_on_hand"
+                  [value]="key.value"
+                  [(ngModel)]="selectedAddressType"
+                  [checked]="key.selected"
+                  (change)="changeAddressType()"
+                />
+                {{ key.name }}
+              </label>
+            </ion-col>
+            <ion-col *ngIf="selectedAddressType != 'Deliver to My Customer'">
+              <ion-label>{{"Select Address"| translate}}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="selectedAddressType == 'Order via Dealer' && view == 'address'"
+          >
+            <ion-col
+              class="marPad0"
+              size="6"
+              size-sm="6"
+              size-lg="6"
+              size-xs="12"
+              size-xl="6"
+              size-md="6"
+              *ngFor="let customerAdd of resellers"
+            >
+              <ion-card
+                [ngClass]="customerAdd.isSelected ? ' selectedAddress h250' : ' h250'"
+                (click)="addDealerAddress(customerAdd)"
+              >
+                <ion-card-content>
+                  <ion-row class="addressHeader">
+                    <ion-col size="2">
+                      <ion-radio-group [value]="addressId">
+                        <ion-radio slot="start" [value]="customerAdd.id">
+                        </ion-radio>
+                      </ion-radio-group>
+                    </ion-col>
+                    <ion-col size="10" class="tal">
+                      {{customerAdd.companyName}}
+                      <span *ngIf="customerAdd.contactName"
+                        >({{ customerAdd.contactName }})</span
+                      >
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="12" class="f13p">
+                      {{ customerAdd.address }}
+                      <br />
+                      {{ customerAdd.city }} - {{ customerAdd.zipCode }}
+                      <br />
+                      {{ customerAdd.state }}<br />
+                      <a
+                        href="https://maps.google.com/?q={{ customerAdd.address }} {{ customerAdd.city }} {{ customerAdd.zipCode }} {{ customerAdd.state }}"
+                        target="_blank"
+                        >{{"View Location"| translate}}</a
+                      >
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="f13p">
+                      {{"Mobile"| translate}}:
+                      <b>{{ customerAdd.contactNumber }}</b>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="!!myCustomers && myCustomers != null && myCustomers && myCustomers.length > 0 && selectedAddressType == 'Deliver to My Customer' && view == 'address'"
+          >
+            <!-- <ion-item lines="none" class="paddleft w100" *ngIf="amountError">
+              <ion-label class="error"> Please enter valid collectible amount </ion-label>
+            </ion-item> -->
+            <ion-item lines="none" class="paddleft w100" *ngIf="amountError">
+              <span class="error"
+                >{{"Please enter valid collectible amount"| translate}}
+              </span>
+            </ion-item>
+            <ion-item lines="none" class="paddleft w100">
+              <ion-col size="4">
+                <ion-label>{{"Collectible Amount"| translate}}</ion-label>
+              </ion-col>
+              <ion-col size="3">
+                <ion-input
+                  type="text"
+                  class="bgLightBlue border tal input mw100"
+                  [(ngModel)]="collectiveValue"
+                  (keypress)="_databaseService.numberOnlyValidation($event)"
+                  (ionChange)="checkAMount($event)"
+                  placeholder="Enter Collectible Amount"
+                ></ion-input>
+              </ion-col>
+            </ion-item>
+            <ion-item lines="none" class="paddleft w100">
+              <ion-label
+                >{{"Select the customer you want to order for"| translate}}.
+                <span class="addNewCust" slot="end" (click)="addNewCustomer()"
+                  >{{"Add New Customer"| translate}}</span
+                >
+              </ion-label>
+            </ion-item>
+          </ion-row>
+          <ion-row
+            *ngIf="!!myCustomers && myCustomers != null && myCustomers.length > 0 && myCustomers != undefined && selectedAddressType == 'Deliver to My Customer' && view == 'address'"
+          >
+            <ion-item lines="none" class="paddleft w100">
+              <app-ionic-selectable-comp
+                class="w100"
+                [list]="myCustomers"
+                [selectedValue]="selectedContact"
+                (onChange)="fetchCustomerAddress(selectedContact)"
+              ></app-ionic-selectable-comp>
+            </ion-item>
+          </ion-row>
+          <ion-row
+            *ngIf="showCustomerError && selectedAddressType == 'Deliver to My Customer' && view == 'address'"
+          >
+            <ion-item lines="none" class="paddleft w100">
+              <ion-label class="error">
+                {{"No customers found"| translate}}</ion-label
+              >
+            </ion-item>
+          </ion-row>
+          <!-- <div *ngIf="myCustomers && myCustomers.length != 0 && selectedAddressType == 'Deliver to My Customer'">
+            <ion-row *ngFor="let customer of myCustomers; let i = index" (click)="fetchCustomerAddress(customer.userid)" class="priceHeader custList">
+              <ion-label>{{ customer.companyName }}-{{ customer.city }}</ion-label>
+            </ion-row>
+          </div> -->
+
+          <ion-row *ngIf="userType == 'Customer' && view == 'address'">
+            <ion-col
+              class="marPad0"
+              size="6"
+              size-sm="6"
+              size-lg="6"
+              size-xs="12"
+              size-xl="6"
+              size-md="6"
+              *ngIf="showAddressSkeleton"
+            >
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                    <ion-col size="10" class="tal">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col
+              class="marPad0"
+              size="6"
+              size-sm="6"
+              size-lg="6"
+              size-xs="12"
+              size-xl="6"
+              size-md="6"
+              *ngIf="showAddressSkeleton"
+            >
+              <ion-card>
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                    <ion-col size="10" class="tal">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ng-container *ngIf="!showAddressSkeleton">
+              <ion-col
+                class="marPad0"
+                size="6"
+                size-sm="6"
+                size-lg="6"
+                size-xs="12"
+                size-xl="6"
+                size-md="6"
+                *ngFor="let customerAdd of customerAddress"
+              >
+                <ion-card
+                  [ngClass]="customerAdd.isSelected ? ' marPad0 selectedAddress h250' : ' marPad0 h250'"
+                  (click)="changeDeliverAddress(customerAdd)"
+                >
+                  <ion-card-content>
+                    <ion-row class="addressHeader">
+                      <ion-col size="2">
+                        <ion-radio-group [value]="addressId">
+                          <ion-radio slot="start" [value]="customerAdd.id">
+                          </ion-radio>
+                        </ion-radio-group>
+                      </ion-col>
+                      <ion-col size="10" class="tal">
+                        {{ customerAdd.fullName }}
+                        <div *ngIf="customerAdd.defaultAddress == 1">
+                          ({{"Default"| translate}})
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="12" class="f13p">
+                        {{ customerAdd.house }}
+                        <br />
+                        {{ customerAdd.area }}
+                        <br />
+                        {{ customerAdd.city }} - {{ customerAdd.pinCode }}
+                        <br />
+                        {{ customerAdd.state }}
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col class="f13p">
+                        {{"Mobile"| translate}}:
+                        <b>{{ customerAdd.phoneNo }}</b>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-content>
+                  <!-- <ion-item lines="none" class="paddleft w100">
+                  <ion-select *ngIf="customerAddress!=null && customerAddress!= undefined" [(ngModel)]="addressId" placeholder="Select your address"
+                    class="w100 mw100">
+                    <ion-select-option [value]="customerAdd.id" *ngFor="let customerAdd of customerAddress">{{
+                      customerAdd.area }} {{ customerAdd.city }} {{ customerAdd.state }} {{ customerAdd.country }} {{
+                      customerAdd.pinCode }}</ion-select-option>
+                  </ion-select>
+                </ion-item> -->
+                </ion-card>
+              </ion-col>
+
+              <ion-col
+                class="marPad0"
+                size="6"
+                size-sm="6"
+                size-lg="6"
+                size-xs="12"
+                size-xl="6"
+                size-md="6"
+                *ngIf="selectedAddressType == 'Delivery'"
+              >
+                <ion-card
+                  id="fadeshow2"
+                  class="h250 marPad0"
+                  (click)="gotoAddressPage()"
+                >
+                  <ion-card-content>
+                    <ion-row>
+                      <ion-col class="tac vam">
+                        <ion-icon name="add-circle"></ion-icon>
+                        <br />
+                        <div class="addressHeader">
+                          {{"Add new address"| translate}}
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+                <ion-card
+                  id="fadeshow3"
+                  class="marPad0"
+                  (click)="gotoAddressPage()"
+                >
+                  <ion-card-content>
+                    <ion-row>
+                      <ion-col class="tal vam addressHeader">
+                        <label>{{"Add new address"| translate}}</label>
+                      </ion-col>
+                      <ion-col class="tar">
+                        <ion-icon name="arrow-forward"></ion-icon>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col
+                class="marPad0"
+                size="12"
+                *ngIf="showPickUpInput && ShowPickUpTime"
+                class="selectDeliveryAddress"
+              >
+                <ion-label>{{"Select Pick Up Time"| translate}}</ion-label>
+                <ion-row>
+                  <ion-col
+                    size="3"
+                    size-xs="3"
+                    size-sm="3"
+                    size-md="3"
+                    size-lg="3"
+                  >
+                    <ion-select
+                      [(ngModel)]="selectedPickUpDays"
+                      cancelText="Cancel"
+                      okText="OK"
+                      (ionChange)="genPickUpDate()"
+                    >
+                      <ion-select-option
+                        *ngFor="let day of pickUpDays"
+                        [value]="day.value"
+                        >{{ day.name }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                  <ion-col
+                    size="1"
+                    size-xs="3"
+                    size-sm="3"
+                    size-md="3"
+                    size-lg="1"
+                  >
+                    <ion-select
+                      [(ngModel)]="selectedPickUpHours"
+                      cancelText="Cancel"
+                      okText="OK"
+                      (ionChange)="genPickUpDate()"
+                    >
+                      <ion-select-option
+                        *ngFor="let hour of pickUpHours"
+                        [value]="hour"
+                        >{{ hour }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                  <ion-col
+                    size="1"
+                    size-xs="3"
+                    size-sm="3"
+                    size-md="3"
+                    size-lg="1"
+                  >
+                    <ion-select
+                      [(ngModel)]="selectedPickUpMinutes"
+                      cancelText="Cancel"
+                      okText="OK"
+                      (ionChange)="genPickUpDate()"
+                    >
+                      <ion-select-option
+                        *ngFor="let mint of pickUpMinutes"
+                        [value]="mint"
+                        >{{ mint }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                  <ion-col
+                    size="1"
+                    size-xs="3"
+                    size-sm="3"
+                    size-md="3"
+                    size-lg="2"
+                  >
+                    <ion-select
+                      [(ngModel)]="selectedTimePerid"
+                      cancelText="Cancel"
+                      okText="OK"
+                      (ionChange)="genPickUpDate()"
+                    >
+                      <ion-select-option
+                        *ngFor="let tp of timePeriod"
+                        [value]="tp"
+                        >{{ tp }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-datetime displayFormat="YYYY-MM-DD hh:mm" [min]="minDate" [max]="maxDate" [value]="pickUpDate"></ion-datetime> -->
+              </ion-col>
+            </ng-container>
+          </ion-row>
+
+          <!-- <ion-card id="fadeshow1" class="" *ngIf="userType=='Customer' && view=='address'">
+            <ion-row *ngIf="customerAddress!= undefined && customerAddress.length>0">
+              <ion-item lines="none" class="paddleft w100">
+                <ion-label>Select customer address</ion-label>
+              </ion-item>
+            </ion-row>
+            <ion-row *ngIf="customerAddress != undefined && customerAddress.length > 0">
+              <ion-item lines="none" class="paddleft w100">
+                <ion-select *ngIf="customerAddress != null && customerAddress != undefined" [(ngModel)]="addressId" (ionChange)="changeDeliverAddressFromSelect($event, customerAddress)" placeholder="Select your address" class="w100 mw100">
+                  <ion-select-option [value]="customerAdd.id" *ngFor="let customerAdd of customerAddress">{{ customerAdd.area }} {{ customerAdd.city }} {{ customerAdd.state }} {{ customerAdd.country }} {{ customerAdd.pinCode }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-row>
+          </ion-card> -->
+
+          <!-- <ion-card class=" marPad0" *ngIf="userType == 'Customer' && view == 'address' && (customerAddress == undefined || customerAddress.length == 0)">
+            <ion-row>
+              <ion-col>
+                <ion-label>
+                  Or Have us call you back?
+                </ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-card> -->
+        </ion-col>
+        <ion-col
+          size="3"
+          size-xs="12"
+          size-sm="12"
+          size-md="12"
+          size-xl="3"
+          size-lg="3"
+          [ngClass]="!onMobile ? '' : ''"
+        >
+          <ng-container *ngIf="!hideStorePrice">
+            <ion-card
+              class="marPad0"
+              *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0"
+            >
+              <ion-card-content>
+                <ion-row
+                  [ngClass]="equals(view,'payment') ? 'itemName' : 'priceHeader'"
+                >
+                  <ion-col class="tal">
+                    {{"Price Details" | translate}}</ion-col
+                  >
+                </ion-row>
+                <!-- <ion-row class="total">
+                  <ion-col class="tal"> Cts: </ion-col>
+                  <ion-col class="tar">
+                    {{ totalSelectedSummary['cts'] | number : '1.2-2' }}
+                  </ion-col>
+                </ion-row>
+                <ion-row class="total">
+                  <ion-col class="tal"> Pcs: </ion-col>
+                  <ion-col class="tar">
+                    {{ totalSelectedSummary['pcs'] }}
+                  </ion-col>
+                </ion-row>
+                <ion-row class="total">
+                  <ion-col class="tal"> Amount: </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{
+                    totalSelectedSummary['amount'] | number : '1.2-2' }}
+                  </ion-col>
+                </ion-row> -->
+                <ion-row class="total">
+                  <ion-col class="tal"> {{"Avg/Carat"| translate}}: </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{
+                    totalSelectedSummary['amount'] / totalSelectedSummary['cts']
+                    | number : '1.2-2' }}
+                  </ion-col>
+                </ion-row>
+                <ion-row class="total">
+                  <ion-col class="tal">{{"Avg Disc"| translate}}: </ion-col>
+                  <ion-col class="tar">
+                    {{ ((1 - (totalSelectedSummary['amount'] /
+                    totalSelectedSummary['rapValue'])) * 100) | number :
+                    '1.2-2'}}%
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-row class="total">
+                  <ion-col class="tal"> Cart Total </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{
+                    cartData.data.count.SubTotal | json | number: ".2-2" }}
+                  </ion-col>
+                </ion-row> -->
+                <ion-row
+                  class="total"
+                  *ngIf="!!bagDiscountPrice && bagDiscountPrice > 0"
+                >
+                  <ion-col class="tal"> {{"Discount"| translate}} </ion-col>
+                  <ion-col class="tar">
+                    - {{ _companyService.currencySymbol }}{{ bagDiscountPrice |
+                    number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row
+                  class="total"
+                  *ngIf="!!bagDiscountPrice && bagDiscountPrice > 0"
+                >
+                  <ion-col class="tal"> {{"Sub Total"| translate}} </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{ bagTotal | number:
+                    ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row
+                  class="total"
+                  *ngIf="cartData.data.count.FinalPrice - cartData.data.count.SubTotal > 0"
+                >
+                  <ion-col class="tal"> {{"Tax"| translate}} </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{
+                    cartData.data.count.FinalPrice -
+                    cartData.data.count.SubTotal | number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row
+                  class="total"
+                  *ngIf="!!shippingCost && shippingCost > 0"
+                >
+                  <ion-col class="tal">
+                    {{"Shipping Cost"| translate}}
+                  </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{ shippingCost |
+                    number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row class="total" *ngIf="!!paymentCost">
+                  <ion-col class="tal"> {{"Payment Cost"| translate}} </ion-col>
+                  <ion-col class="tar">
+                    {{ _companyService.currencySymbol }}{{ -paymentCost |
+                    number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="showError">
+                  <span class="error"
+                    >{{"Collective Amount must be Greter than Total Amount"|
+                    translate}}
+                  </span>
+                </ion-row>
+                <ion-row
+                  *ngIf="selectedAddressType == 'Deliver to My Customer'"
+                >
+                  <ion-col class="tal"> Collectible Amount </ion-col>
+                  <ion-col class="tar">
+                    {{ collectiveValue | number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+                <ion-row class="priceDetail-base-total">
+                  <ion-col class="tal"> {{"Total"| translate}} </ion-col>
+                  <ion-col class="tar"
+                    >{{ _companyService.currencySymbol }}{{
+                    cartData.data.count.SubTotal | json | number: ".2-2" }}
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+          <!-- <ng-container>
+            <ion-row [ngClass]="hideStorePrice ? 'hideContinueButton' : '' " class="marTop10"
+              *ngIf="(view == 'bag' && cartData?.data?.products.length > 0) || view == 'address'">
+              <ion-col>
+                <label *ngIf="view == 'bag' && cartData?.data?.products.length > 0" class="textAboveButton">
+                  Next step: Choose Delivery Address
+                </label>
+                <label *ngIf="view == 'address'" class="textAboveButton">
+                  Next step: Choose Payment Mode
+                </label>
+              </ion-col>
+            </ion-row>
+          </ng-container> -->
+          <ion-row [ngClass]="hideStorePrice ? 'hideContinueButton' : '' ">
+            <ion-col class="marPad0">
+              <!-- <ion-button class="{{ !(isExistsNote && equals(view,'payment')) ? 'placeOrderBtn' : '' }}"
+                *ngIf="view == 'bag' && cartData?.data?.products.length > 0" [ngClass]="!onMobile ? 'button' : ''"
+                expand="block" (click)="buynow('address')" [disabled]="disableContinueButton">
+                Continue
+              </ion-button>
+              <ion-button *ngIf="!!addressId && view == 'address'"
+                class="{{ !(isExistsNote && equals(view,'payment')) ? 'placeOrderBtn' : '' }}"
+                [ngClass]="!onMobile ? 'button' : ''" expand="block" (click)="buynow('payment')"
+                [disabled]="disableContinueButton">
+                Continue
+              </ion-button> -->
+              <ion-button
+                class="{{ !(isExistsNote && equals(view,'payment')) ? 'placeOrderBtn' : '' }}"
+                [ngClass]="!onMobile ? 'button' : ''"
+                *ngIf="!!addressId && equals(view,'payment')"
+                expand="block"
+                (click)="placeOrder()"
+                [disabled]="buttonDisabled"
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                {{ payNowText | translate}}
+              </ion-button>
+              <ion-button
+                class="{{ !(isExistsNote && equals(view,'payment')) ? 'placeOrderBtn' : '' }}"
+                [ngClass]="!onMobile ? 'button' : ''"
+                *ngIf="cartData?.data.length == 0"
+                expand="block"
+                (click)="goToHomePage()"
+              >
+                {{"Add items to Cart"| translate}}
+              </ion-button>
+
+              <label
+                *ngIf="isExistsNote && equals(view,'payment')"
+                class="textAboveButton placeOrderBtn"
+                (click)="presentPopover($event)"
+              >
+                {{"Show Shipping Notes"| translate}}
+              </label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-row>
+        <ion-col>
+          <ion-button *ngIf="view == 'bag' && !!cartData?.data?.products && cartData?.data?.products.length > 0"
+            [ngClass]="!onMobile ? 'buttonTop' : ''" expand="block" (click)="buynow('address')"
+            [disabled]="disableContinueButton">
+            Continue
+          </ion-button>
+          <ion-button *ngIf="!!addressId && view == 'address'" [ngClass]="!onMobile ? 'buttonTop' : ''"
+            expand="block" (click)="buynow('payment')" [disabled]="disableContinueButton">
+            Continue
+          </ion-button>
+          <ion-button [ngClass]="!onMobile ? 'buttonTop' : ''" *ngIf="!!addressId && equals(view,'payment')" expand="block"
+            (click)="placeOrder()" [disabled]="buttonDisabled">
+            <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+            {{ payNowText }}
+          </ion-button>        
+        </ion-col>
+      </ion-row> -->
+    </div>
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>
+
+<!-- total summary -->
+<!-- <ion-row [ngClass]="contentClass">
+  <span class="floatRight summary_span">
+    <ng-container
+      *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0 && view == 'bag'"
+    >
+      <span class="summaryCapsules">
+        Cts: {{ totalSelectedSummary['cts'] | number : '1.2-2' }}
+      </span>
+      <span class="summaryCapsules">
+        Pcs: {{ totalSelectedSummary['pcs'] }}</span
+      >
+      <span class="summaryCapsules">
+        Amount:{{ totalSelectedSummary['amount'] | number : '1.2-2' }}
+      </span>
+      <span class="summaryCapsules">
+        Avg/Carat: {{ totalSelectedSummary['amount'] /
+        totalSelectedSummary['cts'] | number : '1.2-2' }}
+      </span>
+      <span class="summaryCapsules">
+        Avg Disc: {{ 100 - (totalSelectedSummary['amount'] /
+        totalSelectedSummary['rapValue']) * 100 | number : '1.2-2' }}%
+      </span>
+    </ng-container>
+  </span>
+</ion-row> -->

@@ -1,0 +1,215 @@
+<ion-content class="form-content">
+  <form [formGroup]="validations_formUserKYC" (ngSubmit)="onSubmit(validations_formUserKYC.value)"
+    class="frm contentDiv">
+    <div [ngClass]="mobileView ? '' : 'width'">
+      <div *ngIf="formData.kyc">
+        <div class="w100 tal mt10Imp">
+          <ion-label color="primary">{{"KYC form"| translate}} * </ion-label>
+          <!-- <a href="/assets/files/KG_Mumbai_KYC.docx" *ngIf="!onMobile">(get kyc form)</a> -->
+          <a (click)="download('https://res.cloudinary.com/kgdiamonds/raw/upload/v1629895337/KG_KYC_Files/KG_Mumbai_KYC.docx')"
+            href="javascript:void(0)">{{"(KYC Form Copy)"| translate}}</a>
+        </div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="kyc"
+              (change)="changeListener($event, 'kyc')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"></ion-input>
+
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && kycFile" (click)="download(kycFile)" href="javascript:void(0)">
+              <!-- (Download KYC form) -->
+              <!-- <ion-icon name="arrow-down-circle-outline"></ion-icon> -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+
+
+          <!-- <a *ngIf="!!profileData && profileData.kyc" [href]="profileData.kyc.path" target="_blank" download>{{ profileData.kyc.name }}</a> -->
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.kyc">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('kyc').hasError(validation.type) && (validations_formUserKYC.get('kyc').dirty || validations_formUserKYC.get('kyc').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="formData.undertaking">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"Undertaking of BPP Compliances(On Company letterhead with stamp & signature)"|translate}} *</ion-label>
+          <!-- <a href="/assets/files/BPP_Undertaking.doc" *ngIf="!onMobile">(get bbp undertaking)</a> -->
+          <a (click)="download('https://res.cloudinary.com/kgdiamonds/raw/upload/v1629895337/KG_KYC_Files/BPP_Undertaking.doc')"
+            href="javascript:void(0)">{{"(get bbp undertaking)"|translate}}</a>
+        </div>
+
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="undertaking"
+              (change)="changeListener($event, 'undertaking')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"> </ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && undertakingFile" (click)="download(undertakingFile)" href="javascript:void(0)">
+              <!-- {{ profileData.undertaking.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.undertaking">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('undertaking').hasError(validation.type) && (validations_formUserKYC.get('undertaking').dirty || validations_formUserKYC.get('undertaking').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="formData.companypan">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"Company PAN ID"|translate}} *</ion-label>
+        </div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="companypan"
+              (change)="changeListener($event, 'companypan')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"> </ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && companypanFile" (click)="download(companypanFile)" href="javascript:void(0)">
+              <!-- {{ profileData.companypan.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.companypan">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('companypan').hasError(validation.type) && (validations_formUserKYC.get('companypan').dirty || validations_formUserKYC.get('companypan').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div *ngIf="formData.companygst">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"Company GST Certificates"|translate}} * </ion-label>
+        </div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="companygst"
+              (change)="changeListener($event, 'companygst')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"> </ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && companygstFile" (click)="download(companygstFile)" href="javascript:void(0)">
+              <!-- {{ profileData.companygst.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.companygst">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('companygst').hasError(validation.type) && (validations_formUserKYC.get('companygst').dirty || validations_formUserKYC.get('companygst').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="formData.iec">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"BUSINESS REGISTRATION"|translate}} *</ion-label>
+          <!-- <a href="/assets/files/BPP_Undertaking.doc" *ngIf="!onMobile">(IEC Copy)</a> -->
+          <a (click)="download('https://res.cloudinary.com/kgdiamonds/raw/upload/v1629895337/KG_KYC_Files/BPP_Undertaking.doc')"
+            href="javascript:void(0)">{{"(IEC Copy)"|translate}}</a>
+        </div>
+
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="iec"
+              (change)="changeListener($event, 'iec')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"></ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && iecFile" (click)="download(iecFile)" href="javascript:void(0)">
+              <!-- {{ profileData.iec.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.iec">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('iec').hasError(validation.type) && (validations_formUserKYC.get('iec').dirty || validations_formUserKYC.get('iec').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="formData.passport">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"PASSPORT COPY"|translate}} *</ion-label>
+        </div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="passport"
+              (change)="changeListener($event, 'passport')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"> </ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && passportFile" (click)="download(passportFile)" href="javascript:void(0)">
+              <!-- {{ profileData.passport.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.passport">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('passport').hasError(validation.type) && (validations_formUserKYC.get('passport').dirty || validations_formUserKYC.get('passport').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="formData.passportOrAddharcard">
+        <div class="w100 tal mt10Imp">
+          <ion-label position="floating" color="primary">{{"PARTNER AADHAR CARD OR PASSPORT"|translate}} *</ion-label>
+        </div>
+        <ion-row>
+          <ion-col size="10">
+            <ion-input type="file" [attr.disabled]="submittedKyc" formControlName="passportOrAddharcard"
+              (change)="changeListener($event, 'passportOrAddharcard')"
+              accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"></ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <a *ngIf="!!profileData && passportOrAddharcardFile" (click)="download(passportOrAddharcardFile)"
+              href="javascript:void(0)">
+              <!-- {{ profileData.passportOrAddharcard.name }} -->
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.passportOrAddharcard">
+            <div class="error-message"
+              *ngIf="validations_formUserKYC.get('passportOrAddharcard').hasError(validation.type) && (validations_formUserKYC.get('passportOrAddharcard').dirty || validations_formUserKYC.get('passportOrAddharcard').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <!-- <ul class="tal colorRed">
+        <li>You may choose to skip KYC submission for now, and complete upon your first purchase.</li>
+        <li>To upload multiple files, add all files into one folder on your computer into zip file, Then please upload the zip file.</li>
+      </ul> -->
+      <ion-button
+        [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn submit-btn tac': 'submit-btn tac'"
+        type="submit" [disabled]="!validations_formUserKYC.valid || submittedKyc">{{"Save"|translate}} </ion-button>
+    </div>
+  </form>
+</ion-content>

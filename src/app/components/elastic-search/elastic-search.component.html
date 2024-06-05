@@ -1,0 +1,1639 @@
+<ion-grid class="p0">
+  <!-- <img src="assets/icon/website - Loader.gif" alt="Custom Loader" /> -->
+  <div class="largeFilters stickyHeader" [ngClass]="contentClass">
+    <!-- <ion-row class="mt5"> </ion-row> -->
+    <ion-row
+      class="mainDiv w100 h60"
+      *ngIf="_companyService.productListing == 'card'"
+    >
+      <ion-col
+        class="w100"
+        *ngIf="!!searchPageButtons && searchPageButtons.length > 0"
+      >
+        <ion-row class="marPad0">
+          <ion-col class="tal">
+            <div class="tooltip cursor">
+              <ion-button
+                fill="clear"
+                (click)="toggleView('grid')"
+                class="ion-no-padding"
+              >
+                <ion-icon
+                  name="reorder-four-outline"
+                  class="reorder-four-outline"
+                ></ion-icon>
+              </ion-button>
+              <span class="tooltiptext">{{ "List View" | translate }}</span>
+            </div>
+          </ion-col>
+          <ion-col class="tac mAuto">
+            <div class="playTextinfo">
+              {{ "Hover on diamond to play video" | translate }}
+            </div>
+          </ion-col>
+          <ion-col class="tar">
+            <ion-button
+              (click)="modifySearch()"
+              class="floatRight round-button v2Btn"
+            >
+              {{ "Modify Search" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+      class="mainDiv w100"
+      *ngIf="_companyService.productListing == 'grid'"
+    >
+      <ion-col
+        class="w100 secondary_header_container"
+        [ngClass]="!!selected?.length ? 'secondary_header_container_block' : ''"
+        *ngIf="!!searchPageButtons && searchPageButtons.length > 0"
+        style="text-align: left"
+      >
+        <div class="selection_btn_container">
+          <div class="tooltip cursor">
+            <ion-button
+              fill="clear"
+              (click)="toggleView('card')"
+              class="ion-no-padding grid-outline-container"
+            >
+              <ion-icon name="grid-outline" class="grid-outline"></ion-icon>
+            </ion-button>
+            <span class="tooltiptext">{{ "Grid View" | translate }}</span>
+          </div>
+
+          <ion-button
+            *ngFor="let btn of searchPageButtons"
+            [fill]="
+              _companyService.productListing == 'grid' ? 'clear' : 'solid'
+            "
+            (click)="actionButtonClick(btn)"
+            [ngClass]="
+              _companyService.productListing == 'grid'
+                ? 'round-clear-button v2Btn'
+                : ''
+            "
+          >
+            {{ btn.name | translate }}
+          </ion-button>
+
+          <img
+            src="assets/images/excel.png"
+            class="clsActionImage cursor"
+            alt=""
+            (click)="openPopoverExcel()"
+          />
+          <!-- (click)="ExcelProducts()" -->
+
+          <img
+            src="assets/images/email.png"
+            class="clsActionImage cursor"
+            (click)="openPopoverMail()"
+            alt=""
+          />
+
+          <!-- <span *ngIf="!!selected.length" class="tooltipCopy">
+            <span class="tooltipTextCopy">Copy</span>
+            <img
+              src="../../../assets/images/copy.png"
+              alt="copyImg"
+              class="cursor clipboard_icon"
+              (click)="shareSelectedStones()"
+            />
+          </span> -->
+
+          <!-- <ion-button
+            *ngIf="!selected?.length"
+            (click)="modifySearch()"
+            class="floatRight round-button v2Btn ml15"
+          >
+            Modify Search
+          </ion-button> -->
+        </div>
+        <!-- (click)= "showGetEmailId()" -->
+
+        <!-- <ion-row *ngIf="mode == 'multiple'" class="margin-botton-5 rawHeight">
+          <ion-col> -->
+        <div *ngIf="!selected?.length" class="modify_search">
+          <span>
+            <ion-button
+              (click)="modifySearch()"
+              class="floatRight round-button v2Btn ml15"
+            >
+              {{ "Modify Search" | translate }}
+            </ion-button>
+          </span>
+          <!-- <span class="legend"></span>
+          <span class="legend-text">Hold/Memo</span> -->
+        </div>
+
+        <div class="tar selection_view" *ngIf="selected?.length">
+          <!-- <div class="selection_view_web"> -->
+          <span
+            *ngIf="mode == 'multiple' && !inspectionView"
+            class="tar selection_view_span"
+          >
+            <!-- </ion-col> -->
+
+            <!-- <ion-col class="tar"> -->
+            <span class="clear_selection_container position-r">
+              <a
+                class="clear-selection"
+                (click)="refresh()"
+                *ngIf="selected?.length && !hideClearSelection"
+              >
+                {{ "Clear Selection" | translate }}
+              </a>
+            </span>
+            <span *ngIf="selected?.length" class="selection_view_scroll">
+              <span class="summaryCapsules">
+                Cts: {{ totalSelectedSummary["cts"] | number : "1.2-2" }}
+              </span>
+              <span class="summaryCapsules">
+                Pcs: {{ totalSelectedSummary["pcs"] }}</span
+              >
+              <span class="summaryCapsules">
+                {{ "Amount" | translate }}:
+                {{ totalSelectedSummary["amount"] | number : "1.2-2" }}
+              </span>
+              <span class="summaryCapsules">
+                {{ "Avg/Carat" | translate }}:
+                {{
+                  totalSelectedSummary["amount"] / totalSelectedSummary["cts"]
+                    | number : "1.2-2"
+                }}
+              </span>
+              <span class="summaryCapsules">
+                {{ "Avg Disc" | translate }}:
+                {{
+                  100 -
+                    (totalSelectedSummary["amount"] /
+                      totalSelectedSummary["rapValue"]) *
+                      100 | number : "1.2-2"
+                }}%
+              </span>
+            </span>
+          </span>
+          <!-- </ion-col>
+        </ion-row> -->
+          <!-- <br class="before_modify_search" /> -->
+          <span>
+            <ion-button
+              (click)="modifySearch()"
+              class="floatRight round-button v2Btn ml15"
+            >
+              {{ "Modify Search" | translate }}
+            </ion-button>
+          </span>
+          <!-- <span>
+            <ion-icon
+              (click)="shareSelectedStones()"
+              class="floatRight round-button v2Btn ml15 cursor clipboard_icon"
+              name="clipboard-outline"
+            ></ion-icon>
+            <ion-button
+                (click)="shareSelectedStones()"
+                class="floatRight round-button v2Btn ml15"
+              >
+                Share
+              </ion-button>
+          </span> -->
+          <!-- <span class="legend"></span>
+          <span class="legend-text">Hold/Memo</span> -->
+          <!-- </div> -->
+          <!-- <div class="selection_view_app">
+            <span
+              *ngIf="mode == 'multiple' && !inspectionView"
+              class="tar selection_view_span"
+            >
+              <span class="clear_selection_container position-r">
+                <a
+                  class="clear-selection"
+                  (click)="refresh()"
+                  *ngIf="selected?.length && !hideClearSelection"
+                >
+                  Clear Selection
+                </a>
+              </span>
+              <span *ngIf="selected?.length" class="selection_view_scroll">
+                <span class="summaryCapsules">
+                  Cts: {{ totalSelectedSummary['cts'] | number : '1.2-2' }}
+                </span>
+                <span class="summaryCapsules">
+                  Pcs: {{ totalSelectedSummary['pcs'] }}</span
+                >
+                <span class="summaryCapsules">
+                  Amount:
+                  {{ totalSelectedSummary['amount'] | number : '1.2-2' }}
+                </span>
+                <span class="summaryCapsules">
+                  Avg/Carat:
+                  {{
+                    totalSelectedSummary['amount'] / totalSelectedSummary['cts']
+                      | number : '1.2-2'
+                  }}
+                </span>
+                <span class="summaryCapsules">
+                  Avg Disc:
+                  {{
+                    100 -
+                      (totalSelectedSummary['amount'] /
+                        totalSelectedSummary['rapValue']) *
+                        100 | number : '1.2-2'
+                  }}%
+                </span>
+              </span>
+            </span>
+          </div>
+          <div class="selection_view_app">
+            <span>
+              <ion-button
+                (click)="modifySearch()"
+                class="floatRight round-button v2Btn ml15"
+              >
+                Modify Search
+              </ion-button>
+            </span>
+            <span>
+              <ion-icon
+                (click)="shareSelectedStones()"
+                class="floatRight round-button v2Btn ml15 cursor clipboard_icon"
+                name="clipboard-outline"
+              ></ion-icon>
+            </span>
+            <span class="legend"></span>
+            <span class="legend-text">Hold/Memo</span>
+          </div> -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-row class="ffWhitney" [class.hide]="showFilterMenu">
+    <div
+      class=""
+      [ngClass]="
+        showFilters
+          ? 'largeFilters clsSideFilter'
+          : 'largeFilters clsSideFilter hideImp'
+      "
+      *ngIf="callSearchRefinements && !!esFilters && esFilters.length > 0"
+    >
+      <ion-row>
+        <ion-col>
+          <ion-button
+            fill="clear"
+            class="ffWhitney"
+            (click)="clearAllRefinements()"
+            >{{ "Clear All" | translate }}</ion-button
+          >
+          <!-- <app-clear-refinements></app-clear-refinements>
+        <ais-configure *ngIf="!query.filters" [searchParameters]="query"></ais-configure> -->
+          <ion-icon
+            name="close"
+            color="danger"
+            class="fr cursor"
+            (click)="showFilters = !showFilters"
+          ></ion-icon>
+        </ion-col>
+      </ion-row>
+      <div
+        *ngIf="
+          !!searchPara &&
+          callSearchRefinements &&
+          !!esFilters &&
+          esFilters.length > 0
+        "
+      >
+        <ion-row *ngFor="let filter of esFilters">
+          <ion-col *ngIf="!!filter.values">
+            <!-- <ion-row *ngIf="filter.type == 'refinement' || filter.type == 'rangeSlider'">
+              <ion-col>
+                <ion-label class="vertical-filters-header">{{ filter.label | uppercase }}</ion-label>
+              </ion-col>
+            </ion-row> -->
+            <ion-row *ngIf="filter.type == 'refinement'">
+              <ion-col size="12">
+                <ion-label class="vertical-filters-header">{{
+                  filter.label | uppercase
+                }}</ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <app-es-refinement-list
+                  [attribute]="filter.attribute"
+                  [placeholder]="filter.searchPlaceholder"
+                  view="verticalView"
+                  showMoreLimit="8"
+                  operator="or"
+                  [items]="filter.values"
+                  (callFunction)="addRefinements($event)"
+                >
+                </app-es-refinement-list>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="filter.type == 'rangeSlider'">
+              <ion-col size="12">
+                <ion-label class="vertical-filters-header">{{
+                  filter.label | uppercase
+                }}</ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <app-es-refinement-list
+                  [attribute]="filter.attribute"
+                  [placeholder]="filter.searchPlaceholder"
+                  view="verticalView"
+                  showMoreLimit="8"
+                  operator="or"
+                  [items]="filter.values"
+                  (callFunction)="addRefinements($event)"
+                >
+                </app-es-refinement-list>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+    <!--|||||||||||||| BACK BUTTON MOVED FROM SMALLSCREEN (SEARCH: smallScreen fixed-row) ||||||||||||||-->
+    <!--|||||||||||||| CHECK DX-DATA-GRID COMPONENT (TS) update_gridHeightMobile (FN) ||||||||||||||-->
+    <ion-col size="2" class="tal p0 back-btn-mobile-container">
+      <ion-button
+        *ngIf="_companyService.productListing == 'grid' && !inspectionView"
+        class="fs12 round-button v2Btn back-btn-mobile"
+        style="height: 22px"
+        (click)="openDiamondSearch()"
+        fill="outline"
+        >Back</ion-button
+      >
+    </ion-col>
+    <!--|||||||||||||| ADD TO BELOW COL IF ABOVE COL IS UNCOMMENTED: sizeXs="10" sizeSm="12" ||||||||||||||-->
+    <ion-col
+      sizeXs="10"
+      sizeSm="12"
+      size="12"
+      class="tar p0 legend-container-mob"
+    >
+      <span
+        *ngIf="!!selected.length && !mobileView && !inspectionView"
+        class="tooltipCopy"
+      >
+        <span class="tooltipTextCopy">{{ "Copy" | translate }}</span>
+        <img
+          src="../../../assets/images/copy.png"
+          alt="copyImg"
+          class="mr10 cursor clipboard_icon"
+          (click)="shareSelectedStones()"
+        />
+      </span>
+      <span class="legend"></span>
+      <span class="legend-text">{{ "Hold/Memo" | translate }}</span>
+    </ion-col>
+
+    <ion-col
+      size="12"
+      size-xs="12"
+      size-sm="12"
+      size-xl="12"
+      class="marPad0"
+      size-md="12"
+      size-lg="12"
+    >
+      <div *ngIf="!!hits">
+        <ion-row *ngIf="!!esFilters && esFilters.length > 0">
+          <ion-col size="4" class="largeFilters padding5">
+            <ion-label class="header-title cursor" (click)="showSideFilter()">{{
+              "FILTERS" | translate
+            }}</ion-label>
+            <span *ngFor="let filter of esFilters">
+              <ion-button
+                *ngIf="filter.type == 'sideRefinement'"
+                class="colorBlack"
+                fill="clear"
+                (click)="show(filter)"
+              >
+                {{ filter.attribute }}
+                <ion-icon *ngIf="!filter.showDesc" name="arrow-down"></ion-icon>
+                <ion-icon *ngIf="filter.showDesc" name="arrow-up"></ion-icon>
+              </ion-button>
+            </span>
+          </ion-col>
+          <ion-col size="4" class="marPad0">
+            <div
+              class="marPad0 dispInlineFlex fr"
+              *ngIf="!DisableSavedSearches && userData"
+            >
+              <!-- <ion-select [(ngModel)]="selectedSavedSearch" placeholder="Select Saved Search" class="marPad0 mt10Imp" -->
+              <!-- style="max-width:200px;" (ionChange)="SavedSearchSelect()"> -->
+              <!-- <ion-select-option [value]="ss.id" *ngFor="let ss of savedSearchList"> -->
+              <!-- {{ss.name}} -->
+              <!-- </ion-select-option> -->
+              <!-- </ion-select> -->
+              <ionic-selectable
+                class="marPad0 colorWhite savedSearchSelectable"
+                [placeholder]="'Select Saved Search' | translate"
+                [items]="savedSearchList"
+                itemValueField="id"
+                itemTextField="name"
+                [canSearch]="true"
+                (onChange)="valueChange($event)"
+              >
+              </ionic-selectable>
+              <ion-button (click)="openNewSavedSearch()">
+                {{ "Save Search" | translate }}
+              </ion-button>
+              <ion-button (click)="modifySearch()">
+                {{ "Modify Search" | translate }}
+              </ion-button>
+            </div>
+          </ion-col>
+          <ion-col
+            size="4"
+            class="largeFilters marPad0 tar"
+            *ngIf="!!collectionOrderOptions"
+          >
+            <ion-button
+              fill="clear"
+              class="colorBlack"
+              (click)="showSortBy($event)"
+            >
+              {{ "Sort By" | translate }}
+              <span *ngIf="!!orderBy && !!orderBy.name" class="btnActiveClass"
+                >: {{ orderBy.name | json }}{{ orderBy.name }}</span
+              >
+              <ion-icon name="chevron-down"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          class="largeFilters marPad0"
+          *ngIf="!!searchPara && callSearchRefinements"
+        >
+          <div *ngFor="let filter of esFilters">
+            <app-es-refinement-list
+              *ngIf="filter.type == 'sideRefinement'"
+              view="horizontalView"
+              [class.hide]="!filter.showDesc"
+              [attribute]="filter.attribute"
+              operator="or"
+              [items]="filter.values"
+              (callFunction)="addRefinements($event)"
+            ></app-es-refinement-list>
+          </div>
+        </ion-row>
+
+        <ion-row
+          class="marPad0"
+          *ngIf="currentFilterExists && callSearchRefinements"
+        >
+          <ion-col size="12" class="marPad0">
+            <!-- <ais-current-refinements class="m28"></ais-current-refinements> -->
+            <app-es-refinement-list
+              view="currentFilters"
+              class="m28"
+              [items]="esFilters"
+              (callFunction)="addRefinements($event)"
+            >
+            </app-es-refinement-list>
+          </ion-col>
+        </ion-row>
+        <!-- Large screen view -->
+        <div class="largeFilters" *ngIf="!mobileView">
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'card'"
+          >
+            <div
+              *ngIf="
+                databaseServiceService.searchListSelected.length == 0;
+                then allView;
+                else selectedView
+              "
+            ></div>
+            <ng-template #allView>
+              <ion-col
+                class="productCol cursor"
+                size="6"
+                size-sm="4"
+                size-xl="3"
+                size-md="4"
+                size-lg="4"
+                size-xs="6"
+                *ngFor="let single_product of hits; let i = index"
+              >
+                <stone-grid
+                  (goToDNAFn)="singleProduct(single_product)"
+                  (addToCartFunction)="addToCart($event)"
+                  [stoneDetails]="single_product"
+                  [refreshData]="refreshCard"
+                >
+                </stone-grid>
+              </ion-col>
+            </ng-template>
+            <ng-template #selectedView>
+              <ion-col
+                class="productCol cursor"
+                size="6"
+                size-sm="4"
+                size-xl="3"
+                size-md="4"
+                size-lg="4"
+                size-xs="6"
+                *ngFor="
+                  let single_product of databaseServiceService.searchListSelected;
+                  let i = index
+                "
+              >
+                <stone-grid
+                  (goToDNAFn)="singleProduct(single_product)"
+                  (addToCartFunction)="addToCart($event)"
+                  [stoneDetails]="single_product"
+                >
+                </stone-grid>
+              </ion-col>
+            </ng-template>
+            <ng-container> </ng-container>
+          </ion-row>
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'MobileList'"
+          >
+            <ion-col
+              size="12"
+              size-sm="6"
+              size-xl="4"
+              size-md="6"
+              size-lg="6"
+              size-xs="12"
+              *ngFor="let single_product of hits; let i = index"
+            >
+              <ion-card class="priceCardContent">
+                <ion-card-content class="priceCardContent bgWhite">
+                  <div
+                    class="outofStock"
+                    *ngIf="single_product.outOfStock == 1"
+                  >
+                    <img src="assets/images/sold-out.png" alt="" />
+                  </div>
+                  <ion-row
+                    class="product-name"
+                    (click)="singleProduct(single_product)"
+                  >
+                    {{ productTitle(single_product.productName) }}
+                  </ion-row>
+                  <ion-row
+                    class="fs12"
+                    (click)="singleProduct(single_product)"
+                    *ngIf="
+                      (!_companyService.hidePriceForLogin && !hideStorePrice) ||
+                      (_companyService.hidePriceForLogin &&
+                        userId &&
+                        !hideStorePrice) ||
+                      showSKU ||
+                      showProductId
+                    "
+                  >
+                    <span *ngIf="showProductId"
+                      >{{ single_product.id }} &nbsp;</span
+                    ><span *ngIf="showSKU"
+                      >#{{ single_product.productSKU }}
+                    </span>
+                  </ion-row>
+
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice != single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                    >
+                      {{ "From" | translate }}
+                      {{ single_product.minPrice }} {{ "To" | translate }}
+                      {{ single_product.maxPrice }} Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice &&
+                      single_product.minPrice != 0
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                      *ngIf="
+                        (!_companyService.hidePriceForLogin &&
+                          !hideStorePrice) ||
+                        (_companyService.hidePriceForLogin &&
+                          userId &&
+                          !hideStorePrice)
+                      "
+                    >
+                      {{ single_product.minPrice }}
+                      Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice &&
+                      single_product.minPrice == 0
+                    "
+                  >
+                    <ion-col class="noPadding"> TBD </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <!-- loadmore -->
+          <ion-row
+            *ngIf="!isLastPage && _companyService.productListing != 'grid'"
+          >
+            <ion-infinite-scroll (ionInfinite)="nextPage($event)">
+              <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data..."
+              >
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+
+            <!-- <ion-col class="tac">
+              <ion-button fill="clear" (click)="nextPage()">
+                Show more
+              </ion-button>
+            </ion-col> -->
+          </ion-row>
+          <!-- <ion-row class="mainDiv w100 fixed-buttons" *ngIf="_companyService.productListing == 'grid'">
+            <ion-col class="w100" *ngIf="!!searchPageButtons && searchPageButtons.length > 0" style="text-align: left">            
+
+              <ion-button *ngFor="let btn of searchPageButtons"
+                [fill]="_companyService.productListing == 'grid'? 'clear': 'solid'" (click)="actionButtonClick(btn)"
+                [ngClass]="_companyService.productListing == 'grid'? 'round-clear-button v2Btn': ''">
+                {{ btn.name }}
+              </ion-button>
+
+              <img src="assets/images/excel.png" class="clsActionImage cursor" (click)="ExcelProducts()" />
+              <img src="assets/images/email.png" class="clsActionImage cursor" (click)="showGetEmailId()" />
+            </ion-col>
+          </ion-row> -->
+          <ion-row
+            class="mainDiv ml5 mr5"
+            *ngIf="_companyService.productListing == 'grid'"
+          >
+            <ion-col size="12" *ngIf="!inspectionView">
+              <app-dx-data-grid
+                [columns]="searchResultColumns"
+                [rowData]="hits"
+                [mode]="mode"
+                [selected]="selected"
+                (selectStone)="singleProduct($event)"
+                (viewCertificateFn)="viewCertificate($event)"
+                (callFunction)="
+                  selected = $event.selectedRowsData; setSelection()
+                "
+                (popOverFunction)="popOverFunction($event)"
+                [pageSize]="pageSize"
+                (addToCartFunction)="addToCart($event)"
+                [refreshGrid]="refreshGrid"
+                page="search"
+                (dataSorted)="dataSorted($event)"
+                (selectionViewData)="selectionViewData($event)"
+                [allowColumnResizing]="false"
+                [allowColumnReordering]="false"
+              >
+              </app-dx-data-grid>
+            </ion-col>
+            <ion-col size="12" *ngIf="inspectionView && selected.length > 0">
+              <app-inspect-viewing
+                [selected]="selected"
+                [defaultSelected]="defaultSelected"
+                [details]="showDetails"
+                (close)="changeView()"
+                loadFrom="search"
+              >
+              </app-inspect-viewing>
+            </ion-col>
+          </ion-row>
+        </div>
+        <!-- Small screen view -->
+        <div class="smallFilters" *ngIf="mobileView">
+          <!-- Show previous button template -->
+          <ion-row
+            *ngIf="!isFirstPage && _companyService.productListing != 'grid'"
+          >
+            <ion-col class="tac">
+              <ion-button fill="clear" (click)="previousPage()">
+                {{ "Show previous" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            class="mainDiv w100 largescreen"
+            *ngIf="_companyService.productListing == 'grid'"
+          >
+            <ion-col class="tal">
+              <ion-button
+                class="fs12 round-button v2Btn"
+                (click)="openDiamondSearch()"
+              >
+                {{ "Filter" | translate }}
+              </ion-button>
+            </ion-col>
+            <ion-col
+              class="tar"
+              *ngIf="!!searchPageButtons && searchPageButtons.length > 0"
+            >
+              <ion-button
+                (click)="presentActionSheet()"
+                class="fs12 round-button v2Btn"
+              >
+                {{ "Select Action" | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row class="smallScreen fixed-row-summary" *ngIf="_companyService.productListing == 'grid'">
+            <ion-col size="8">{{ loadMoreData?.length == 0 ? 0 : loadMoreData?.length }} out of {{ totalHits
+              }} stones </ion-col>
+            <ion-col size="4" class="tar marPad0">
+              <ion-button class="fs12 round-button v2Btn" style="height: 22px;" (click)="openDiamondSearch()"
+                fill="outline">Back</ion-button>
+            </ion-col>
+          </ion-row> -->
+          <ion-row
+            class="smallScreen fixed-row tac"
+            *ngIf="_companyService.productListing == 'grid' && !inspectionView"
+          >
+            <!-- <ion-row>
+              <ion-col size="8">{{ loadMoreData?.length == 0 ? 0 : loadMoreData?.length }} out of {{ totalHits
+                }} stones </ion-col>
+              <ion-col size="4"class="tar marPad0">
+                <ion-button class="fs12 round-button v2Btn" style="height: 22px;" (click)="openDiamondSearch()"
+                  fill="outline">Back</ion-button>
+              </ion-col>
+            </ion-row>         -->
+            <ion-row class="ion-justify-content-center">
+              <!-- <ion-col size="8" class="tal mAuto">
+                {{ loadMoreData?.length == 0 ? 0 : loadMoreData?.length }} out of {{ totalHits
+              }} stones  
+              </ion-col> -->
+
+              <!--|||||||||||||| MOVED BACK BUTTON TO LEGEND ROW (SEARCH: back-btn-mobile-container) ||||||||||||||-->
+              <!--|||||||||||||| CHECK DX-DATA-GRID COMPONENT (TS) update_gridHeightMobile (FN) ||||||||||||||-->
+              <!-- <ion-col size="4" offset="8" class="tar">
+                <ion-button
+                  class="fs12 round-button v2Btn"
+                  style="height: 22px"
+                  (click)="openDiamondSearch()"
+                  fill="outline"
+                  >{{"Back"|translate}}</ion-button
+                >
+              </ion-col> -->
+              <ion-col size="5.5" class="marPad0">
+                <ion-button
+                  class="fs12 round-button v2Btn btnWidth"
+                  (click)="
+                    actionButtonClick({
+                      name: 'Add To Cart',
+                      action: '/my-cart',
+                      orderBook: ''
+                    })
+                  "
+                >
+                  {{ "Add to Cart" | translate }}
+                </ion-button>
+              </ion-col>
+              <ion-col size="5.5" class="marPad0 tar">
+                <ion-button
+                  class="fs12 round-button font-black transform-none btnWidth"
+                  color="white"
+                  (click)="
+                    actionButtonClick({
+                      name: 'Purchase',
+                      action: 'order',
+                      orderBook: ''
+                    })
+                  "
+                >
+                  {{ "Purchase" | translate }}
+                </ion-button>
+              </ion-col>
+              <ion-col
+                size="1"
+                class="marPad0"
+                (click)="options()"
+                class="icon-bottom"
+              >
+                <ion-icon
+                  name="ellipsis-vertical-outline"
+                  class="pt5"
+                  color="primary"
+                ></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-row>
+
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'card' && hits.length > 0"
+          >
+            <ion-col
+              class="productCol"
+              size="6"
+              size-sm="4"
+              size-xl="2.4"
+              size-md="3"
+              size-lg="3"
+              size-xs="6"
+              *ngFor="let single_product of hits; let i = index"
+            >
+              <ion-card class="priceCardContent">
+                <div
+                  class="imgInList imgHgt"
+                  (click)="singleProduct(single_product)"
+                >
+                  <!-- <cl-image
+                    [public-id]="single_product.image"
+                    format="jpg"
+                    secure="true"
+                    *ngIf="
+                      !!single_product?.image &&
+                      single_product.image.includes('/')
+                    "
+                    class="mAuto"
+                  >
+                    <cl-transformation
+                      width="180"
+                      height="255"
+                      gravity="auto"
+                      crop="fill"
+                    ></cl-transformation>
+                  </cl-image>
+                  <cl-image
+                    public-id="/logo/noimage"
+                    format="png"
+                    *ngIf="!single_product?.image && !companyLogo"
+                    secure="true"
+                    class="mAuto"
+                  >
+                    <cl-transformation
+                      width="180"
+                      height="255"
+                      gravity="auto"
+                      crop="fill"
+                    ></cl-transformation>
+                  </cl-image>
+                  <cl-image
+                    public-id="/logo/{{ _companyService.refCompanyId }}"
+                    format="png"
+                    secure="true"
+                    *ngIf="!single_product?.image && !!companyLogo"
+                    class="mAuto"
+                  >
+                    <cl-transformation
+                      width="180"
+                      height="255"
+                      gravity="auto"
+                      crop="fill_pad"
+                    ></cl-transformation>
+                  </cl-image> -->
+                </div>
+                <ion-card-content class="priceCardContent bgWhite">
+                  <div
+                    class="outofStock"
+                    *ngIf="single_product.outOfStock == 1"
+                  >
+                    <img src="assets/images/sold-out.png" alt="" />
+                  </div>
+                  <ion-row
+                    class="product-name"
+                    (click)="singleProduct(single_product)"
+                  >
+                    {{ productTitle(single_product.productName) }}
+                  </ion-row>
+                  <ion-row
+                    class="fs12"
+                    (click)="singleProduct(single_product)"
+                    *ngIf="
+                      (!_companyService.hidePriceForLogin && !hideStorePrice) ||
+                      (_companyService.hidePriceForLogin &&
+                        userId &&
+                        !hideStorePrice) ||
+                      showSKU ||
+                      showProductId
+                    "
+                  >
+                    <span *ngIf="showProductId"
+                      >{{ single_product.id }} &nbsp;</span
+                    ><span *ngIf="showSKU"
+                      >#{{ single_product.productSKU }}
+                    </span>
+                  </ion-row>
+
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice != single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                    >
+                      {{ "From" | translate }}
+                      {{ single_product.minPrice }} {{ "To" | translate }}
+                      {{ single_product.maxPrice }} Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                      *ngIf="
+                        (!_companyService.hidePriceForLogin &&
+                          !hideStorePrice) ||
+                        (_companyService.hidePriceForLogin &&
+                          userId &&
+                          !hideStorePrice)
+                      "
+                    >
+                      {{ single_product.minPrice }}
+                      Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+              <!-- <ion-row *ngIf="!!single_product">
+            </ion-row> -->
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'MobileList'"
+          >
+            <ion-col
+              size="12"
+              size-sm="8"
+              size-xl="4"
+              size-md="6"
+              size-lg="6"
+              size-xs="12"
+              *ngFor="let single_product of hits; let i = index"
+            >
+              <ion-card class="priceCardContent">
+                <ion-card-content class="priceCardContent bgWhite">
+                  <div
+                    class="outofStock"
+                    *ngIf="single_product.outOfStock == 1"
+                  >
+                    <img src="assets/images/sold-out.png" alt="" />
+                  </div>
+                  <ion-row
+                    class="product-name"
+                    (click)="singleProduct(single_product)"
+                  >
+                    {{ productTitle(single_product.productName) }}
+                  </ion-row>
+                  <ion-row
+                    class="fs12"
+                    (click)="singleProduct(single_product)"
+                    *ngIf="
+                      (!_companyService.hidePriceForLogin && !hideStorePrice) ||
+                      (_companyService.hidePriceForLogin &&
+                        userId &&
+                        !hideStorePrice) ||
+                      showSKU ||
+                      showProductId
+                    "
+                  >
+                    <span *ngIf="showProductId"
+                      >{{ single_product.id }} &nbsp;</span
+                    ><span *ngIf="showSKU"
+                      >#{{ single_product.productSKU }}
+                    </span>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice != single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                    >
+                      {{ "From" | translate }}
+                      {{ single_product.minPrice }} {{ "To" | translate }}
+                      {{ single_product.maxPrice }} Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                      *ngIf="
+                        (!_companyService.hidePriceForLogin &&
+                          !hideStorePrice) ||
+                        (_companyService.hidePriceForLogin &&
+                          userId &&
+                          !hideStorePrice)
+                      "
+                    >
+                      {{ single_product.minPrice }}
+                      Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'list'"
+          >
+            <ion-col
+              *ngFor="let single_product of hits; let i = index"
+              size="12"
+            >
+              <ion-row>
+                <ion-col size="2">
+                  <div
+                    class="imgInList imgHgt"
+                    (click)="singleProduct(single_product)"
+                  >
+                    <!-- <cl-image
+                      [public-id]="single_product.image"
+                      format="jpg"
+                      secure="true"
+                      *ngIf="
+                        !!single_product?.image &&
+                        single_product.image.includes('/')
+                      "
+                      class="mAuto"
+                    >
+                      <cl-transformation
+                        width="180"
+                        height="255"
+                        gravity="auto"
+                        crop="fill"
+                      ></cl-transformation>
+                    </cl-image>
+                    <cl-image
+                      public-id="/logo/noimage"
+                      format="png"
+                      *ngIf="!single_product?.image && !companyLogo"
+                      secure="true"
+                      class="mAuto"
+                    >
+                      <cl-transformation
+                        width="180"
+                        height="255"
+                        gravity="auto"
+                        crop="fill"
+                      ></cl-transformation>
+                    </cl-image>
+                    <cl-image
+                      public-id="/logo/{{ _companyService.refCompanyId }}"
+                      format="png"
+                      secure="true"
+                      *ngIf="!single_product?.image && !!companyLogo"
+                      class="mAuto"
+                    >
+                      <cl-transformation
+                        width="180"
+                        height="255"
+                        gravity="auto"
+                        crop="fill_pad"
+                      ></cl-transformation>
+                    </cl-image> -->
+                  </div>
+                </ion-col>
+                <ion-col size="10" class="priceCardContent bgWhite">
+                  <div
+                    class="outofStock"
+                    *ngIf="single_product.outOfStock == 1"
+                  >
+                    <img src="assets/images/sold-out.png" alt="" />
+                  </div>
+                  <!-- <ion-card-content class="priceCardContent bgWhite"> -->
+                  <ion-row
+                    class="product-name"
+                    (click)="singleProduct(single_product)"
+                  >
+                    {{ productTitle(single_product.productName) }}
+                  </ion-row>
+                  <ion-row
+                    class="fs12"
+                    (click)="singleProduct(single_product)"
+                    *ngIf="
+                      (!_companyService.hidePriceForLogin && !hideStorePrice) ||
+                      (_companyService.hidePriceForLogin &&
+                        userId &&
+                        !hideStorePrice) ||
+                      showSKU ||
+                      showProductId
+                    "
+                  >
+                    <span *ngIf="showProductId"
+                      >{{ single_product.id }} &nbsp;</span
+                    ><span *ngIf="showSKU"
+                      >#{{ single_product.productSKU }}
+                    </span>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice != single_product.maxPrice
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                    >
+                      {{ "From" | translate }}
+                      {{ single_product.minPrice }} {{ "To" | translate }}
+                      {{ single_product.maxPrice }} Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice &&
+                      single_product.minPrice != 0
+                    "
+                  >
+                    <ion-col
+                      class="noPadding"
+                      (click)="singleProduct(single_product)"
+                      *ngIf="
+                        (!_companyService.hidePriceForLogin &&
+                          !hideStorePrice) ||
+                        (_companyService.hidePriceForLogin &&
+                          userId &&
+                          !hideStorePrice)
+                      "
+                    >
+                      {{ single_product.minPrice }}
+                      Rs.
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row
+                    class="priceTag"
+                    *ngIf="
+                      !!single_product &&
+                      single_product.maxPrice != null &&
+                      single_product.minPrice != null &&
+                      single_product?.minPrice == single_product.maxPrice &&
+                      single_product.minPrice == 0
+                    "
+                  >
+                    <ion-col class="noPadding">
+                      {{ "TBD" | translate }}
+                    </ion-col>
+                    <ion-col
+                      class="fr tar"
+                      (click)="addToFavorite(single_product)"
+                      *ngIf="!hideFavourites"
+                    >
+                      <ion-icon
+                        name="heart"
+                        *ngIf="single_product.favorite"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-icon
+                        name="heart"
+                        *ngIf="!single_product.favorite"
+                        color="medium"
+                      ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <!-- <ion-col class="productCol" size="12" >
+              <ion-card class="priceCardContent">
+                <div class="imgHgt" *ngIf="!single_product?.image && !!companyLogo">
+                  <img class="imgInList" (click)="singleProduct(single_product)" [src]="companyLogo" />
+                </div>
+                 </ion-card-content>
+              </ion-card>
+            </ion-col> -->
+          </ion-row>
+          <ion-row
+            class="mainDiv"
+            *ngIf="_companyService.productListing == 'grid'"
+          >
+            <ion-col size="12" *ngIf="!inspectionView">
+              <div class="smallScreen searchGridDiv" *ngIf="mobileView">
+                <app-dx-data-grid
+                  [mobileView]="true"
+                  [columns]="searchResultColumns"
+                  [rowData]="hits"
+                  [mode]="mode"
+                  (selectStone)="singleProduct($event)"
+                  (viewCertificateFn)="viewCertificate($event)"
+                  [selected]="selected"
+                  (callFunction)="
+                    selected = $event.selectedRowsData;
+                    refreshMobileGrid = false
+                  "
+                  (popOverFunction)="popOverFunction($event)"
+                  (addToCartFunction)="addToCart($event)"
+                  [pageSize]="pageSize"
+                  page="search"
+                  [refreshMobileGrid]="refreshMobileGrid"
+                  (selectionViewData)="selectionViewData($event)"
+                  [allowColumnResizing]="false"
+                  [allowColumnReordering]="false"
+                >
+                </app-dx-data-grid>
+                <!-- <ion-row>
+                  <ion-col size="8">{{ loadMoreData?.length == 0 ? 0 : loadMoreData?.length }} out of {{ totalHits
+                    }} stones </ion-col>
+                  <ion-col size="4"class="tar marPad0">
+                    <ion-button class="fs12 round-button v2Btn" style="height: 22px;" (click)="openDiamondSearch()"
+                      fill="outline">Back</ion-button>
+                  </ion-col>
+                </ion-row> -->
+              </div>
+              <!-- <div class="largescreen">
+                <app-dx-data-grid [mobileView]="false" [columns]="searchResultColumns" [rowData]="hits" [mode]="mode"
+                  (selectStone)="singleProduct($event)" [selected]="selected"
+                  (callFunction)="selected = $event.selectedRowsData" (popOverFunction)="popOverFunction($event)"
+                  [pageSize]="pageSize" page="search" [refreshGrid]="refreshGrid">
+                </app-dx-data-grid>
+                <ion-row>
+                  <ion-col class="tar pos">{{ loadMoreData?.length == 0 ? 0 : loadMoreData?.length }} out of {{
+                    totalHits
+                    }} stones </ion-col>
+                </ion-row>
+              </div> -->
+            </ion-col>
+            <ion-col size="12" *ngIf="inspectionView && selected.length > 0">
+              <app-inspect-viewing
+                [selected]="selected"
+                [defaultSelected]="defaultSelected"
+                [details]="showDetails"
+                (close)="changeView()"
+                loadFrom="search"
+              >
+              </app-inspect-viewing>
+            </ion-col>
+          </ion-row>
+
+          <!-- Show more button template -->
+          <ion-row
+            *ngIf="!isLastPage && _companyService.productListing != 'grid'"
+          >
+            <ion-infinite-scroll (ionInfinite)="nextPage($event)">
+              <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data..."
+              >
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+
+            <!-- <ion-col class="tac">
+              <ion-button fill="clear" (click)="nextPage()">
+                Show more
+              </ion-button>
+            </ion-col> -->
+          </ion-row>
+        </div>
+      </div>
+
+      <div *ngIf="!hits && !!searchResponse">
+        <ion-row>
+          <ion-col size="6" (click)="showSideFilter()">
+            <ion-label class="filter ffWhitney">{{
+              "FILTERS" | translate
+            }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{ searchResponse }}</ion-col>
+        </ion-row>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row
+    [class.hide]="!showFilterMenu"
+    class="h100 searchFilters noPadding ffWhitney"
+    *ngIf="
+      !!esFilters &&
+      esFilters.length > 0 &&
+      _companyService.productListing != 'grid'
+    "
+  >
+    <ion-col class="noPadding">
+      <ion-row class="noPadding">
+        <ion-col class="noPadding" size="9">
+          <app-es-refinement-list
+            view="currentFilters"
+            class="m28"
+            [items]="esFilters"
+            (callFunction)="addRefinements($event)"
+          >
+          </app-es-refinement-list>
+        </ion-col>
+        <ion-col class="tar" size="3">
+          <ion-button
+            fill="clear"
+            class="ffWhitney"
+            (click)="clearAllRefinements()"
+            >{{ "Clear All" | translate }}</ion-button
+          >
+        </ion-col>
+        <br />
+      </ion-row>
+      <ion-row class="h100 noPadding">
+        <ion-col size="4" class="noPadding">
+          <ion-list class="filters" lines="none">
+            <ion-item
+              *ngFor="let filter of esFilters"
+              [ngClass]="
+                smallScreenFilter == filter.attribute
+                  ? 'ffWhitney selectedFilter'
+                  : 'itemList ffWhitney'
+              "
+              (click)="filterForSmallScreen(filter.attribute)"
+            >
+              <ion-label>{{ filter.label | uppercase }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="8">
+          <div
+            [class.hide]="smallScreenFilter != filter.attribute"
+            *ngFor="let filter of esFilters"
+          >
+            <!-- <ais-refinement-list *ngIf="filter.type == 'refinement' || filter.type == 'sideRefinement'"
+            [attribute]="filter.attribute" operator="or" [searchable]="true"
+            [searchPlaceholder]="filter.searchPlaceholder" class="filterItem"> </ais-refinement-list> -->
+            <!-- <ais-range-slider *ngIf="filter.type=='rangeSlider'" [attribute]="filter.attribute"></ais-range-slider> -->
+            <app-es-refinement-list
+              *ngIf="
+                filter.type == 'refinement' || filter.type == 'sideRefinement'
+              "
+              [attribute]="filter.attribute"
+              [placeholder]="filter.searchPlaceholder"
+              view="verticalView"
+              showMoreLimit="8"
+              operator="or"
+              [items]="filter.values"
+              (callFunction)="addRefinements($event)"
+              class="filterItem"
+            >
+            </app-es-refinement-list>
+            <!-- <app-numeric-filter *ngIf="filter.type == 'rangeSlider'" [attribute]="filter.attribute"
+            [items]="filter.filterValues" [query]="query"></app-numeric-filter> -->
+            <app-es-refinement-list
+              *ngIf="filter.type == 'rangeSlider'"
+              [attribute]="filter.attribute"
+              [placeholder]="filter.searchPlaceholder"
+              view="verticalView"
+              showMoreLimit="8"
+              operator="or"
+              [items]="filter.values"
+              (callFunction)="addRefinements($event)"
+            >
+            </app-es-refinement-list>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row
+    [class.hide]="!showFilterMenu"
+    class="h100 searchFilters noPadding ffWhitney"
+    *ngIf="_companyService.productListing == 'grid'"
+  >
+    <ion-col class="noPadding">
+      <!-- <app-diamond-search hideHeaderFooter="true"></app-diamond-search> -->
+    </ion-col>
+  </ion-row>
+
+  <ng-container *ngIf="showSpinner">
+    <ion-row class="mt5"> </ion-row>
+    <ion-row
+      class="mainDiv h50"
+      *ngIf="_companyService.productListing == 'card'"
+    >
+      <ion-col
+        size="6"
+        size-sm="4"
+        size-xl="3"
+        size-md="4"
+        size-lg="4"
+        size-xs="6"
+        *ngFor="let data of configService.arrayOne(18); let idx = index"
+      >
+        <ion-skeleton-text animated class="h333-skel"></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="mt5 h80" *ngIf="_companyService.productListing == 'grid'">
+    </ion-row>
+    <ion-row
+      class="mainDiv ml50 mr50"
+      *ngIf="_companyService.productListing == 'grid'"
+    >
+      <ion-col
+        size="12"
+        *ngFor="let data of configService.arrayOne(25); let idx = index"
+      >
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+</ion-grid>

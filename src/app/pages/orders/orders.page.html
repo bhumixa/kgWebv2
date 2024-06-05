@@ -1,0 +1,256 @@
+<app-header (languageChanged)="onLanguageChanged($event)" *ngIf="!hideBackButton" showBackButton="true" [pageTitle]="title"></app-header>
+<app-header (languageChanged)="onLanguageChanged($event)" *ngIf="hideBackButton" showBackButton="false" [pageTitle]="title"></app-header>
+<ion-content *ngIf="!uploadOrderView">
+  <div class="minHeightMinus120">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content pullingIcon="arrow-down" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing..."> </ion-refresher-content>
+    </ion-refresher>
+    <ion-row>
+      <ion-col size="12" class="onPageTitle">
+        <ng-container *ngIf="!showDealersOrderOnOrdersPage && _companyService.productListing != 'grid'">{{ title }}
+        </ng-container>
+        <!--<ion-button (click)="uploadOrdersViewChange()" class="fr" *ngIf="allowUploadFromFile">
+          Upload
+        </ion-button>-->
+        <ion-segment [(ngModel)]="selectedSegment" color="primary" *ngIf="showDealersOrderOnOrdersPage"
+          (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="By Me">{{"By Me"|translate}}</ion-segment-button>
+          <ion-segment-button value="For Me">{{"For Me"|translate}} </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="12" *ngIf="allowUploadFromFile">
+        <ion-button (click)="uploadOrdersViewChange()" class="fr" *ngIf="allowUploadFromFile"> {{"Upload"|translate}} </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row [ngClass]="_companyService.productListing == 'grid'? 'mt5': ''">
+
+    </ion-row>
+    <ion-row *ngIf="_companyService.productListing == 'grid'" [ngClass]="contentClass">
+      <ion-col size="12" class="fl tal mAuto largeFilters">
+        <ng-container *ngIf="!!orderPageButton && orderPageButton.length > 0">
+          <ion-button *ngFor="let btn of orderPageButton" (click)="actionButtonClick(btn)"
+            [ngClass]="_companyService.productListing == 'grid'? 'round-clear-button v2Btn': 'fs12'" [fill]="
+          _companyService.productListing=='grid' ? 'clear' : 'solid'"> {{ btn.name | translate}} </ion-button>
+        </ng-container>
+        <!-- <ng-container *ngIf="orderBook != 'Offer'">
+          <img src="assets/images/excel.png" class="clsActionImage cursor" (click)="ExcelProducts()" />
+          <img src="assets/images/email.png" class="clsActionImage cursor" (click)="showGetEmailId()" />
+        </ng-container> -->
+
+      </ion-col>
+      <ion-col size="12" class="tar mAuto smallFilters">
+        <ion-button (click)="presentActionSheet()" class="fs12 round-button v2Btn">
+          {{"Select Action"|translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <div class="noDataMsg mar10" *ngIf="orders && orders.length > 0 && filter && orders != null">
+      <span *ngIf="temp.length != 0 && _companyService.productListing == 'grid'" (click)="clearFilter()">
+        <b><u> {{"Clear Filter"|translate}} </u></b>
+      </span>
+    </div>
+    <div class="noDataMsg mar10" *ngIf="((orders && orders.length == 0) || !orders) && orders != null">
+      {{"Add items to your cart to place your first"|translate}} {{label}}!
+      <!-- <span *ngIf="temp.length != 0 && _companyService.productListing == 'grid'" (click)="clearFilter()">
+        <b><u> Clear Filter </u></b>
+      </span> -->
+    </div>
+
+    <!-- <div *ngIf="!!orders && orders.length>0"> -->
+    <ion-row *ngIf="!skeleton && _companyService.productListing != 'grid'">
+      <ion-col size="12" size-lg="6" offset-lg="3" size-md="6" offset-md="3" size-sm="8" offset-sm="2">
+        <ion-card class="mar10" *ngFor="let order of orders" (click)="getOrderDetailById(order.orderId)">
+          <ion-card-header class="cardHeader" [ngClass]="onMobile ? 'padd15' : ''">
+            <ion-row>
+              <ion-col size="6">
+                <ion-label>{{"ORDER"|translate}}</ion-label><br />
+                <ion-label class="bold fs18">#{{ order.serialNumber }}</ion-label>
+                <!-- <ion-label class="fr cursor color"  (click)="getOrderDetailById(order.orderId)">Order Details</ion-label> -->
+              </ion-col>
+              <ion-col size="6">
+                <ion-label class="fr">{{"STATUS"|translate}}</ion-label><br />
+                <ion-label class="fr bold fs18">{{ order.orderStatus }}</ion-label>
+              </ion-col>
+              <ion-col size="6" *ngIf="selectedSegment == 'For Me'">
+                <ion-label>{{"Name"|translate}}</ion-label><br />
+                <ion-label class="bold fs18">{{ order.name }}</ion-label>
+              </ion-col>
+              <ion-col size="6" *ngIf="selectedSegment == 'For Me'">
+                <ion-label class="fr">{{"Number"|translate}}</ion-label><br />
+                <ion-label class="fr bold fs18">{{ order.username }}</ion-label>
+              </ion-col>
+              <ion-col size="6">
+                <label>{{"PLACED"|translate}}</label><br />
+                <label class="bold"> {{ order.addedOn | timeAgo }} </label>
+              </ion-col>
+
+              <ion-col size="6" *ngIf="!hideStorePrice">
+                <ion-label class="fr">{{"TOTAL"|translate}}</ion-label><br />
+                <!-- <ion-label class="fr bold ">{{ _companyService.currency }}{{ order.total * order.totalOrderQty | number: ".2-2" }}</ion-label> -->
+                <ion-label class="fr bold">{{ _companyService.currency }}{{ order.total | number: ".2-2" }} </ion-label>
+              </ion-col>
+            </ion-row>
+            <div [ngClass]="onMobile ? '' : 'marTB'" *ngIf="order.lastShipDate && order.orderStatus == 'Pending'">
+              <ion-label class="shippedDetails" class="p5">
+                <ion-icon name="send"></ion-icon>
+                {{"Shipped"|translate}} {{ order.lastShipDate | timeAgo: 0 }}
+              </ion-label>
+              <ion-label [ngClass]="!onMobile ? 'pad45' : ''"
+                *ngIf="order.lastShipDate && order.orderStatus == 'Delivered'">{{"Delivered"|translate}} {{ order.lastShipDate | timeAgo
+                }}</ion-label>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <!-- </div> -->
+    <ion-row *ngIf="!skeleton && _companyService.productListing == 'grid'" style="text-align: -webkit-center"
+      [ngClass]="contentClass">
+      <ion-col>
+        <app-dx-data-grid [columns]="resultColumns" [tableId]="'orders-grid'"  [rowData]="orders" mode="multiple" [selected]="selected"
+          [mobileView]="mobileView" (callFunction)="selected = $event.selectedRowsData" [pageSize]="pageSize"
+          [orderBook]="orderBook" page="order"> </app-dx-data-grid>
+      </ion-col>
+    </ion-row>
+
+    <!-- grid skeleton  -->
+    <div *ngIf="skeleton && _companyService.productListing == 'grid'" [ngClass]="contentClass">
+      <ion-grid>
+        <ion-row *ngFor="let data of _configService.arrayOne(15)">
+          <ion-col size="1" *ngFor="let data of _configService.arrayOne(12)">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- <div class="mar16 floatRight">
+    <ion-skeleton-text animated style="height: 35px;"></ion-skeleton-text>
+   </div> -->
+    </div>
+
+    <!-- end -->
+
+    <!-- skeleton -->
+    <ion-row *ngIf="skeleton && _companyService.productListing != 'grid'">
+      <ion-col size="12" size-lg="6" offset-lg="3" size-md="6" offset-md="3" size-sm="8" offset-sm="2">
+        <ion-card class="mar10" *ngFor="let data of _configService.arrayOne(10)">
+          <ion-card-header class="cardHeader" [ngClass]="onMobile ? 'padd15' : ''">
+            <ion-row>
+              <ion-col size="6" *ngFor="let data of _configService.arrayOne(2)">
+                <ion-skeleton-text animated class="w55-skel m0-skel"></ion-skeleton-text><br />
+                <ion-skeleton-text animated class="w75-skel m0-skel"></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="6">
+                <div class="fr">
+                  <ion-skeleton-text animated class="w55-skel m0-skel"></ion-skeleton-text><br />
+                  <ion-skeleton-text animated class="w75-skel m0-skel"></ion-skeleton-text>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <!-- end -->
+    <ion-infinite-scroll (ionInfinite)="doInfiniteNewForNewOrder($event)"
+      *ngIf="_companyService.productListing != 'grid'">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>
+<ion-content class="ion-padding" *ngIf="uploadOrderView">
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="uploadOrdersViewChange()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-grid>
+    <ion-row *ngIf="userType == 'User'">
+      <ion-col>
+        <ion-item>
+          <ion-searchbar placeholder="Search Customer" [(ngModel)]="searchText" (ionChange)="fetchCustomer()"
+            [showCancelButton]="shouldShowCancel"></ion-searchbar>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="userType == 'User'">
+      <ion-col>
+        <ion-item *ngIf="custName" lines="none" class="paddleft w100">
+          <ion-label>{{ custName }}</ion-label>
+        </ion-item>
+
+        <div *ngIf="!custName && customers && customers.length != 0">
+          <ion-row *ngFor="let customer of customers.data; let i = index" (click)="fetchCustomerContact(customer)"
+            class="custList">
+            <!-- <ion-item > -->
+            <ion-label>{{ customer.companyName }}-{{ customer.city }}</ion-label>
+            <!-- </ion-item> -->
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!!customerContacts && customerContacts != null && customerContacts != undefined">
+      <ion-item lines="none" class="paddleft w100">
+        <app-ionic-selectable-comp class="w100 pl5" [selectedValue]="selectedCustomer" [list]="customerContacts?.data">
+        </app-ionic-selectable-comp>
+      </ion-item>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>{{"Select address"|translate}}</ion-label>
+          <ion-select [(ngModel)]="addressId">
+            <ion-select-option [value]="address.id" *ngFor="let address of customerAddress"> {{ address.area }} {{
+              address.city }} {{ address.state }} {{ address.country }} {{ address.pinCode }} </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>{{"Reference No."|translate}}</ion-label>
+          <ion-input [(ngModel)]="referenceNo"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>{{"Shipment mode"| translate}}</ion-label>
+          <ion-select [(ngModel)]="shipmentMode">
+            <ion-select-option [value]="shipMode" *ngFor="let shipMode of allShippingMethods"> {{ shipMode.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>{{"Payment mode"| translate}}</ion-label>
+          <ion-select [(ngModel)]="paymentMode">
+            <ion-select-option [value]="payMode" *ngFor="let payMode of paymentModeList"> {{ payMode.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="tac">
+        <ion-input type="file" (change)="changeListener($event)"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="tac">
+        <ion-button (click)="uploadOrders()"> {{"Upload"|translate}} </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

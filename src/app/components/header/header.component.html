@@ -1,0 +1,491 @@
+<ion-header>
+  <ion-toolbar [ngClass]="getToolbarClass()">
+    <!-- <ion-title>{{ collectionName | titlecase }}</ion-title> -->
+    <!-- <ion-title>test title</ion-title> -->
+    <!-- <ion-buttons slot="start">
+      <ion-back-button color="primary" defaultHref=""></ion-back-button>
+    </ion-buttons> -->
+
+    <ng-container *ngIf="!!showBackButton && showBackButton == 'true'">
+      <ion-buttons slot="start" class="marPad0 mAuto">
+        <ion-back-button
+          color="headerIconColor"
+          defaultHref="/diamond-search"
+          text
+          font-size="50px"
+        >
+        </ion-back-button>
+      </ion-buttons>
+    </ng-container>
+
+    <div [ngClass]="sideMarginClass">
+      <ion-row class="ion-align-items-center posRel">
+        <ion-title *ngIf="!!title && title.length > 0" class="innerPageTitle"
+          >{{ title | titlecase }}
+        </ion-title>
+
+        <ng-container
+          *ngIf="
+            !!showBackButton &&
+            showBackButton == 'false' &&
+            !!companyLogo &&
+            showMobileLogo &&
+            page
+          "
+        >
+          <ion-col class="smallScreen pl10">
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}"
+              format="png"
+              *ngIf="!!companyLogo && showImage"
+              secure="true"
+              (click)="goToHomePage()"
+              class="small-login-logo cursor"
+              [height]="logoHeight"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!!companyLogo && showImage"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+            <img
+              *ngIf="!showImage"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+          </ion-col>
+          <!-- <ion-col
+          size="2.5"
+          [ngClass]="
+            !hideInSmallScreen && !loggedInUser ? 'pos75 mr30' : ' pos75 mr30'
+          ">
+          <ion-select
+            (ionChange)="translateConfigService.setLanguage($event.target.value)"
+            [(ngModel)]="defaultLang" >
+            <ion-select-option *ngFor="let lang of languages"
+              [value]="lang.code">
+              <img [src]="lang.flag" alt="{{ lang.name }}"> {{ lang.name | uppercase}}
+            </ion-select-option>
+          </ion-select>
+        </ion-col> -->
+
+          <!-- <div class="section">
+     
+          <select class="langDropdown pos75">
+
+              <option  *ngFor="let item of languages;let i = index" value="{{item.code}}" [selected]="i == 0" [(ngModel)]="defaultLang" (ionChange)="languageChange($event)">
+                {{item.name}}
+              </option>
+            </select>
+        </div> -->
+          <!--|||||||||||||| MultiLanguage Selector ||||||||||||||-->
+          <!-- ********************************************************************* -->
+          <!-- <div
+            class="section"
+            (change)="selectLanguage($event)"
+            *ngIf="mobileView"
+          >
+            <select class="langDropdown pos75" [(ngModel)]="defaultLang">
+              <option
+                *ngFor="let item of languages"
+                [value]="item.code"
+                [selected]="item.code === defaultLang"
+              >
+                {{ item.code | uppercase }}
+              </option>
+            </select>
+          </div> -->
+          <!-- ********************************************************************* -->
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            !!showBackButton &&
+            showBackButton == 'false' &&
+            menuDisplay &&
+            !showMenuOnRight
+          "
+        >
+          <ion-col class="logoMainMenu">
+            <ion-icon
+              name="menu"
+              class="cursor"
+              color="headerIconColor"
+              (click)="menuOpen()"
+            ></ion-icon>
+          </ion-col>
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            !!showBackButton &&
+            showBackButton == 'true' &&
+            !!companyLogo &&
+            showMobileLogo
+          "
+        >
+          <ion-col class="smallScreen pl10">
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}_mobile"
+              format="png"
+              *ngIf="!!companyLogo"
+              secure="true"
+              (click)="goToHomePage()"
+              class="small-logo cursor"
+              [height]="logoHeight"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!!companyLogo"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+          </ion-col>
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            !!showBackButton &&
+            showBackButton == 'false' &&
+            !!companyLogo &&
+            showMobileLogo &&
+            !page
+          "
+        >
+          <ion-col class="smallScreen pl10">
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}_mobile"
+              format="png"
+              *ngIf="!!companyLogo && showImage"
+              secure="true"
+              (click)="goToHomePage()"
+              class="small-logo cursor"
+              [height]="logoHeight"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!!companyLogo && showImage"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+            <img
+              *ngIf="!showImage"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+          </ion-col>
+        </ng-container>
+
+        <ng-container
+          *ngIf="!!showBackButton && showBackButton == 'false' && !!companyLogo"
+        >
+          <ion-col
+            [ngClass]="
+              _companyService.productListing == 'grid'
+                ? 'logoMainCol largescreen kgLogo'
+                : 'logoMainCol largescreen'
+            "
+          >
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}"
+              format="png"
+              *ngIf="!!companyLogo && showImage"
+              secure="true"
+              (click)="goToHomePage()"
+              class="logo cursor"
+              [height]="logoHeight"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!!companyLogo && showImage"
+              (click)="goToHomePage()"
+              src="assets/images/kglogo.png"
+              class="small-login-logo cursor"
+              alt
+            />
+            <!-- <img *ngIf="showImage" src="assets/images/kglogo.png"  class="small-login-logo cursor" alt=""> -->
+            <img
+              *ngIf="!showImage"
+              (click)="goToHomePage()"
+              src="assets/Aspeco White.png"
+              class="small-login-logo cursor"
+              alt
+            />
+          </ion-col>
+        </ng-container>
+
+        <ng-container
+          *ngIf="!!showBackButton && showBackButton == 'true' && !!companyLogo"
+        >
+          <ion-col
+            [ngClass]="
+              _companyService.productListing == 'grid'
+                ? 'logoMainCol largescreen kgLogo'
+                : 'logoMainCol largescreen'
+            "
+          >
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}"
+              format="png"
+              *ngIf="!!companyLogo && showImage"
+              secure="true"
+              (click)="goToHomePage()"
+              class="logo cursor"
+              [height]="logoHeight"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!!companyLogo && showImage"
+              src="assets/images/kglogo.png"
+              (click)="goToHomePage()"
+              class="small-login-logo cursor"
+              alt
+            />
+            <!-- <img *ngIf="showImage" src="assets/images/kglogo.png"  class="small-login-logo cursor" alt=""> -->
+            <img
+              *ngIf="!showImage"
+              src="assets/images/Aspeco White.png"
+              (click)="goToHomePage()"
+              class="small-login-logo cursor"
+              alt
+            />
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="menuDisplay && !headerLinkRight">
+          <!-- <ion-col>
+            <ion-label>
+              Show DNA
+            </ion-label>
+          </ion-col> -->
+          <ion-col
+            class="mw120 tac clsMenu toHideInSmallScreen"
+            *ngFor="let dt of companyJson.homePageHeaderLinks"
+            (click)="openPage(dt)"
+          >
+            <ion-label
+              [ngClass]="
+                currentPage == dt.redirectTo
+                  ? 'menuSelected'
+                  : 'menuNotSelected'
+              "
+            >
+              {{ dt.title }}
+            </ion-label>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!!pageTitle && !pageTitle.removeTitlecase">
+          <ion-title class="ion-text-center mt25 smallScreen title-font"
+            >{{ pageTitle | titlecase }}
+          </ion-title>
+        </ng-container>
+        <ng-container *ngIf="!!pageTitle && pageTitle.removeTitlecase">
+          <ion-title class="ion-text-center mt25 smallScreen title-font"
+            >{{ pageTitle.stoneName }}
+          </ion-title>
+        </ng-container>
+
+        <ng-container *ngIf="menuDisplay && headerLinkRight">
+          <ion-col [ngClass]="mobileView ? 'visCol' : ' '"></ion-col>
+          <!-- <ion-col class="mw105 toHideInSmallScreen cursor" 
+          (click)="openFromHeader('accessories')">
+          <div class="popover__wrapper">
+            <ion-label class="label-color popover__title cursor">
+             Layout
+            </ion-label>
+          </div>
+        </ion-col> -->
+          <ion-col
+            class="mw135 toHideInSmallScreen cursor"
+            (click)="openDNAPopup()"
+          >
+            <div class="popover__wrapper">
+              <ion-label class="label-color popover__title cursor">
+                {{ 'Show DNA' | translate }}
+              </ion-label>
+              <!-- <div class="popover__content">
+                <p class="popover__message">Joseph Francis "Joey" Tribbiani, Jr.</p>
+                <img alt="Joseph Francis Joey Tribbiani, Jr." src="https://media.giphy.com/media/11SIBu3s72Co8w/giphy.gif">
+              </div> -->
+            </div>
+          </ion-col>
+
+          <!-- <ion-col class="stoneCol toHideInSmallScreen cursor" *ngIf="showStoneIdTextbox"
+            (click)="showStoneIdTextbox = true">
+            <ion-searchbar #input (search)="search()" class="stoneTextbox" [(ngModel)]="stoneId" placeholder="Stone ID"
+              (ionCancel)="cancel()">
+            </ion-searchbar>
+          </ion-col> -->
+          <!-- <ion-input type="text" *ngIf="showStoneIdTextbox" class="stoneTextbox  "
+              [(ngModel)]="stoneId" placeholder="Enter Stone ID" (keyup.enter)="search()"></ion-input> -->
+
+          <ion-col
+            class="mw80 toHideInSmallScreen cursor"
+            *ngFor="let dt of companyJson.homePageHeaderLinks"
+            (click)="openPage(dt)"
+          >
+            <ion-label
+              [ngClass]="
+                currentPage == dt.redirectTo
+                  ? 'menuSelected'
+                  : 'menuNotSelected'
+              "
+            >
+              {{ dt.title | translate }}
+            </ion-label>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="searchType != 'diamond'">
+          <ion-col
+            size="0.5"
+            [ngStyle]="{
+              visibility: !searchIconDisplay ? 'hidden' : 'visible'
+            }"
+            (click)="openFromHeader('search')"
+            [ngClass]="
+              hideInSmallScreen
+                ? 'toHideInSmallScreen'
+                : 'cartIcons hide toShowInSmallScreen'
+            "
+          >
+            <ion-icon name="search"></ion-icon>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!!userId">
+          <ion-col
+            size="0.5"
+            [ngClass]="hideInSmallScreen ? 'toHideInSmallScreen' : 'cartIcons'"
+            (click)="openFromHeader('profile')"
+          >
+            <ion-icon class="cursor" name="person"></ion-icon>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!!loggedInUser && !hideFavourites">
+          <ion-col
+            size="0.5"
+            class="cartIcons"
+            (click)="openFromHeader('wishlist')"
+          >
+            <ion-icon class="cursor" name="heart"></ion-icon>
+          </ion-col>
+        </ng-container>
+
+        <!-- <ng-container *ngIf="!!loggedInUser && showContactUs && !mobileView">
+          <ion-col size="0.5" class="cartIcons">
+
+            <a href="/page-contents?title=Contact">
+              <ion-icon class="cursor" name="call-outline"></ion-icon>
+            </a>
+          </ion-col>
+        </ng-container> -->
+
+        <ng-container *ngIf="!loggedInUser && hideLoginIcon && !mobileView">
+          <ion-col class="mw80 cursor" (click)="openFromHeader('login')">
+            <ion-label
+              *ngIf="hideLoginIcon"
+              [ngClass]="
+                currentPage == '/login-with-sign-up'
+                  ? 'menuSelected'
+                  : 'menuNotSelected'
+              "
+            >
+              {{ 'Login' | translate }}
+            </ion-label>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!loggedInUser && !hideLoginIcon">
+          <ion-col
+            size="0.5"
+            class="cartIcons"
+            (click)="openFromHeader('login')"
+          >
+            <ion-icon class="cursor" name="log-in"></ion-icon>
+          </ion-col>
+        </ng-container>
+
+        <ion-col
+          size="0.5"
+          [ngClass]="
+            hideInSmallScreen ? 'toHideInSmallScreen mq30' : 'cartIcons mr30'
+          "
+          (click)="openFromHeader('cart')"
+        >
+          <ion-icon
+            class="cursor"
+            color="headerIconColor"
+            name="cart"
+          ></ion-icon>
+          <ion-badge class="cursor" id="chat-badge">
+            {{ _headerFooterService.getCartTotal }}
+          </ion-badge>
+        </ion-col>
+        <!--|||||||||||||| MultiLanguage Selector ||||||||||||||-->
+        <!-- ********************************************************************* -->
+        <!-- <ion-col
+          (change)="selectLanguage($event)"
+          size="1"
+          [ngClass]="hideInSmallScreen ? 'toHideInSmallScreen ' : 'cartIcons '"
+        >
+          <select class="langDropdown posWebLanguage" [(ngModel)]="defaultLang">
+            <option
+              *ngFor="let item of languages"
+              [value]="item.code"
+              [selected]="item.code === defaultLang"
+            >
+              {{ item.code | uppercase }}
+            </option>
+          </select>
+        </ion-col> -->
+        <!-- ********************************************************************* -->
+        <ion-col
+          *ngIf="menuDisplay && showMenuOnRight && loggedInUser"
+          class="logoMainMenuRight"
+        >
+          <ion-icon
+            name="menu"
+            class="cursor"
+            color="headerIconColor"
+            (click)="menuOpen()"
+          ></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<div id="scroll-container" *ngIf="showScroller">
+  <div id="scroll-text" (click)="gotoSetting()">
+    {{ kycText }}
+    <div></div>
+    <ion-row
+      class="marPad0 hide toShowInSmallScreen"
+      *ngIf="mobileSearch && searchPage"
+    >
+      <ion-col class="marPad0">
+        <app-es-search-box placeholder="Search for products" submitTitle="Go">
+        </app-es-search-box>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<app-header showBackButton="false"></app-header>
+<ion-content class="bg_parent">
+  <div class="main_div bg_parent">
+    <app-accessories-menu
+      class="bg_parent posFix"
+      (itemSelected)="onItemSelected($event)"
+    ></app-accessories-menu>
+    <app-accessories-layout
+      [categoryId]="categoryId"
+      class="layoutPage bg_parent flexCol"
+      [selectedMenuItem]="selectedMenuItem"
+    ></app-accessories-layout>
+  </div>
+</ion-content>

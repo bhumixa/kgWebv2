@@ -1,0 +1,47 @@
+.modalLabel{
+    color: #101828;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+.inputForEmail{
+    display: flex;
+    padding: 10px 14px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FCFCFC;
+    margin-bottom: 8px;
+}
+.desc{
+    background: #FCFCFC;
+    background: #FCFCFC;
+    display: flex;
+    height: 146px;
+    padding: 10px 14px;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FCFCFC;
+}
+.mg0{
+    margin: 0px;
+}
+.flexC{
+    display: flex;
+    justify-content: center;
+}
+.prompt{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.errorColor{
+    color: rgb(199, 48, 48);
+}

@@ -1,0 +1,297 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{pageName}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+        color="primary"
+        color="primary"
+        defaultHref=""
+      ></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-buttons (click)="openCart()" slot="end">
+        <ion-button color="primary">
+          <ion-icon name="cart"></ion-icon>
+        </ion-button>
+      </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-segment
+    [ngClass]="!onMobile?'deskTop':''"
+    scrollable
+    [(ngModel)]="selectedSegment"
+    *ngIf="showSegment==true && !!segments
+      && segments.length>0"
+    color="primary"
+    (ionChange)="segmentChanged($event)"
+  >
+    <ion-segment-button
+      *ngFor="let sg of segments; let i = index"
+      [value]="sg.redirectTo"
+      class="segmentBtn"
+    >
+      {{ sg.title }}
+    </ion-segment-button>
+  </ion-segment>
+  <ion-toolbar [ngClass]="!onMobile?'deskTop':''">
+    <ion-searchbar
+      [(ngModel)]="searchText"
+      debounce="1000"
+      (ionChange)="searchChange($event)"
+      [showCancelButton]="shouldShowCancel"
+      (ionCancel)="cancelSearch($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+  <ion-row
+    [ngClass]="!onMobile?'deskTop':''"
+    *ngIf="!!quickOrderPageDetails && !!quickOrderPageDetails.data && !!quickOrderPageDetails.data[0] && !!quickOrderPageDetails.data[0].name"
+  >
+    <app-page-sections
+      class="w100"
+      [data]="quickOrderPageDetails.data"
+      [hideHeader]="true"
+    ></app-page-sections>
+  </ion-row>
+  <ion-row
+    [ngClass]="!onMobile?'deskTop':''"
+    *ngIf="!showSkeleton && products && products.length!=0 && showDetails==false"
+  >
+    <ng-container *ngFor="let single_product of products;let i=index">
+      <ng-container *ngIf="single_product.collectionCoverImage">
+        <ion-col size="12">
+          <ion-card class="tac">
+            <!-- <cl-image secure="true" [public-id]="single_product.collectionCoverImage" class="maxHeight mAuto imgLoadingBg" format="jpg"
+              loading="lazy" >
+              <cl-transformation gravity="auto" crop="thumb"></cl-transformation>
+              <cl-placeholder type="predominant"></cl-placeholder>
+            </cl-image> -->
+          </ion-card>
+        </ion-col>
+      </ng-container>
+      <ion-col size="12" size-xs="12" size-sm="12" size-md="4" size-lg="4">
+        <ion-card [ngClass]="single_product.addedToCart? 'selectedBox':'box'">
+          <ion-card-header class="marPad0">
+            <div class="pin" class="productHeight">
+              <ion-row
+                *ngIf="!!single_product?.listOfImages && single_product?.listOfImages.length >0 && !hideImage"
+                class="h100 w100 marPad0"
+                (click)="selectProduct(single_product)"
+              >
+              </ion-row>
+              <ion-row
+                [ngClass]="single_product.addedToCart? 'selectedProductName' : 'productName'"
+                (click)="selectProduct(single_product)"
+              >
+                <ion-col size="8">
+                  <span *ngIf="!!single_product.productType">
+                    <sup class="productType"
+                      >{{single_product.productType}}</sup
+                    >
+                  </span>
+                  {{ single_product.name }}
+                  <!-- <span *ngIf="single_product.totalVariants!=single_product.totalOutOfStock && !!variantAvailable">
+                      <sup class="variantAvailable">{{checkIfVariantParameterAvailable(single_product)}}</sup>
+                    </span> -->
+                  <!-- <br>
+                    <span class="fl">
+                      #{{ single_product.sku }}
+                    </span> -->
+                </ion-col>
+                <ion-col
+                  size="4"
+                  class="mAuto tar"
+                  *ngIf="single_product.totalVariants!=single_product.totalOutOfStock && (single_product.totalVariants>1 || single_product.totalAddOns>0)"
+                >
+                  <div class="paramsAndAddOnsCollapsedView">Customisable</div>
+                  <div *ngIf="!!variantAvailable" class="variantAvailable">
+                    / {{checkIfVariantParameterAvailable(single_product)}}
+                  </div>
+                </ion-col>
+                <ion-col
+                  size="4"
+                  class="mAuto tar"
+                  *ngIf="!single_product.addedToCart"
+                >
+                  <ion-button expand="block" fill="outline" size="small"
+                    >Add to Cart</ion-button
+                  >
+                </ion-col>
+                <ion-col size="12" *ngIf="showDescriptionOnProductDetail">
+                  <div [innerHtml]="single_product.description"></div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="productPrice">
+                <ion-col
+                  size="10"
+                  size-xs="8"
+                  size-sm="8"
+                  size-md="8"
+                  size-lg="10"
+                  size-xl="10"
+                  (click)="selectProduct(single_product)"
+                  *ngIf="single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice!=single_product.maxPrice"
+                >
+                  From {{ _companyService.currencySymbol
+                  }}{{single_product.minPrice}} To {{
+                  _companyService.currencySymbol }}{{single_product.maxPrice}}
+                  <!-- <span *ngIf="!!single_product.productType">
+                      <sup class="productType">{{single_product.productType}}</sup>
+                    </span> -->
+                </ion-col>
+                <ion-col
+                  size="10"
+                  size-xs="8"
+                  size-sm="8"
+                  size-md="8"
+                  size-lg="10"
+                  size-xl="10"
+                  (click)="selectProduct(single_product)"
+                  *ngIf="single_product.maxPrice !=null &&single_product.minPrice!=null && single_product?.minPrice==single_product.maxPrice"
+                >
+                  {{ _companyService.currencySymbol
+                  }}{{single_product.minPrice}}
+                  <!-- <span *ngIf="!!single_product.productType">
+                      <sup class="productType">{{single_product.productType}}</sup>
+                    </span> -->
+                </ion-col>
+                <ion-col
+                  size="2"
+                  size-xs="4"
+                  size-sm="4"
+                  size-md="4"
+                  size-lg="2"
+                  size-xl="2"
+                >
+                  <!-- <ion-row *ngIf="single_product.totalVariants!=single_product.totalOutOfStock && !!variantAvailable">
+                      <ion-col class="marPad0">
+                        <div class="paramsAndAddOnsCollapsedView">
+                          {{checkIfVariantParameterAvailable(single_product)}}
+                        </div>
+                      </ion-col>
+                    </ion-row> -->
+                  <ion-row
+                    *ngIf="single_product?.totalVariants==single_product?.totalOutOfStock"
+                  >
+                    <ion-col class="marPad0">
+                      <div class="outOfStock">Sold Out</div>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-card-header>
+          <ion-card-content
+            *ngIf="!!single_product.addedToCart"
+            class="marPad0"
+          >
+            <ion-row
+              *ngFor="let variant of single_product.listOfVariants"
+              class="productPrice mb5px"
+            >
+              <ion-col
+                size="7"
+                (click)="changeQuantity(variant, single_product,'decrement'); $event.stopPropagation()"
+              >
+                {{variant.title}}
+                <span
+                  class="paramsAndAddOnsCollapsedView"
+                  *ngIf="!!variant.selectedParamAndAddOns"
+                  >{{ variant.selectedParamAndAddOns }}</span
+                >
+              </ion-col>
+              <ion-col size="1.5" class="marPad0">
+                <ion-button
+                  expand="block"
+                  fill="outline"
+                  size="small"
+                  (click)="changeQuantity(variant, single_product,'decrement'); $event.stopPropagation()"
+                >
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col size="2" class="marPad0">
+                <ion-input
+                  class="tar quantity"
+                  type="number"
+                  debounce="500"
+                  [(ngModel)]="variant.selectedQty"
+                  (ionChange)="changeQuantity(variant, single_product, null); $event.stopPropagation()"
+                >
+                </ion-input>
+              </ion-col>
+              <ion-col size="1.5" class="marPad0">
+                <ion-button
+                  expand="block"
+                  fill="outline"
+                  size="small"
+                  (click)="changeQuantity(variant, single_product,'increment'); $event.stopPropagation()"
+                >
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ng-container>
+  </ion-row>
+  <ion-row [ngClass]="!onMobile?'deskTop':''" *ngIf="showSkeleton">
+    <ion-col>
+      <ion-card
+        class="box"
+        *ngFor="let single_product of configService.arrayOne(18);let i=index"
+      >
+        <div class="pin" class="productHeight">
+          <ion-row class="price">
+            <ion-col class="productName">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <div
+    *ngIf="showDetails==true && onMobile && !!productId"
+    style="height: 100%"
+  >
+    <app-product-summary-comp
+      [id]="productId"
+      [pageName]="pageName"
+    ></app-product-summary-comp>
+  </div>
+  <div
+    *ngIf="showDetails==true && !onMobile && !!productId"
+    style="height: 100%"
+  >
+    <app-product-summary-comp [id]="productId"></app-product-summary-comp>
+  </div>
+  <ion-infinite-scroll (ionInfinite)="doInfiniteNewForNewOrder($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!-- <app-product-summary-comp *ngIf="showDetails" [id]="productId" [pageName]="pageName"></app-product-summary-comp> -->
+  <app-footer *ngIf="!showHideHeader"></app-footer>
+</ion-content>
+<ion-footer *ngIf="!showSkeleton && !!totalItems && totalItems>0">
+  <ion-toolbar class="footerBg">
+    <ion-row (click)="addToCart()">
+      <ion-col size="5" class="mAuto colorWhite">
+        {{ totalItems }}
+        <span *ngIf="totalItems==1">item</span>
+        <span *ngIf="totalItems>1">items</span> | {{
+        _companyService.currencySymbol }}{{totalPrice}}
+      </ion-col>
+      <ion-col size="6" class="mAuto colorWhite tar"> View your Order </ion-col>
+      <ion-col size="1" class="tar">
+        <!-- <ion-button fill="clear" (click)="addToCart()"> -->
+        <ion-icon class="colorWhite continueFs" name="arrow-forward"></ion-icon>
+        <!-- </ion-button> -->
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

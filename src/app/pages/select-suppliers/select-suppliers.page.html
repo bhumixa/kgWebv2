@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="tac marPad0 width mAuto">
+    <ion-row *ngFor="let supp of suppliers" (click)="selectSupplier(supp)" class="itemRow">
+      <ion-col size="4">
+        <img *ngIf="supp.companyLogo" [src]="supp.companyLogo" class="companyImage" />
+      </ion-col>
+      <ion-col size="7" class="mAuto">
+        <ion-label class="tac cursor">
+          <h2 class="tal">{{ supp.companyName }}</h2>
+        </ion-label>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon *ngIf="selectedCompanyId == supp.companyId" class="colorGreen fs20 mAuto"
+          name="checkmark-circle-outline"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

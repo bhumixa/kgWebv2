@@ -1,0 +1,43 @@
+.block.text{
+    padding: 10px;
+    margin: 0px;
+}
+.block{
+    border-radius: 0px;
+}
+.block.padded, .block .padded{
+    padding: 20px
+}
+.block .main{
+    margin: 0px;
+}
+h1.pagetitle{
+    color: #CF426E;
+    margin-bottom: 10px;
+    padding-bottom: 0px;
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 22px;
+    padding-top: 20px
+}
+p{
+    margin-bottom: 1em;
+}
+table{
+    margin-bottom: 1em;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+tbody{
+    border: 0 none;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+td{
+    border-bottom: 1px solid #cccccc;
+    border-collapse: collapse;
+    border-top: 1px solid #cccccc;
+
+}

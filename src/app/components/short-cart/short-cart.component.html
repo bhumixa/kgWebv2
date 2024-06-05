@@ -1,0 +1,688 @@
+<ion-grid>
+  <ion-row class="mt10Imp">
+    <ion-col size="10">
+      <form (ngSubmit)="submitSearch()">
+        <ion-searchbar
+          name="test"
+          [(ngModel)]="searchText"
+          (ionClear)="clearSearch($event)"
+        >
+        </ion-searchbar>
+      </form>
+    </ion-col>
+    <ion-col size="2" class="mAuto">
+      <ion-button color="primary" (click)="closeCart()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-row>
+  <ion-col size="12" style="text-align: right">
+    <!-- <ion-button
+      *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 2"
+      [ngClass]="getClasses('first')"
+      expand="block"
+      (click)="continue()"
+    >
+      Continue
+    </ion-button> -->
+  </ion-col>
+</ion-row>
+<div class="cart-form">
+  <div
+    class="cart-item-container cart-section"
+    *ngIf="cartData?.data?.products?.length > 0"
+  >
+    <div *ngIf="_companyService.productListing != 'MobileList'">
+      <div
+        class="tableView ion-justify-content-between"
+        *ngFor="
+          let item of cartData?.data?.products
+            | paginate
+              : {
+                  id: 'server',
+                  itemsPerPage: limit,
+                  currentPage: page,
+                  totalItems: cartData.data.totalProduct.TotalProduct
+                };
+          let i = index
+        "
+      >
+        <div *ngIf="!item.show">
+          <ion-row>
+            <ion-col size="2">
+              <h5 class="marPad0 serialNumber">{{ i + 1 }}</h5>
+            </ion-col>
+
+            <ion-col size="7" (click)="showCardView(item)">
+              <h6 class="marPad0">{{ item.title }}</h6>
+              <span class="toppingsCollapsedView" *ngIf="item.addOns">
+                {{ item.addOns }}</span
+              >
+            </ion-col>
+
+            <ion-col
+              size="3"
+              class="serialNumber alignRight"
+              (click)="showCardView(item)"
+            >
+              Qty: {{ item.quantity }}
+            </ion-col>
+          </ion-row>
+          <ion-row class="lineBottom">
+            <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+              <div
+                class="right0"
+                *ngIf="item.discountPrice == 0 && !hideStorePrice"
+              >
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                >
+                  {{ item.SubTotal || 0 | number : ".2-2" }}
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0" *ngIf="item.discount != 0">
+              <div class="right0" *ngIf="item.discount != 0 && !hideStorePrice">
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                  ><del>
+                    {{ _companyService.currencySymbol
+                    }}{{ item.price * item.quantity }}</del
+                  >
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+              <div
+                class="right0"
+                *ngIf="item.discountPrice != 0 && !hideStorePrice"
+              >
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                >
+                  {{ _companyService.currencySymbol
+                  }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0 fr" *ngIf="item.taxes && !hideStorePrice">
+              <div class="absBottom0 right0 marPad0">
+                Tax : {{ item.taxes }}%
+              </div>
+            </ion-col>
+            <ion-button
+              fill="clear"
+              class="fr marPad0 pSpE0 colorGray"
+              *ngIf="item.price > 0"
+              (click)="removeCartProduct(item)"
+            >
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-row>
+        </div>
+        <ion-card *ngIf="item.show" class="cartMarginNone">
+          <ion-card-header class="marPad0">
+            <ion-row class="cartImg ion-justify-content-between">
+              <ion-col size="3" class="cartImg">
+                <!-- <cl-image secure="true" public-id="/logo/{{_companyService.refCompanyId}}" format="png"
+                  *ngIf="!item.image" class="cartImgMinHt">
+                  <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad"></cl-transformation>
+                </cl-image>
+                <cl-image secure="true" [public-id]="item.image" format="jpg" *ngIf="item.image" class="cartImgMinHt">
+                  <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+                </cl-image> -->
+              </ion-col>
+              <ion-col size="9" class="cartImg marPad0">
+                <!-- <ion-button fill="clear" class="fr colorGray" *ngIf="item.price < 0" (click)="removeCartProduct(item)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button> -->
+                <ion-row class="marPad0">
+                  <ion-col
+                    size="12"
+                    class="marPad0"
+                    (click)="hideCardView(item)"
+                  >
+                    <h6 class="marPad0">
+                      {{ item.title }}
+                      <br
+                        *ngIf="
+                          !!item.selectedAddOns &&
+                          item.selectedAddOns.length > 0
+                        "
+                      />
+                      <ion-row
+                        *ngIf="
+                          !!item.selectedAddOns &&
+                          item.selectedAddOns.length > 0
+                        "
+                      >
+                        {{ item.addOns }}
+                      </ion-row>
+                    </h6>
+                    <ion-button
+                      fill="clear"
+                      class="fr colorGray"
+                      *ngIf="item.price > 0"
+                    >
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="marPad0">
+                  <ion-col size="12" class="marPad0">
+                    <div class="absBottom5 disInline">
+                      <ion-row class="marPad0">
+                        <ion-col size="3" class="marPad0">
+                          <ion-button
+                            expand="block"
+                            fill="outline"
+                            size="small"
+                            *ngIf="item.price > 0"
+                            (click)="
+                              decrementQuantity(item); $event.stopPropagation()
+                            "
+                          >
+                            <ion-icon name="remove"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                        <ion-col size="4" class="marPad0">
+                          <ion-label
+                            class="tar quantity"
+                            *ngIf="item.price < 0"
+                            >{{ item.quantity }}</ion-label
+                          >
+                          <ion-input
+                            class="tar quantity"
+                            type="number"
+                            debounce="500"
+                            *ngIf="item.price > 0"
+                            [(ngModel)]="item.quantity"
+                            (ionChange)="
+                              changeQuantity(item, i); $event.stopPropagation()
+                            "
+                          >
+                          </ion-input>
+                        </ion-col>
+                        <!-- (ionFocus)="onFocus(item)" (input)="valChange($event.target.value, i)"-->
+                        <ion-col size="3" class="marPad0">
+                          <ion-button
+                            expand="block"
+                            fill="outline"
+                            size="small"
+                            *ngIf="item.price > 0"
+                            (click)="
+                              incrementQuantity(item); $event.stopPropagation()
+                            "
+                          >
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                      </ion-row>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!hideStorePrice">
+              <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+                <div class="right0" *ngIf="item.discountPrice == 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discount != 0">
+                <div class="right0" *ngIf="item.discount != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    ><del>
+                      {{ _companyService.currencySymbol
+                      }}{{ item.price * item.quantity || 0 }}</del
+                    >
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+                <div class="right0" *ngIf="item.discountPrice != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0 fr" *ngIf="item.taxes">
+                <div class="absBottom0 right0 marPad0" *ngIf="item.taxes">
+                  Tax : {{ item.taxes }}%
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </div>
+    </div>
+    <div *ngIf="_companyService.productListing == 'MobileList'">
+      <div
+        class="tableView ion-justify-content-between"
+        *ngFor="
+          let item of cartData.data.products
+            | paginate
+              : {
+                  id: 'server',
+                  itemsPerPage: limit,
+                  currentPage: page,
+                  totalItems: cartData.data.totalProduct.TotalProduct
+                };
+          let i = index
+        "
+      >
+        <div *ngIf="!item.show">
+          <ion-row>
+            <ion-col size="2">
+              <h5 class="marPad0 serialNumber">{{ i + 1 }}</h5>
+            </ion-col>
+
+            <ion-col size="7" (click)="showCardView(item)">
+              <h6 class="marPad0">{{ item.title }}</h6>
+              <span class="toppingsCollapsedView" *ngIf="item.addOns">
+                {{ item.addOns }}</span
+              >
+            </ion-col>
+
+            <ion-col
+              size="3"
+              class="serialNumber alignRight"
+              (click)="showCardView(item)"
+            >
+              Qty: {{ item.quantity }}
+            </ion-col>
+          </ion-row>
+          <ion-row class="lineBottom">
+            <ion-col
+              class="marPad0"
+              *ngIf="item.discountPrice == 0 && !hideStorePrice"
+            >
+              <div class="right0" *ngIf="item.discountPrice == 0">
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                >
+                  {{ _companyService.currencySymbol
+                  }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col
+              class="marPad0"
+              *ngIf="item.discount != 0 && !hideStorePrice"
+            >
+              <div class="right0" *ngIf="item.discount != 0">
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                  ><del>
+                    {{ _companyService.currencySymbol
+                    }}{{ item.price * item.quantity || 0 }}</del
+                  >
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col
+              class="marPad0"
+              *ngIf="item.discountPrice != 0 && !hideStorePrice"
+            >
+              <div class="right0" *ngIf="item.discountPrice != 0">
+                <ion-button
+                  expand="block"
+                  fill="clear"
+                  size="small"
+                  class="fr marPad0 price-list"
+                  (click)="showCardView(item)"
+                >
+                  {{ _companyService.currencySymbol
+                  }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                </ion-button>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0 fr" *ngIf="item.taxes && !hideStorePrice">
+              <div class="absBottom0 right0 marPad0">
+                Tax : {{ item.taxes }}%
+              </div>
+            </ion-col>
+            <ion-button
+              fill="clear"
+              class="fr marPad0 pSpE0 colorGray"
+              *ngIf="item.price > 0"
+              (click)="removeCartProduct(item)"
+            >
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-row>
+        </div>
+        <ion-card *ngIf="item.show" class="cartMarginNone">
+          <ion-card-header class="marPad0">
+            <ion-row class="cartImg ion-justify-content-between">
+              <ion-col class="cartImg marPad0">
+                <!-- <ion-button fill="clear" class="fr colorGray" *ngIf="item.price < 0" (click)="removeCartProduct(item)">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button> -->
+                <ion-row class="marPad0">
+                  <ion-col
+                    size="12"
+                    class="marPad0"
+                    (click)="hideCardView(item)"
+                  >
+                    <h6 class="marPad0">
+                      {{ item.title }}
+                      <br
+                        *ngIf="
+                          !!item.selectedAddOns &&
+                          item.selectedAddOns.length > 0
+                        "
+                      />
+                      <ion-row
+                        *ngIf="
+                          !!item.selectedAddOns &&
+                          item.selectedAddOns.length > 0
+                        "
+                      >
+                        {{ item.addOns }}
+                      </ion-row>
+                    </h6>
+                    <ion-button
+                      fill="clear"
+                      class="fr colorGray"
+                      *ngIf="item.price > 0"
+                    >
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="marPad0">
+                  <ion-col size="12" class="marPad0">
+                    <div class="absBottom5 disInline">
+                      <ion-row class="marPad0">
+                        <ion-col size="3" class="marPad0">
+                          <ion-button
+                            expand="block"
+                            fill="outline"
+                            size="small"
+                            *ngIf="item.price > 0"
+                            (click)="
+                              decrementQuantity(item); $event.stopPropagation()
+                            "
+                          >
+                            <ion-icon name="remove"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                        <ion-col size="4" class="marPad0">
+                          <ion-label
+                            class="tar quantity"
+                            *ngIf="item.price < 0"
+                            >{{ item.quantity }}</ion-label
+                          >
+                          <ion-input
+                            class="tar quantity"
+                            type="number"
+                            debounce="500"
+                            *ngIf="item.price > 0"
+                            [(ngModel)]="item.quantity"
+                            (ionChange)="
+                              changeQuantity(item, i); $event.stopPropagation()
+                            "
+                          >
+                          </ion-input>
+                        </ion-col>
+                        <ion-col size="3" class="marPad0">
+                          <ion-button
+                            expand="block"
+                            fill="outline"
+                            size="small"
+                            *ngIf="item.price > 0"
+                            (click)="
+                              incrementQuantity(item); $event.stopPropagation()
+                            "
+                          >
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                      </ion-row>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!hideStorePrice">
+              <ion-col class="marPad0" *ngIf="item.discountPrice == 0">
+                <div class="right0" *ngIf="item.discountPrice == 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discount != 0">
+                <div class="right0" *ngIf="item.discount != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                    ><del>
+                      {{ _companyService.currencySymbol
+                      }}{{ item.price * item.quantity || 0 }}</del
+                    >
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0" *ngIf="item.discountPrice != 0">
+                <div class="right0" *ngIf="item.discountPrice != 0">
+                  <ion-button
+                    expand="block"
+                    fill="clear"
+                    size="small"
+                    class="fr marPad0 price-list"
+                  >
+                    {{ _companyService.currencySymbol
+                    }}{{ item.SubTotal || 0 | number : ".2-2" }}
+                  </ion-button>
+                </div>
+              </ion-col>
+              <ion-col class="marPad0 fr" *ngIf="item.taxes">
+                <div class="absBottom0 right0 marPad0" *ngIf="item.taxes">
+                  Tax : {{ item.taxes }}%
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </div>
+    </div>
+    <!-- <pagination-controls
+      [maxSize]="maxSize"
+      (pageChange)="pagination($event)"
+      id="server"
+      previousLabel="Previous"
+      nextLabel="Next"
+      responsive="true"
+      *ngIf="_companyService.productListing != 'grid'"
+    ></pagination-controls> -->
+  </div>
+</div>
+<ion-row class="padd15" *ngIf="!hideStorePrice && cartData?.data?.count">
+  <ion-col size="12" class="paddingBottom0">
+    <div class="mar16 displayAmount fr total paddingBottom0">
+      Sub Total : {{ cartData.data.count.SubTotal || 0 | number : ".2-2" }}
+    </div>
+  </ion-col>
+  <ion-col
+    size="12"
+    class="paddingBottom0"
+    *ngIf="cartData.data.count.FinalPrice - cartData.data.count.SubTotal > 0"
+  >
+    <div class="mar16 displayAmount fr total paddingBottom0">
+      Tax Amount:
+      {{
+        cartData.data.count.FinalPrice - cartData.data.count.SubTotal || 0
+          | number : ".2-2"
+      }}
+    </div>
+  </ion-col>
+  <ion-col size="12" class="paddingBottom0">
+    <div class="mar16 displayAmount fr total paddingBottom0 grandTotal">
+      Grand Total : {{ cartData.data.count.FinalPrice || 0 | number : ".2-2" }}
+    </div>
+  </ion-col>
+</ion-row>
+<ion-row class="padd15">
+  <ion-col size="12">
+    <ion-button
+      type="button"
+      *ngIf="!!cartData?.data?.products && cartData?.data?.products.length > 0"
+      [ngClass]="getClasses('last')"
+      class=""
+      expand="block"
+      (click)="continue()"
+    >
+      Continue</ion-button
+    >
+  </ion-col>
+</ion-row>
+<div
+  class="ion-padding"
+  *ngIf="
+    (!cartData?.data?.products || cartData?.data?.products?.length == 0) &&
+    !searchText &&
+    cartData != null
+  "
+>
+  Your Cart is empty
+</div>
+<div
+  class="ion-padding"
+  *ngIf="
+    (!cartData?.data?.products || cartData?.data?.products?.length == 0) &&
+    searchText &&
+    cartData != null
+  "
+>
+  No Products Found
+</div>
+
+<!-- end -->
+
+<!-- skeleton -->
+<div *ngIf="cartData == null">
+  <div class="cart-form">
+    <div class="cart-item-container cart-section">
+      <ion-card
+        *ngFor="let data of _configService.arrayOne(8)"
+        class="cartMarginNone"
+      >
+        <ion-card-header class="marPad0">
+          <ion-row class="cartImg ion-justify-content-between">
+            <ion-col size="3" class="cartImg">
+              <ion-skeleton-text
+                animated
+                style="height: 120px"
+              ></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="9" class="cartImg marPad0">
+              <h6 class="marPad0 cartTitle">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </h6>
+              <div class="absBottom5 disInline">
+                <ion-row>
+                  <ion-col size="3">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-col>
+                  <ion-col size="4">
+                    <ion-label class="tar quantity">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="3">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-col>
+                </ion-row>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="marPad0">
+              <div class="right0">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0">
+              <div class="right0">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col class="marPad0">
+              <div class="absBottom0 right0 marPad0">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+      </ion-card>
+    </div>
+  </div>
+  <ion-row class="padd15">
+    <ion-col size="12" class="paddingBottom0">
+      <div class="mar16 displayAmount fr total paddingBottom0">
+        <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+      </div>
+    </ion-col>
+    <ion-col size="12" class="paddingBottom0">
+      <div class="mar16 displayAmount fr total paddingBottom0">
+        <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+      </div>
+    </ion-col>
+    <ion-col size="12" class="paddingBottom0">
+      <div class="mar16 displayAmount fr total paddingBottom0 grandTotal">
+        <ion-skeleton-text animated style="width: 85px"></ion-skeleton-text>
+      </div>
+    </ion-col>
+  </ion-row>
+  <div class="mar16">
+    <ion-skeleton-text animated style="height: 35px"></ion-skeleton-text>
+  </div>
+</div>

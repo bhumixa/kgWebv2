@@ -1,0 +1,155 @@
+.box {
+  flex: 1 1 120px;
+  margin: 3px;
+  position: relative;
+}
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.toggleFormat {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  font-size: 20px;
+}
+// ion-img {
+//   height: 220px;
+// }
+.favoriteColor {
+  color: red;
+}
+
+.divMarginDesktop {
+  padding: 20px 70px;
+  margin: auto;
+}
+.ionCardForDeskTop1 {
+  min-height: 350px;
+  // width: 250px
+}
+.divWidth {
+  width: fit-content;
+}
+// img {
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   top: 0;
+// }
+
+.padd {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.mainDiv {
+  box-sizing: border-box;
+  // max-width: 1366px;
+  // padding: 0 24px;
+  margin: 0 auto;
+}
+.secondDiv {
+  padding: 0 0 36px;
+}
+.imgDiv {
+  position: relative;
+  font-size: 0;
+  margin-bottom: 9px;
+  // background-color: #eee;
+  display: block;
+}
+img {
+  max-height: 255px;
+  width: auto;
+  // width: 100%;
+  // height: 100%;
+  // width: inherit;
+  // max-height: 470px;
+  // position: absolute;
+  // top: 0;
+}
+ion-img {
+  // height: auto;
+  max-height: 255px;
+  width: auto;
+  // min-height: 450px
+}
+ion-card {
+  background: #f4f3f3;
+  margin-inline-end: 0px;
+  margin-inline-start: 0px;
+}
+
+.maxHeightForCard {
+  max-height: 400px;
+  min-height: 400px;
+}
+.maxHeightForCardForMobile {
+  max-height: 200px;
+  min-height: 200px;
+}
+.imgHeight {
+  max-height: 300px;
+  min-height: 300px;
+}
+.productTitle {
+  max-height: 40px;
+  // overflow-y: scroll;
+}
+.favoriteButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 25px;
+}
+.mainTitle {
+  // text-align: inherit !important;
+  font-weight: 100;
+  font-size: 14px;
+}
+.maxHeight {
+  max-height: 270px;
+}
+.bottomTitle {
+  background-color: rgba(255, 255, 255, 0.6);
+  max-height: 70px !important;
+  padding: 5px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  left: 22;
+  color: #000;
+}
+@media screen and (min-width: 300px) and (max-width: 400px) {
+  // .maxHeightForCard {
+  //   max-height: 160px;
+  //   min-height: 160px;
+  // }
+  // .mainTitle {
+  //   font-size: 10px;
+  // }
+
+  // .favoriteButton {
+  //   font-size: 21px;
+  //   bottom: 180px;
+  // }
+  // .productTitle {
+  //   max-height: inherit;
+  // }
+}
+
+.product-name {
+  color: #535766;
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
+  display: block;
+}

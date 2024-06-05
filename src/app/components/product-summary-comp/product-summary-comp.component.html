@@ -1,0 +1,1953 @@
+<ion-row class="clsFooterRow" *ngIf="!!header">
+  <ion-col>
+    <div [innerHtml]="header" class="ffWhitney clsMainData"></div>
+  </ion-col>
+</ion-row>
+<div class="minHeightMinus120">
+  <ion-grid *ngIf="!(productData?.data)[0]" class="mlmr20 mtp25">
+    <ion-row class="ffWhitney marPad0" *ngIf="productType != 'diamond'">
+      <ion-col
+        size="12"
+        size-sm="12"
+        size-md="5"
+        size-lg="6"
+        offset-lg="1"
+        size-xs="12"
+        size-xxs="12"
+      >
+        <ion-row class="w100 marPad0 custom-skeleton">
+          <ion-col size="6">
+            <div class="slider-image-skeleton">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="slider-image-skeleton">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="w100 marPad0 custom-skeleton">
+          <ion-col size="6">
+            <div class="slider-image-skeleton">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="slider-image-skeleton">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="12"
+        size-sm="12"
+        size-md="7"
+        size-lg="4"
+        size-xs="12"
+        size-xxs="12"
+        class="marPad0"
+      >
+        <ion-grid class="marPad0">
+          <ion-row>
+            <ion-col size="12">
+              <ion-skeleton-text
+                animated
+                style="width: 45px"
+              ></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="12">
+              <ion-skeleton-text
+                animated
+                style="height: 35px"
+              ></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <h1 class="product-title tal">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </h1>
+              <h1 class="pdp-name pdp-bb1">
+                <ion-skeleton-text
+                  animated
+                  style="width: 65px"
+                ></ion-skeleton-text>
+              </h1>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="marPad0">
+            <ion-col class="tal pdp-add-to-bag">
+              <ion-skeleton-text
+                animated
+                style="width: 75px; height: 35px"
+              ></ion-skeleton-text>
+            </ion-col>
+            <ion-col class="tal pdp-add-to-bag">
+              <ion-skeleton-text
+                animated
+                style="width: 75px; height: 35px"
+              ></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="index-tableContainer"
+            *ngFor="let data of configService.arrayOne(13); let idx = index"
+          >
+            <ion-col size="12" class="index-row">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ffWhitney marPad0" *ngIf="productType == 'diamond'">
+      <ion-col
+        size="6"
+        size-xs="12"
+        size-s="12"
+        size-md="6"
+        size-lg="6"
+        class="h100 w100 marPad0"
+      >
+        <ion-row class="w100 marPad0 custom-skeleton">
+          <ion-col style="margin: 0 auto; text-align: center">
+            <div class="slider-image-skeleton" style="height: 400px">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="w100 marPad0 custom-skeleton">
+          <ion-col size="2" *ngFor="let data of configService.arrayOne(6)">
+            <div class="slider-image-skeleton" style="height: 50px">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        size="6"
+        size-xs="12"
+        size-s="12"
+        size-md="6"
+        size-lg="6"
+        class="h100 w100 marPad0"
+      >
+        <ion-grid class="marPad0">
+          <ion-row *ngFor="let data of configService.arrayOne(6)">
+            <ion-col size="12">
+              <ion-skeleton-text
+                animated
+                style="height: 35px"
+              ></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="marPad0" *ngIf="!imageView">
+    <!-- <ion-row>
+      <ion-col size="12">
+        <ion-button *ngIf="!!productNavigationList && productNavigationList.length != 1 && canGoNext"
+          class="next cursor" (click)="nextProduct()" fill="clear">NEXT</ion-button>
+        <ion-button *ngIf="!!productNavigationList && productNavigationList.length != 1 && canGoPrev"
+          class="prev cursor" (click)="prevProduct()" fill="clear">PREV</ion-button>
+      </ion-col>
+    </ion-row> -->
+    <ion-row class="ffWhitney marBottomPad0 marginBottomSmallScreen">
+      <!-- <ion-segment [(ngModel)]="segmentSelected" *ngIf="onMobile" color="primary" (ionChange)="segmentChanged($event)">
+        <ion-segment-button *ngFor="let sg of segments; let i = index" [value]="sg.redirectTo"> {{ sg.title }} </ion-segment-button>
+      </ion-segment> -->
+      <ion-col
+        size="12"
+        *ngIf="productType != 'diamond'"
+        size-sm="12"
+        size-md="5"
+        size-lg="6"
+        offset-lg="1"
+        size-xs="12"
+        size-xxs="12"
+      >
+        <ion-row *ngIf="!pageName" class="w100 marPad0">
+          <ion-col class="h100 w100 marPad0">
+            <!-- <ion-slides
+              id="fadeshow-1"
+              #slider
+              *ngIf="(productData?.data)[0]?.listOfProductImages.length > 12"
+              pager="true"
+              slidesPerView="1"
+              spaceBetween="20"
+              class="product marPad0"
+            >
+              <ion-slide
+                *ngFor="
+                  let img of (productData?.data)[0]?.listOfProductImages;
+                  let i = index
+                "
+                class="slider marPad0"
+              >
+                <img
+                  data-src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_256{{
+                    img.image
+                  }}.jpg 256w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{
+                    img.image
+                  }}.jpg 512w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_768{{
+                    img.image
+                  }}.jpg 768w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1024{{
+                    img.image
+                  }}.jpg 1024w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1280{{
+                    img.image
+                  }}.jpg 1280w"
+                  src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{
+                    img.image
+                  }}.jpg"
+                  alt
+                />
+              </ion-slide>
+            </ion-slides>
+            <ion-slides
+              #slider
+              *ngIf="
+                (productData?.data)[0]?.listOfProductImages.length == 0 &&
+                !!companyLogo
+              "
+              pager="true"
+              slidesPerView="1"
+              spaceBetween="20"
+              class="product marPad0"
+            >
+              <ion-slide class="slider marPad0">
+                <img
+                  [src]="companyLogo"
+                  (click)="openImage(companyLogo, 0)"
+                  class="maxHeight bgColor"
+                  tappable
+                />
+              </ion-slide>
+            </ion-slides>
+            <ion-slides
+              #slider
+              *ngIf="
+                (productData?.data)[0]?.listOfProductImages.length == 0 &&
+                !companyLogo
+              "
+              pager="true"
+              slidesPerView="1"
+              spaceBetween="20"
+              class="product marPad0"
+            >
+              <ion-slide class="slider marPad0">
+                <img
+                  [src]="_companyService.defaultImage.defaultLogo"
+                  (click)="
+                    openImage(_companyService.defaultImage.defaultLogo, 0)
+                  "
+                  class="maxHeight bgColor"
+                  tappable
+                />
+              </ion-slide>
+            </ion-slides>
+            <ion-slides
+              #slider
+              [options]="sliderOpt"
+              id="fadeshow-2"
+              *ngIf="(productData?.data)[0]?.listOfProductImages.length > 0"
+              pager="true"
+              slidesPerView="1"
+              spaceBetween="20"
+              class="product marPad0"
+              zoom
+            >
+              <ion-slide
+                *ngFor="
+                  let img of (productData?.data)[0]?.listOfProductImages;
+                  let i = index
+                "
+                class="slider"
+              >
+                <img
+                  (click)="openImage(img.image, i)"
+                  data-src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_256{{
+                    img.image
+                  }}.jpg 256w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{
+                    img.image
+                  }}.jpg 512w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_768{{
+                    img.image
+                  }}.jpg 768w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1024{{
+                    img.image
+                  }}.jpg 1024w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1280{{
+                    img.image
+                  }}.jpg 1280w"
+                  src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{
+                    img.image
+                  }}.jpg"
+                  class="maxHeight"
+                  alt
+                />
+              </ion-slide>
+            </ion-slides> -->
+            <ion-row
+              id="fadeshow-3"
+              *ngIf="
+                (productData?.data)[0]?.listOfProductImages.length > 1 &&
+                (productData?.data)[0]?.listOfProductImages.length <= 6
+              "
+              class="h100 w100 marPad0"
+            >
+              <ion-col
+                size="6"
+                *ngFor="
+                  let img of (productData?.data)[0]?.listOfProductImages;
+                  let i = index
+                "
+              >
+                <div *ngIf="img.transformType">
+                  <!-- <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image && img.transformationValue.gravity && !img.transformationValue.crop && !img.transformationValue.height && !img.transformationValue.width"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation [attr.gravity]="img.transformationValue.gravity" height="600" width="450"> </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image && img.transformationValue.gravity && img.transformationValue.crop && !img.transformationValue.height && !img.transformationValue.width"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation [attr.gravity]="img.transformationValue.gravity" [attr.crop]="img.transformationValue.crop" height="600" width="450"></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image && img.transformationValue.gravity && !img.transformationValue.crop && img.transformationValue.height && img.transformationValue.width"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation [attr.gravity]="img.transformationValue.gravity" [attr.height]="img.transformationValue.height" [attr.width]="img.transformationValue.width"> </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image && !img.transformationValue.gravity && !img.transformationValue.crop && img.transformationValue.height && !img.transformationValue.width"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation crop="scale" [attr.height]="img.transformationValue.height"></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image && !img.transformationValue.gravity && !img.transformationValue.crop && !img.transformationValue.height && img.transformationValue.width"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation [attr.width]="img.transformationValue.width"></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+                <div *ngIf="!img.transformType">
+                  <!-- <cl-image secure="true" [public-id]="img.image" class="maxHeight marPad0 imgLoadingBg" format="jpg" loading="lazy" *ngIf="img.image" (click)="openImage(img.image, i)">
+                    <cl-transformation gravity="auto" crop="thumb" height="600" width="450"></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              id="fadeshow-5"
+              *ngIf="
+                (productData?.data)[0]?.listOfProductImages.length > 6 &&
+                (productData?.data)[0]?.listOfProductImages.length <= 12
+              "
+              class="h100 w100 marPad0"
+            >
+              <ion-col
+                size="4"
+                *ngFor="
+                  let img of (productData?.data)[0]?.listOfProductImages;
+                  let i = index
+                "
+              >
+                <div *ngIf="img.transformType">
+                  <!-- <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      height="400"
+                      width="285"
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      [attr.crop]="img.transformationValue.crop"
+                      height="400"
+                      width="285"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      img.transformationValue.height &&
+                      img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      [attr.height]="img.transformationValue.height"
+                      [attr.width]="img.transformationValue.width"
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      !img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      crop="scale"
+                      [attr.height]="img.transformationValue.height"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      !img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.width]="img.transformationValue.width"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+                <div *ngIf="!img.transformType">
+                  <!-- <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      gravity="auto"
+                      crop="thumb"
+                      height="400"
+                      width="285"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              id="fadeshow-4"
+              *ngIf="(productData?.data)[0]?.listOfProductImages.length == 1"
+              class="h100 w100 marPad0"
+            >
+              <ion-col
+                size="12"
+                *ngFor="
+                  let img of (productData?.data)[0]?.listOfProductImages;
+                  let i = index
+                "
+                class="tac"
+              >
+                <div *ngIf="img.transformType">
+                  <!-- <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      height="800"
+                      width="570"
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      [attr.crop]="img.transformationValue.crop"
+                      height="800"
+                      width="570"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      img.transformationValue.height &&
+                      img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.gravity]="img.transformationValue.gravity"
+                      [attr.height]="img.transformationValue.height"
+                      [attr.width]="img.transformationValue.width"
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      !img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      img.transformationValue.height &&
+                      !img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      crop="scale"
+                      [attr.height]="img.transformationValue.height"
+                      [attr.gravity]
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="
+                      img.image &&
+                      !img.transformationValue.gravity &&
+                      !img.transformationValue.crop &&
+                      !img.transformationValue.height &&
+                      img.transformationValue.width
+                    "
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      [attr.width]="img.transformationValue.width"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+                <div *ngIf="!img.transformType">
+                  <!-- <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    *ngIf="img.image"
+                    (click)="openImage(img.image, i)"
+                  >
+                    <cl-transformation
+                      gravity="auto"
+                      crop="thumb"
+                      height="800"
+                      width="570"
+                    ></cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image> -->
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-grid
+          id="fadeshow-2"
+          class="marPad0"
+          *ngIf="(productData?.data)[0]?.listOfProductImages.length > 1"
+        >
+          <ion-row class="marPad0">
+            <ion-col size="1">
+              <ion-button
+                class="h100"
+                fill="clear"
+                (click)="slidePrev((productData?.data)[0], slideWithNav2)"
+                [class.disabled]="(productData?.data)[0]?.isBeginningSlide"
+              >
+                <ion-icon name="arrow-back" class="custom-nav"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="10">
+              <!-- <ion-slides
+                pager="false"
+                [options]="slideOptsTwo"
+                #slideWithNav2
+                (ionSlideDidChange)="
+                  slideDidChange((productData?.data)[0], slideWithNav2)
+                "
+              >
+                <ion-slide
+                  *ngFor="
+                    let img of (productData?.data)[0]?.listOfProductImages;
+                    let i = index
+                  "
+                  class="slider"
+                >
+                  https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{img.image}}.jpg 512w,
+                  https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_768{{img.image}}.jpg 768w,
+                  https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1024{{img.image}}.jpg 1024w,
+                  https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1280{{img.image}}.jpg 1280w"
+                    src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{img.image}}.jpg"
+                    class="maxHeight" alt /> 
+                  <cl-image
+                    secure="true"
+                    [public-id]="img.image"
+                    class="maxHeight marPad0 imgLoadingBg"
+                    format="jpg"
+                    loading="lazy"
+                    (click)="openThumbnail(i)"
+                  >
+                    <cl-transformation
+                      width="90"
+                      height="120"
+                      gravity="auto"
+                      crop="fill"
+                    >
+                    </cl-transformation>
+                    <cl-placeholder type="predominant"></cl-placeholder>
+                  </cl-image>
+                </ion-slide>
+              </ion-slides> -->
+            </ion-col>
+            <ion-col size="1">
+              <ion-button
+                class="h100"
+                fill="clear"
+                (click)="slideNext((productData?.data)[0], slideWithNav2)"
+                [class.disabled]="(productData?.data)[0]?.isEndSlide"
+              >
+                <ion-icon name="arrow-forward" class="custom-nav"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-row *ngIf="productSchemes">
+          <ion-col class="marPad0" *ngFor="let scm of productSchemes">
+            <img [src]="scm.image" class="hwauto" />
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="12" *ngIf="productType == 'diamond' && hits.length != 0">
+        <!-- <ion-row class="marPad0" *ngIf="productData && productData.data[0] && productData.data[0].listOfVariants.length
+          !=0 && (!_companyService.hidePriceForLogin || (_companyService.hidePriceForLogin && userId))">
+          <ion-col class="tal pdp-add-to-bag" size="12" style="text-align: center;margin: 0 auto;">
+            <ion-button class="cartButton wishlist marPad0" fill="outline"
+              *ngIf="!hideFavourites && !(productData?.data)[0]?.isFavorite" (click)="addToFavorite()">
+              <ion-icon slot="start" name="heart"></ion-icon>
+              Wishlist
+            </ion-button>
+            <ion-button class="cartButton selectedWishlist marPad0" fill="outline"
+              *ngIf="!hideFavourites && (productData?.data)[0]?.isFavorite">
+              <ion-icon slot="start" name="heart"></ion-icon>
+              Wishlisted
+            </ion-button>
+            <ion-button class="outOfStock" fill="outline"
+              *ngIf="!!selectedVariant && !!selectedVariant.outOfStock && selectedVariant.outOfStock == 1">
+              Sold Out
+            </ion-button>
+          </ion-col>
+        </ion-row> -->
+
+        <ion-row *ngIf="!pageName" class="w100 marPad0 mtp50">
+          <ion-col class="h100 w100 marPad0">
+            <app-inspect-viewing
+              *ngIf="hits.length != 0"
+              [selected]="hits"
+              [defaultSelected]="defaultSelected"
+              loadFrom="config"
+              (currentNo)="currentNo($event)"
+              (close)="changeView()"
+            ></app-inspect-viewing>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col
+        *ngIf="productType != 'diamond'"
+        size="12"
+        size-sm="12"
+        size-md="7"
+        size-lg="4"
+        size-xs="12"
+        size-xxs="12"
+        class="marPad0"
+      >
+        <ion-grid class="ml10Imp">
+          <ion-row>
+            <ion-col>
+              <h1 class="product-title tal">
+                {{ productTitle }}
+              </h1>
+              <h1
+                *ngIf="
+                  productData &&
+                  productData.data &&
+                  productData.data[0] &&
+                  (showSKU || showProductId)
+                "
+                class="pdp-name pdp-bb1 fs12"
+              >
+                <span *ngIf="showProductId">{{ dataValue }} &nbsp;</span
+                ><span *ngIf="showSKU"> #{{ productData.data[0].sku }}</span>
+              </h1>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="
+              !!productPrice &&
+              productPrice != 0 &&
+              !hideStorePrice &&
+              (!hidePrice || hidePrice != '1') &&
+              (!_companyService.hidePriceForLogin ||
+                (_companyService.hidePriceForLogin && userId))
+            "
+            class="marPad0"
+          >
+            <ion-col size="12" *ngIf="discount != 0 && finalPrice">
+              <span class="title fl">
+                <b
+                  >{{ _companyService.currency }}
+                  {{ finalPrice | number : ".2-2" }}</b
+                >
+              </span>
+              <span
+                class="ml5p"
+                *ngIf="
+                  !!customerTag &&
+                  !databaseServiceService.hideCustomerTagInProductDetail
+                "
+              >
+                ({{ customerTag }})</span
+              >
+              <br
+                *ngIf="
+                  !!customerTag &&
+                  !databaseServiceService.hideCustomerTagInProductDetail
+                "
+              />
+              <span class="ml5p colorGrey"> (Extra {{ discount }}% OFF)</span>
+            </ion-col>
+            <ion-col size="12">
+              <strong class="title tal" *ngIf="discount == 0">
+                <b
+                  >{{ _companyService.currency }}
+                  {{ productPrice | number : ".2-2" }}</b
+                >
+              </strong>
+              <del *ngIf="discount != 0" class="delTitle tal"
+                >{{ _companyService.currency }}
+                {{ productPrice | number : ".2-2" }}</del
+              >
+              <span
+                class="ml5p"
+                *ngIf="!!compareDiscount && compareDiscount != 0"
+              >
+                ({{ compareDiscount }}% OFF)
+              </span>
+            </ion-col>
+            <ion-col
+              size="12"
+              class="delTitle tal"
+              *ngIf="
+                !!compareAtPrice &&
+                compareAtPrice > 0 &&
+                !!compareDiscount &&
+                compareDiscount != 0
+              "
+            >
+              <del
+                >{{ _companyService.currency }}
+                {{ compareAtPrice | number : ".2-2" }}</del
+              >
+            </ion-col>
+            <br />
+          </ion-row>
+          <ion-row
+            *ngIf="!!hidePrice && hidePrice == '1' && !hideStorePrice"
+            class="marPad0"
+          >
+            <ion-col size="12">
+              <span class="title fl">
+                <b>TBD</b>
+              </span>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="_companyService.hidePriceForLogin && !userId"
+            class="marPad0"
+          >
+            <ion-col size="12">
+              <span class="fl italic"> Price displayed after you login </span>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="
+              !!productData &&
+              !!productData.data &&
+              !!productData.data[0]?.listOfReview &&
+              !!productData.data[0]?.listOfReview.rating &&
+              !!productData.data[0]?.listOfReview.totalRating
+            "
+            class="overallRatingContainer"
+          >
+            <ion-col size="12" class="mb10p">
+              <span class="overallRating">
+                <span>
+                  <b> {{ productData.data[0].listOfReview.rating }}</b>
+                </span>
+                <span class="starIcon">
+                  <ion-icon name="star" class="ratingColor"></ion-icon>
+                </span>
+                <span class="separator"> | </span>
+                <span class="totalRatings">
+                  {{ productData.data[0].listOfReview.totalRating }}
+                  Ratings</span
+                >
+              </span>
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row class="marPad0" *ngIf="listOfProductVariantType && listOfProductVariantType[0]">
+            <ion-col *ngIf="listOfVariantType1.length != 0 && listOfVariantType1.length > 18">
+              <label> {{ listOfProductVariantType[0].name }} : </label>
+              <ion-item lines="none">
+                <ion-select [placeholder]="selectedVariantType1.value" [(ngModel)]="selectedVariantType1" class="mw100p w20" (ionChange)="variantSelected()">
+                  <ion-select-option [value]="variant" *ngFor="let variant of listOfVariantType1">
+                    {{ variant.value }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="listOfProductVariantType && listOfProductVariantType[1]">
+            <ion-col class="marPad0" *ngIf="listOfVariantType2.length != 0 && listOfVariantType2.length > 18">
+              <label> {{ listOfProductVariantType[1].name }} : </label>
+              <ion-item lines="none">
+                <ion-select [placeholder]="selectedVariantType2.value" [(ngModel)]="selectedVariantType2" class="mw100p w20" (ionChange)="variantSelected()">
+                  <ion-select-option [value]="variant" *ngFor="let variant of listOfVariantType2">
+                    {{ variant.value }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row> -->
+          <ng-container *ngIf="!hideVarientParametersOnDetailPage">
+            <ion-row
+              *ngIf="listOfProductVariantType && listOfProductVariantType[0]"
+              class="marPad0"
+            >
+              <ion-col
+                class="pTopBottom0"
+                size="12"
+                *ngIf="listOfVariantType1.length != 0"
+              >
+                <!-- <ion-item class="pStartNone" lines="none"> -->
+                <label> {{ listOfProductVariantType[0].name }} </label>
+                <!-- </ion-item> -->
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <div
+                class="variantDiv pTopBottom0"
+                *ngIf="
+                  listOfProductVariantType &&
+                  listOfProductVariantType[0] &&
+                  listOfVariantType1.length != 0
+                "
+              >
+                <ion-col
+                  size="6"
+                  class="pTopBottom0"
+                  *ngFor="let variant of listOfVariantType1; let index1 = index"
+                >
+                  <!-- <ion-item  lines="none" class="pStartNone"> -->
+                  <!-- <ion-button class="buttonWidth" [class]="variant.value.length>3?'variant':''" id="btn_{{index1}}" *ngIf="variant.name==listOfProductVariantType[0].name" [color]="listOfVariantType1[index1].isSelected ? 'white': 'black'"
+                    (click)="variantSelectedByButton(listOfVariantType1,index1,1)">{{variant.value}}</ion-button> -->
+                  <ion-row class="w100">
+                    <ion-col>
+                      <ion-button
+                        id="btn_{{ index1 }}"
+                        fill="outline"
+                        shape="round"
+                        [ngClass]="
+                          listOfVariantType1[index1].isSelected
+                            ? 'variant variantSelected'
+                            : 'variant variantNotSelected'
+                        "
+                        *ngIf="variant.name == listOfProductVariantType[0].name"
+                        (click)="
+                          variantSelectedByButton(listOfVariantType1, index1, 1)
+                        "
+                      >
+                        <!-- <div *ngIf="variant.isPresentInCart" class="cartQty fr">{{ variant.cartQuantity }}</div>
+                      <ion-icon *ngIf="variant.isPresentInCart" [color]="listOfVariantType2[index2].isSelected ? 'grey' : ''" name="cart">
+                      </ion-icon>
+                      &nbsp; -->
+                        {{ variant.value }}
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                  <!-- <div *ngIf="listOfVariantType1[index1].isSelected">
+                  <ion-col size="6" class="pTopBottom0" *ngFor="let variant2 of variant.secondVariantList; let index2 = index">
+                    <ion-item (click)="variantSelectedByButton(listOfVariantType2, index2, 2)">
+                      <ion-label>{{variant2.value}}</ion-label>
+                      <ion-input type="number" [(ngModel)]="variant2.quantity"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </div> -->
+                  <!-- </ion-item> -->
+                </ion-col>
+              </div>
+            </ion-row>
+            <ion-row
+              *ngIf="listOfProductVariantType && listOfProductVariantType[1]"
+            >
+              <ion-col
+                class="pTopBottom0"
+                size="12"
+                *ngIf="listOfVariantType2.length != 0"
+              >
+                <label>{{ listOfProductVariantType[1].name }} </label>
+              </ion-col>
+            </ion-row>
+            <ion-row
+              *ngIf="
+                listOfProductVariantType &&
+                listOfProductVariantType[1] &&
+                selectedVariantType1
+              "
+            >
+              <ion-col
+                size="6"
+                class="pTopBottom0"
+                *ngFor="
+                  let variant2 of selectedVariantType1.secondVariantList;
+                  let index2 = index
+                "
+              >
+                <ion-row
+                  class="w100"
+                  (click)="
+                    variantSelectedByButton(listOfVariantType2, index2, 2)
+                  "
+                >
+                  <ion-col size="7">
+                    <ion-button
+                      [ngClass]="
+                        listOfVariantType2[index2].isSelected
+                          ? 'variant variantSelected'
+                          : 'variant variantNotSelected'
+                      "
+                      id="btn_{{ index2 }}"
+                    >
+                      <div *ngIf="variant2.isPresentInCart" class="cartQty fr">
+                        {{ variant2.cartQuantity }}
+                      </div>
+                      <ion-icon
+                        *ngIf="variant2.isPresentInCart"
+                        [color]="
+                          listOfVariantType2[index2].isSelected ? 'grey' : ''
+                        "
+                        name="cart"
+                      >
+                      </ion-icon>
+                      &nbsp;{{ variant2.value }}
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="5">
+                    <ion-input
+                      type="number"
+                      class="tar quantity"
+                      [(ngModel)]="variant2.quantity"
+                    ></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+              <!-- <div class="variantDiv pTopBottom0" *ngIf="listOfProductVariantType && listOfProductVariantType[1] && listOfVariantType2.length != 0 && listOfVariantType2.length <= 18">
+              <ion-col size="6" class="pTopBottom0" *ngFor="let variant of listOfVariantType2; let index2 = index">
+                <ion-row class="w100">
+                  <ion-col>
+                    <ion-button [ngClass]="listOfVariantType2[index2].isSelected ? 'variant variantSelected' : 'variant variantNotSelected'" id="btn_{{ index2 }}" *ngIf="variant.name == listOfProductVariantType[1].name" (click)="variantSelectedByButton(listOfVariantType2, index2, 2)">{{
+                      variant.value
+                    }}</ion-button>
+                  </ion-col>
+                  <ion-col>
+                    <ion-input type="number" [(ngModel)]="variant.quantity"></ion-input>
+                   </ion-col>
+                </ion-row>
+              </ion-col>
+            </div> -->
+            </ion-row>
+          </ng-container>
+          <!-- Add Ons -->
+          <ion-row
+            *ngIf="
+              !!selectedVariant &&
+              !!selectedVariant.listOfProductVariantAddOns &&
+              selectedVariant.listOfProductVariantAddOns.length > 0
+            "
+          >
+            <ion-col size="12"> Add Ons </ion-col>
+            <ion-col size="12" class="marPad0">
+              <ion-row
+                *ngFor="let addOn of selectedVariant.listOfProductVariantAddOns"
+              >
+                <ion-col size="1">
+                  <ion-img
+                    *ngIf="!addOn.image && !!companyLogo"
+                    [src]="companyLogo"
+                  ></ion-img>
+                  <ion-img *ngIf="!!addOn.image" [src]="addOn.image"></ion-img>
+                </ion-col>
+                <ion-col size="9">
+                  {{ addOn.name }} &nbsp;&nbsp;
+                  <span *ngIf="addOn.price > 0"
+                    >{{ _companyService.currency }}{{ addOn.price }}</span
+                  >
+                </ion-col>
+                <ion-col size="2">
+                  <!-- <ion-toggle
+                    [(ngModel)]="addOn.selected"
+                    [(checked)]="addOn.selected"
+                    (ionChange)="selectAddOn($event, selectedVariant)"
+                  ></ion-toggle> -->
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row *ngIf="!!productPrice">
+            <ion-col class="marPad0">
+              <ion-item class="fl" lines="none">
+                <label>
+                  Price
+                </label>
+              </ion-item>
+            </ion-col>
+            <ion-col class="marPad0" *ngIf="discount==0">
+              <ion-item lines="none" class="fr">
+                <label>{{ _companyService.currency }} {{ productPrice }}</label>
+              </ion-item>
+            </ion-col>
+            <ion-col class="marPad0" *ngIf="discount!=0">
+              <ion-item lines="none" class="fr minHeight30p">
+                <label><del>{{ _companyService.currency }} {{ productPrice }}</del></label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" class="marPad0" *ngIf="discount!=0">
+              <ion-item lines="none" class="fr minHeight30p">
+                <label> {{ discount }}% off</label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" class="marPad0" *ngIf="discount!=0 && finalPrice">
+              <ion-item lines="none" class="fr minHeight30p">
+                <label>{{ _companyService.currency }} {{ finalPrice }}</label>
+              </ion-item>
+            </ion-col>
+          </ion-row> -->
+
+          <ion-row
+            class="marPad0"
+            *ngIf="userId && !!parentCustomers && parentCustomers.length > 0"
+          >
+            <ion-col class="marPad0" size="12">
+              <span class="pincode-enterPincode pdp-product-description-content"
+                >Select from whom you want to buy</span
+              >
+            </ion-col>
+            <ion-col size="12" class="marPad0">
+              <ion-select
+                interface="popover"
+                placeholder="Select from whom you want to buy"
+                [(ngModel)]="selectedParentCustomerId"
+                (ionChange)="getDiscountOnParentCustomerChange()"
+              >
+                <ion-select-option
+                  [value]="parent.customerId"
+                  *ngFor="let parent of parentCustomers"
+                >
+                  {{ parent.companyName }}
+                </ion-select-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="marPad0"
+            *ngIf="
+              !hideBuyNowButton &&
+              (productData?.data)[0]?.liveStatus &&
+              (!_companyService.hidePriceForLogin ||
+                (_companyService.hidePriceForLogin && userId))
+            "
+          >
+            <ion-col size="12" class="marPad0 colorWhite">
+              <ion-button
+                expand="block"
+                class="colorWhite bgSuccess"
+                [disabled]="buyNowbuttonDisabled"
+                (click)="directBuyNow()"
+                *ngIf="
+                  !!selectedVariant &&
+                  (!selectedVariant.outOfStock ||
+                    selectedVariant.outOfStock == 0) &&
+                  (((!hidePrice || hidePrice != '1') &&
+                    _companyService.hidePriceForLogin) ||
+                    quickBuy)
+                "
+              >
+                <ion-spinner
+                  *ngIf="buyNowbuttonDisabled"
+                  slot="start"
+                ></ion-spinner>
+                Buy now
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="marPad0"
+            *ngIf="
+              productData &&
+              productData.data[0] &&
+              productData.data[0].listOfVariants.length != 0 &&
+              (!_companyService.hidePriceForLogin ||
+                (_companyService.hidePriceForLogin && userId))
+            "
+          >
+            <ion-col class="tal pdp-add-to-bag">
+              <ion-button
+                class="cartButton wishlist prev marPad0"
+                expand="block"
+                fill="outline"
+                *ngIf="!hideFavourites && !(productData?.data)[0]?.isFavorite"
+                (click)="addToFavorite()"
+              >
+                <ion-icon slot="start" name="heart"></ion-icon>
+                Wishlist
+              </ion-button>
+              <ion-button
+                class="cartButton selectedWishlist prev marPad0"
+                expand="block"
+                fill="outline"
+                *ngIf="!hideFavourites && (productData?.data)[0]?.isFavorite"
+              >
+                <ion-icon slot="start" name="heart"></ion-icon>
+                Wishlisted
+              </ion-button>
+            </ion-col>
+            <ion-col class="tar pdp-add-to-bag marPad0">
+              <ion-button
+                (click)="buyNow()"
+                [disabled]="buttonDisabled"
+                *ngIf="
+                  !!selectedVariant &&
+                  (productData?.data)[0]?.liveStatus &&
+                  (!selectedVariant.outOfStock ||
+                    selectedVariant.outOfStock == 0) &&
+                  (!hidePrice || hidePrice != '1')
+                "
+              >
+                <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner>
+                <ion-icon slot="start" name="cart"></ion-icon>
+                Add To Cart
+              </ion-button>
+              <ion-button
+                class="outOfStock"
+                expand="block"
+                fill="outline"
+                *ngIf="
+                  !!selectedVariant &&
+                  !!selectedVariant.outOfStock &&
+                  selectedVariant.outOfStock == 1
+                "
+              >
+                Sold Out
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <br />
+          <ion-row
+            *ngIf="productData && productData.data[0] && showDescription"
+            class="lineBreak marPad0"
+          >
+            <ion-col class="marPad0">
+              <h4 class="pdp-product-description-title">
+                Product Details
+                <ion-icon name="list" class="ml5p"></ion-icon>
+              </h4>
+            </ion-col>
+            <!-- <h5 class="pl"><b>Description</b></h5> -->
+          </ion-row>
+          <ion-row
+            *ngIf="productData && productData.data[0] && showDescription"
+            class="pdp-product-description-content"
+          >
+            <!-- {{productData?.data[0]?.description}} -->
+            <ion-col>
+              <div [innerHTML]="(productData?.data)[0]?.description"></div>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="productData && productData.data[0]"
+            class="index-sizeFitDesc"
+          >
+            <!--h4 class="index-sizeFitDescTitle"><b>SPECIFICATIONS</b></h4-->
+          </ion-row>
+          <ion-row class="index-tableContainer">
+            <!-- <ion-col size="12" class="index-row" *ngIf="param.paramName != 'Hide Price'">
+              <ion-row>
+                <ion-col size="4" class="index-rowKey">
+                  {{ param.paramName }}
+                </ion-col>
+                <ion-col size="8" class="index-rowValue">
+                  {{ param.paramValue }}
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+            <ion-col
+              size="6"
+              class="specifications"
+              *ngFor="let param of (productData?.data)[0]?.listOfParameter"
+            >
+              <div
+                class="specifications-col-inn fon-size-14"
+                *ngIf="param.paramName != 'Hide Price'"
+              >
+                <div class="specifications-rawval bold-md">
+                  {{ param.paramName }}
+                </div>
+                <div class="specifications-titleVal black-text">
+                  {{ param.paramValue }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row class="index-tableContainer" *ngIf="productData && productData.data[0] && productData.data[0].listOfVariants.length != 0 && !!selectedVariant && !!selectedVariant.quantity">
+            <ion-col size="12" class="index-row">
+              <ion-row>
+                <ion-col size="4" class="index-rowKey">
+                  Quantity
+                </ion-col>
+                <ion-col size="8" class="index-rowValue">
+                  {{ selectedVariant.quantity }}
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row> -->
+          <ion-row class="marPad0 resellerMargin">
+            <ion-col size="12" class="marPad0">
+              <ion-row>
+                <ion-col
+                  class="marPad0 mAuto"
+                  *ngIf="
+                    productData && productData.data[0] && showDirectWAInquiry
+                  "
+                >
+                  <h4 class="pdp-product-description-title">
+                    <b>Inquiry</b>
+                  </h4>
+                  <span
+                    class="pincode-enterPincode pdp-product-description-content"
+                    >Talk to us about this product</span
+                  >
+                </ion-col>
+                <ion-col
+                  class="marPad0 mAuto tar"
+                  *ngIf="
+                    productData &&
+                    productData.data[0] &&
+                    showDirectWAInquiry &&
+                    onMobile
+                  "
+                  (click)="sendDirectInquiryViaPlugin()"
+                >
+                  <img
+                    src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_50/v1597051767/assets/WA_ktog8s.png"
+                  />
+                </ion-col>
+                <ion-col
+                  class="marPad0 mAuto tar"
+                  *ngIf="
+                    productData &&
+                    productData.data[0] &&
+                    showDirectWAInquiry &&
+                    !onMobile
+                  "
+                >
+                  <a
+                    href="{{ directWAInquiryURL }}"
+                    target="_blank"
+                    (click)="sendDirectInquiry()"
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_50/v1597051767/assets/WA_ktog8s.png"
+                    />
+                  </a>
+                </ion-col>
+                <!-- *ngIf="onMobile" -->
+                <ion-col
+                  class="marPad0 mAuto tar"
+                  (click)="shareViawhatsapp()"
+                  *ngIf="showShareOnProductDetails && onMobile"
+                >
+                  <ion-icon name="share" class="shareBtn"></ion-icon>
+                </ion-col>
+                <ion-col
+                  class="marPad0 mAuto tar"
+                  *ngIf="showShareOnProductDetails && !onMobile"
+                >
+                  <!-- <a href="https://web.whatsapp.com/send?text={{socialMediaShareLink}}" target="_blank"
+                    data-action="share/whatsapp/share">
+                    <ion-icon name="share" class="shareBtn"></ion-icon>
+                  </a> -->
+                  <a
+                    href="https://api.whatsapp.com/send?text={{
+                      socialMediaShareLink
+                    }}"
+                    target="_blank"
+                    data-action="share/whatsapp/share"
+                  >
+                    <ion-icon name="share" class="shareBtn"></ion-icon>
+                  </a>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row> </ion-row>
+          <ion-row
+            *ngIf="productData && productData.data[0] && showResellerOption"
+            class="marPad0 resellerMargin"
+          >
+            <ion-col size="12" class="marPad0">
+              <h4 class="pdp-product-description-title">
+                <b>Buy these products in your area</b>
+              </h4>
+              <span class="pincode-enterPincode pdp-product-description-content"
+                >Enter pincode or city to find out nearby dealers</span
+              >
+            </ion-col>
+            <ion-col
+              size="12"
+              class="marPad0"
+              *ngIf="!!resellers && resellers.length == 0"
+            >
+              <span class="error">
+                No dealers around this pincode or city. Please order from this
+                website and we will deliver.
+              </span>
+            </ion-col>
+            <ion-col size="12" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <ion-input
+                    type="text"
+                    placeholder="Enter pincode or city to find dealers"
+                    [(ngModel)]="resellerPinCode"
+                    class="pincode-code"
+                    value
+                    name="resellerPinCode"
+                    class="w100"
+                  >
+                  </ion-input>
+                </ion-col>
+                <ion-col class="tar">
+                  <ion-button (click)="findDealers()">Find Dealers</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col
+              size="12"
+              class="marPad0"
+              *ngIf="!!resellers && resellers.length > 0"
+            >
+              <ion-row *ngFor="let seller of resellers; let i = index">
+                <ion-col size="10">
+                  <b> {{ i + 1 }}. &nbsp;&nbsp; </b>
+                  <b>{{ seller.companyName }} </b>,
+                  <span *ngIf="seller.contactName"
+                    >&nbsp;({{ seller.contactName }})</span
+                  >
+                  <span>&nbsp;&nbsp;{{ seller.city }}</span>
+                </ion-col>
+                <ion-col
+                  size="1"
+                  class="tar"
+                  *ngIf="onMobile"
+                  (click)="saveInquiryViaPlugin(seller, 'WA')"
+                >
+                  <img
+                    src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_25/v1597051767/assets/WA_ktog8s.png"
+                  />
+                </ion-col>
+                <ion-col size="1" class="tar" *ngIf="!onMobile">
+                  <a href="{{ seller.WAURL }}" target="_blank">
+                    <img
+                      src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_25/v1597051767/assets/WA_ktog8s.png"
+                      (click)="saveInquiry(seller, 'WA')"
+                    />
+                  </a>
+                </ion-col>
+                <ion-col size="1" class="tar">
+                  <a
+                    href="tel:{{ seller.contactNumber }}"
+                    target="_blank"
+                    (click)="saveInquiry(seller, 'Call')"
+                  >
+                    <ion-icon name="call" class="callIcon"></ion-icon>
+                  </a>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="productData && productData.data[0] && showHaveAQuestionForm"
+            class="marPad0"
+          >
+            <!-- {{productData?.data[0]?.description}} -->
+            <ion-col class="marPad0">
+              <form [formGroup]="validations_form" class="mTop10">
+                <ion-row class="marPad0">
+                  <ion-col size="12" class="marPad0">
+                    <ion-label
+                      position="floating"
+                      color="primary"
+                      class="pdp-product-description-title"
+                      >Have a question? Request a callback</ion-label
+                    >
+                  </ion-col>
+                  <ion-col size="12" class="marPad0">
+                    <ion-input
+                      type="tel"
+                      class="borderHaveAQ"
+                      formControlName="phone"
+                      placeholder="Enter your phone number"
+                    >
+                    </ion-input>
+                  </ion-col>
+                  <ion-col size="12" class="marPad0 tar">
+                    <ion-button (click)="requestACallback()">
+                      Schedule Call back
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="marPad0">
+                  <ion-col class="marPad0">
+                    <div class="validation-errors">
+                      <ng-container
+                        *ngFor="let validation of validation_messages.phone"
+                      >
+                        <div
+                          class="error-message"
+                          *ngIf="
+                            validations_form
+                              .get('phone')
+                              .hasError(validation.type) &&
+                            (validations_form.get('phone').dirty ||
+                              validations_form.get('phone').touched)
+                          "
+                        >
+                          <ion-icon
+                            name="information-circle-outline"
+                          ></ion-icon>
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </form>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngIf="productData && productData.data[0] && showDeliveryOption"
+            class="marPad0"
+          >
+            <ion-col size="12" class="marPad0">
+              <h4 class="pdp-product-description-title">
+                <b>Delivery Options</b>
+                <ion-icon name="bus" class="ml5p"></ion-icon>
+              </h4>
+            </ion-col>
+            <!-- <ion-col size="12" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <ion-input type="text" placeholder="Enter pincode" [(ngModel)]="pincode" class="pincode-code" value
+                    name="pincode" class="w100"></ion-input>
+                </ion-col>
+                <ion-col class="tar">
+                  <ion-button (click)="checkDelivery()">Check</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="12" *ngIf="!!pincodeResult" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <p class="pincode-enterPincode pdp-product-description-content" [innerHTML]="pincodeResult"></p>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="12" *ngIf="!pincodeResult" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <p class="pincode-enterPincode pdp-product-description-content">Please enter PIN code to check
+                    delivery time &amp; Cash/Card on Delivery Availability</p>
+                </ion-col>
+              </ion-row>
+            </ion-col> -->
+            <ion-col size="12" *ngIf="!pincodeResult" class="marPad0">
+              <ion-row>
+                <ion-col size="1">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-col>
+                <ion-col size="11">
+                  <ion-row>
+                    <h4 class="pincodeh4">Expected Delivery Time</h4>
+                  </ion-row>
+                  <ion-row>
+                    <p class="pincodep">
+                      5 days; Actual time may vary depending on other items in
+                      your order
+                    </p>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="1">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-col>
+                <ion-col size="11">
+                  <ion-row>
+                    <h4 class="pincodeh4">Cash/Card on delivery available</h4>
+                  </ion-row>
+                  <ion-row>
+                    <p class="pincodep">
+                      May be available for orders between
+                      {{ _companyService.currency }} 299-
+                      {{ _companyService.currency }} 20,000
+                    </p>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="1">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-col>
+                <ion-col size="11">
+                  <ion-row>
+                    <h4 class="pincodeh4">Easy 7 days returns and exchanges</h4>
+                  </ion-row>
+                  <ion-row>
+                    <p class="pincodep">
+                      Choose to return or exchange for a different size (if
+                      available) within 7 days.
+                    </p>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="12" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <div class="deliveryInfo">
+                    Tax: Applicable tax on the basis of exact location &
+                    discount will be charged at the time of checkout
+                  </div>
+                  <div class="deliveryInfo">100% Original Products</div>
+                  <!-- <div class="deliveryInfo">Free Delivery on order above {{ _companyService.currency }} 1199</div> -->
+                  <!-- <div class="deliveryInfo">Cash on delivery available</div>
+                  <div class="deliveryInfo">Easy 7 days returns and exchanges</div> -->
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            *ngIf="
+              productData &&
+              productData.data[0] &&
+              showProductWiseDeliveryOption
+            "
+          >
+            <!-- for benara demo - need to remove this -->
+            <ion-col size="12" class="marPad0">
+              <h4 class="pdp-product-description-title">
+                <b>Delivery Options</b>
+                <ion-icon name="bus" class="ml5p"></ion-icon>
+              </h4>
+            </ion-col>
+            <ion-col size="12" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <ion-input
+                    type="text"
+                    placeholder="Enter pincode"
+                    [(ngModel)]="pincode"
+                    class="pincode-code"
+                    value
+                    name="pincode"
+                    class="w100"
+                  ></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="checkDeliveryProductWise()"
+                    >Check</ion-button
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-col size="12" *ngIf="!!pincodeResult" class="marPad0">
+              <ion-row>
+                <ion-col>
+                  <p
+                    class="pincode-enterPincode pdp-product-description-content"
+                    [innerHTML]="pincodeResult"
+                  ></p>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="hide">
+            <br />
+            <h4 class="pdp-product-description-title">
+              <b>Questions </b>
+              <ion-icon name="help-circle-outline"></ion-icon>
+            </h4>
+
+            <ion-col size="12">
+              Got a question about this product? Need help buying?
+              <ion-button>
+                <ion-icon slot="start" name="chatbubbles"></ion-icon>
+                Talk to us
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <!-- <ion-col size="12" *ngIf="hits?.length != 0 && productType == 'diamond'">
+        <app-dx-data-grid [columns]="searchResultColumns" [rowData]="hits"></app-dx-data-grid>
+      </ion-col> -->
+      <ion-col
+        size="12"
+        *ngIf="
+          !!productData &&
+          !!productData.data &&
+          !!productData.data[0]?.listOfReview &&
+          !!productData.data[0].listOfReview?.listOfReviews
+        "
+      >
+        <ion-row>
+          <ion-col class="tac sectionName">
+            <ion-label>Reviews</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col class="tal">
+                <ion-icon name="star" class="ratingColor"></ion-icon>
+                <ion-icon name="star" class="ratingColor"></ion-icon>
+                <ion-icon name="star" class="ratingColor"></ion-icon>
+                <ion-icon name="star" class="ratingColor"></ion-icon>
+                <ion-icon name="star-half"></ion-icon>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="tal">
+                <b
+                  >Reviews({{
+                    productData.data[0].listOfReview.listOfReviews.length
+                  }})</b
+                >
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-card
+                  *ngFor="
+                    let review of productData.data[0].listOfReview.listOfReviews
+                  "
+                  class="reviewCard marPad0"
+                >
+                  <ion-card-header>
+                    <ion-row>
+                      <ion-col
+                        size="0.5"
+                        size-sm="0.5"
+                        size-md="0.5"
+                        size-lg="0.5"
+                        size-xs="2"
+                        class="tal reviewNameInitial"
+                      >
+                        {{ review.name.charAt(0) }}
+                      </ion-col>
+                      <ion-col
+                        size="11.5"
+                        size-sm="11.5"
+                        size-md="11.5"
+                        size-lg="11.5"
+                        size-xs="10"
+                      >
+                        <ion-row>
+                          <ion-col class="tal">
+                            <b>{{ review.name }}</b> &nbsp; Verified Buyer
+                          </ion-col>
+                          <!-- <ion-col class="tar">
+                            {{review.date | timeAgo}}
+                          </ion-col> -->
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col class="tal">
+                        <span *ngFor="let i of getNumbers(review.review)">
+                          <ion-icon name="star" class="ratingColor"></ion-icon>
+                        </span>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card-header>
+                  <ion-card-content>
+                    {{ review.description }}
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="12" *ngIf="!!seeMoreIn && seeMoreIn.length > 0">
+        <ion-row>
+          <ion-col class="tac sectionName">
+            <ion-label>See more in</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="tac">
+            <ion-button
+              class="seeMoreBtn"
+              fill="clear"
+              *ngFor="let seeMore of seeMoreIn"
+              (click)="showSearchPage(seeMore)"
+            >
+              {{ seeMore.label }}
+              <ion-icon name="arrow-forward"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-row
+        class="w100"
+        *ngIf="
+          !!productPageDetails &&
+          !!productPageDetails.data &&
+          !!productPageDetails.data[0] &&
+          !!productPageDetails.data[0].name
+        "
+      >
+        <app-page-sections
+          class="w100"
+          [data]="productPageDetails.data"
+          [hideHeader]="true"
+        ></app-page-sections>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+  <ion-row *ngIf="imageView" class="h100">
+    <ion-fab vertical="top" horizontal="end">
+      <ion-fab-button (click)="closeImageViewer()">
+        <ion-icon name="close"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <!-- <ion-slides
+      #slider
+      *ngIf="
+        (productData?.data)[0]?.listOfProductImages.length == 0 && !!companyLogo
+      "
+      pager="true"
+      slidesPerView="1"
+      spaceBetween="20"
+    >
+      <ion-slide>
+        <img [src]="companyLogo" class="maxHeight bgColor" tappable />
+      </ion-slide>
+    </ion-slides>
+    <ion-slides
+      #imageViewSlider
+      *ngIf="(productData?.data)[0]?.listOfProductImages"
+      pager="true"
+      slidesPerView="1"
+      spaceBetween="20"
+      class="h95vh product marPad0 h100"
+    >
+      <ion-slide
+        *ngFor="
+          let img of (productData?.data)[0]?.listOfProductImages;
+          let i = index
+        "
+        class="slider marPad0"
+      >
+        <img
+          data-src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_256{{
+            img.image
+          }}.jpg 256w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_512{{
+            img.image
+          }}.jpg 512w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_768{{
+            img.image
+          }}.jpg 768w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1024{{
+            img.image
+          }}.jpg 1024w,
+                https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1280{{
+            img.image
+          }}.jpg 1280w"
+          src="https://res.cloudinary.com/dealerclub/image/upload/f_auto,q_70,w_1024{{
+            img.image
+          }}.jpg"
+          alt
+        />
+      </ion-slide>
+    </ion-slides> -->
+    <ion-fab vertical="center" horizontal="start">
+      <ion-fab-button (click)="prev()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="center" horizontal="end">
+      <ion-fab-button (click)="next()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-row>
+</div>

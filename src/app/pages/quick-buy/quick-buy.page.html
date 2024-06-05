@@ -1,0 +1,358 @@
+<app-header showBackButton="true" [pageName]="defaultpageName"></app-header>
+
+<ion-content>
+  <ion-card [ngClass]="!onMobile?'deskTop frm':'frm'" class="width br0">
+    <ion-card-header class="marPad0">
+      <h3 class="onPageTitle">Place Order</h3>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card
+    [ngClass]="!onMobile?'deskTop frm':'frm'"
+    class="width br0"
+    *ngIf="!!cartData && !!cartData.data.products && cartData.data.products.length==1"
+    (click)="openCart(cartData.data.products[0].id)"
+  >
+    <ion-card-header class="marPad0">
+      <ion-row>
+        <ion-col>
+          <ion-card-subtitle> Order For: </ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="cartImg ion-justify-content-between">
+        <ion-col size="3" class="cartImg">
+          <div class="imgInList imgHgt">
+            <!-- <cl-image secure="true" public-id="/logo/{{_companyService.refCompanyId}}" format="png"
+              *ngIf="!cartData.data.products[0]?.image" class="cartImgMinHt">
+              <cl-transformation width="78" height="105" gravity="auto" crop="fill_pad"></cl-transformation>
+            </cl-image>
+            <cl-image secure="true" [public-id]="cartData.data.products[0].image" format="jpg"
+              *ngIf="cartData.data.products[0]?.image" class="cartImgMinHt">
+              <cl-transformation width="78" height="105" gravity="auto" crop="fill"></cl-transformation>
+            </cl-image> -->
+          </div>
+        </ion-col>
+        <ion-col size="9">
+          <ion-row class="product-name">
+            {{ productTitle(cartData.data.products[0].title) }}
+          </ion-row>
+          <ion-row class="priceTag">
+            <ion-col>
+              Rs. {{ cartData.data.products[0].taxAblePrice | number: ".2-2" }}
+            </ion-col>
+            <ion-col> Qty: {{ cartData.data.products[0].quantity }} </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!!cartData?.data?.count">
+        <ion-col size="12" class="paddingBottom0">
+          <div class="mar16 displayAmount fr paddingBottom0">
+            Sub Total : {{ cartData.data.count.SubTotal || 0 | number: ".2-2" }}
+          </div>
+        </ion-col>
+        <ion-col
+          size="12"
+          class="paddingBottom0"
+          *ngIf="cartData.data.count.FinalPrice - cartData.data.count.SubTotal > 0"
+        >
+          <div class="mar16 displayAmount fr paddingBottom0">
+            Tax Amount: {{ (cartData.data.count.FinalPrice -
+            cartData.data.count.SubTotal) || 0 | number: ".2-2" }}
+          </div>
+        </ion-col>
+        <ion-col size="12" class="paddingBottom0" *ngIf="shippingCost>0">
+          <div class="mar16 displayAmount fr paddingBottom0">
+            Ship Cost: {{ shippingCost || 0 | number: ".2-2" }}
+          </div>
+        </ion-col>
+        <ion-col size="12" class="paddingBottom0">
+          <div class="mar16 displayAmount fr paddingBottom0">
+            Grand Total : {{ totalWithShipCost || 0 | number: ".2-2" }}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+  </ion-card>
+  <ion-card
+    [ngClass]="!onMobile?'deskTop frm':'frm'"
+    class="width br0"
+    *ngIf="!!cartData && !!cartData.data.products && cartData.data.products.length>1"
+    (click)="openCart(cartData.data.products[0].id)"
+  >
+    <ion-card-header class="marPad0">
+      <ion-card-subtitle>
+        <!-- <ion-row>
+          <ion-col class="paddingBottom0">
+            <div class="mar16 displayAmount fr total paddingBottom0">
+              Order for {{totalQty}} items
+            </div>
+          </ion-col>
+        </ion-row>  -->
+        <ion-row *ngIf="!!cartData?.data?.count">
+          <ion-col size="12" class="paddingBottom0">
+            <div class="mar16 displayAmount fr paddingBottom0">
+              Order for {{totalQty}} items
+            </div>
+          </ion-col>
+          <ion-col size="12" class="paddingBottom0">
+            <div class="mar16 displayAmount fr paddingBottom0">
+              Sub Total : {{ cartData.data.count.SubTotal || 0 | number: ".2-2"
+              }}
+            </div>
+          </ion-col>
+          <ion-col
+            size="12"
+            class="paddingBottom0"
+            *ngIf="cartData.data.count.FinalPrice - cartData.data.count.SubTotal > 0"
+          >
+            <div class="mar16 displayAmount fr paddingBottom0">
+              Tax Amount: {{ (cartData.data.count.FinalPrice -
+              cartData.data.count.SubTotal) || 0 | number: ".2-2" }}
+            </div>
+          </ion-col>
+          <ion-col size="12" class="paddingBottom0" *ngIf="shippingCost>0">
+            <div class="mar16 displayAmount fr paddingBottom0">
+              Ship Cost: {{ shippingCost || 0 | number: ".2-2" }}
+            </div>
+          </ion-col>
+          <ion-col size="12" class="paddingBottom0">
+            <div class="mar16 displayAmount fr paddingBottom0">
+              Grand Total : {{ totalWithShipCost || 0 | number: ".2-2" }}
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+  <form
+    [formGroup]="validations_form"
+    (ngSubmit)="onSubmit(validations_form.value)"
+  >
+    <div [ngClass]="!onMobile?'deskTop frm':'frm'" class="width">
+      <ion-item>
+        <ion-label position="floating" color="primary">Phone</ion-label>
+        <ion-input
+          type="tel"
+          [(ngModel)]="phone"
+          formControlName="phone"
+          (ionBlur)="insertQuickBuyStartedView()"
+        >
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.phone">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('phone').hasError(validation.type) && (validations_form.get('phone').dirty || validations_form.get('phone').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.name">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('name').hasError(validation.type) && (validations_form.get('name').dirty || validations_form.get('name').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary"
+          >Zip code / Postal code</ion-label
+        >
+        <ion-input
+          type="tel"
+          formControlName="zip"
+          (ionBlur)="getAreaByZipCode()"
+        ></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.zip">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('zip').hasError(validation.type) && (validations_form.get('zip').dirty || validations_form.get('zip').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Address</ion-label>
+        <ion-textarea type="text" formControlName="address"></ion-textarea>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.address">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('address').hasError(validation.type) && (validations_form.get('address').dirty || validations_form.get('address').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <!-- <ion-item>
+        <ion-label position="floating" color="primary">Block</ion-label>
+        <ion-input type="text" formControlName="block"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.block">
+          <div class="error-message"
+            *ngIf="validations_form.get('block').hasError(validation.type) && (validations_form.get('block').dirty || validations_form.get('block').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+          </div>
+        </ng-container>
+      </div> -->
+      <ion-item>
+        <ion-label position="floating" color="primary">Near/Landmark</ion-label>
+        <ion-input type="text" formControlName="street"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.street">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('street').hasError(validation.type) && (validations_form.get('street').dirty || validations_form.get('street').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">City</ion-label>
+        <ion-input type="text" formControlName="city"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.city">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('city').hasError(validation.type) && (validations_form.get('city').dirty || validations_form.get('city').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item>
+        <ion-label position="floating" color="primary">State</ion-label>
+        <ion-input type="text" formControlName="state"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.state">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('state').hasError(validation.type) && (validations_form.get('state').dirty || validations_form.get('state').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Country</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="country"
+          formControlName="country"
+        ></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.country">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('country').hasError(validation.type) && (validations_form.get('country').dirty || validations_form.get('country').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item *ngIf="!!shippingMethods && shippingMethods.length>1">
+        <ion-label position="floating" color="primary">Shipment mode</ion-label>
+        <ion-select
+          [(ngModel)]="shipmentMode"
+          placeholder="Select shipment Mode"
+          class="w100 mw100"
+          formControlName="shipMode"
+          cancelText="Cancel"
+          okText="OK"
+          (ionChange)="shipModeSelected()"
+        >
+          <ion-select-option
+            *ngFor="let shipMode of shippingMethods"
+            [value]="shipMode.id"
+            >{{shipMode.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div
+        class="validation-errors"
+        *ngIf="!!shippingMethods && shippingMethods.length>1"
+      >
+        <ng-container *ngFor="let validation of validation_messages.shipMode">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('shipMode').hasError(validation.type) && (validations_form.get('shipMode').dirty || validations_form.get('shipMode').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Payment mode</ion-label>
+        <ion-select
+          [(ngModel)]="paymentMode"
+          placeholder="Select Payment Mode"
+          class="w100 mw100"
+          formControlName="payMode"
+          cancelText="Cancel"
+          okText="OK"
+        >
+          <ion-select-option
+            *ngFor="let payMode of paymentModeList"
+            [value]="payMode"
+            >{{payMode.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.payMode">
+          <div
+            class="error-message"
+            *ngIf="validations_form.get('payMode').hasError(validation.type) && (validations_form.get('payMode').dirty || validations_form.get('payMode').touched)"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-button
+        class="submit-btn tac w100"
+        type="submit"
+        [disabled]="!validations_form.valid || buttonDisabled"
+      >
+        <ion-spinner *ngIf="buttonDisabled" slot="start"></ion-spinner> Place
+        order
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

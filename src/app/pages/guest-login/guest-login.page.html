@@ -1,0 +1,138 @@
+<ion-content class="ion-padding">
+	<ng-container *ngIf="!!formType">
+		<h4 class="loginHeader">
+			<ion-icon name="arrow-back" (click)="closeModal()" class="fl"></ion-icon>
+			Please enter following details to continue
+		</h4>
+
+		<form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)" class="frm">
+			<div>
+				<ion-grid>
+					<ion-row class="marPad0 w100 tac">
+						<ion-col class="tac" size="12">
+							<!-- <ion-input type="tel" formControlName="phone" class="mobileInput" required
+								placeholder="Enter Mobile"></ion-input> -->
+
+							<ion-intl-tel-input id="phone-number" name="phone" class="mobileInput"
+								inputPlaceholder="Enter Mobile" defaultCountryiso="in" formControlName="phone">
+							</ion-intl-tel-input>
+
+						</ion-col>
+						<ion-col class="tac" size="12">
+							<div class="validation-errors">
+								<ng-container *ngFor="let validation of validation_messages.phone">
+									<div class="error-message"
+										*ngIf="validations_form.get('phone').hasError(validation.type) && (validations_form.get('phone').dirty || validations_form.get('phone').touched)">
+										<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+									</div>
+								</ng-container>
+							</div>
+						</ion-col>
+					</ion-row>
+
+					<ion-row class="marPad0 w100 tac">
+						<ion-col size="12" class="tac">
+							<ion-input type="email" formControlName="email" class="mobileInput"
+								placeholder="Enter email"></ion-input>
+						</ion-col>
+						<ion-col size="12" class="tac">
+							<div class="validation-errors">
+								<ng-container *ngFor="let validation of validation_messages.email">
+									<div class="error-message"
+										*ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+										<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+									</div>
+								</ng-container>
+							</div>
+						</ion-col>
+					</ion-row>
+
+					<ion-row class="marPad0 w100 tac">
+						<ion-col class="tac" size="12">
+							<ion-select placeholder="Select Distribution Center" formControlName="distributioncenter"
+								cancelText="Cancel" okText="OK" class="mobileInput">
+								<ion-select-option *ngFor="let cnt of distributioncenters" [value]="cnt">
+									{{cnt.companyName}}
+								</ion-select-option>
+							</ion-select>
+						</ion-col>
+						<ion-col size="12" class="tac">
+							<div class="validation-errors" *ngIf="!!showDistributioncenterInGuestLogin">
+								<ng-container *ngFor="let validation of validation_messages.distributioncenter">
+									<div class="error-message"
+										*ngIf="validations_form.get('distributioncenter').hasError(validation.type) && (validations_form.get('distributioncenter').dirty || validations_form.get('distributioncenter').touched)">
+										<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+									</div>
+								</ng-container>
+							</div>
+						</ion-col>
+					</ion-row>
+
+					
+					<ion-button class="submit-btn tac v2Btn " color="primary" expand="block" type="submit"					
+						[disabled]="!validations_form.valid">Continue
+						<ion-spinner *ngIf="showSpinner" slot="start"></ion-spinner>
+					</ion-button>
+				</ion-grid>
+			</div>
+		</form>
+	</ng-container>
+
+	<ng-container *ngIf="!formType">
+		<h3 color="primary">
+			Please enter following details to continue
+		</h3>
+
+		<form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)" class="frm">
+			<div class="width">
+				<ion-item>
+					<ion-label position="floating" color="primary">Mobile</ion-label>
+					<!-- <ion-input type="text" formControlName="phone"></ion-input> -->
+					<ion-intl-tel-input id="phone-number" name="phone" class="mobileInput"
+						inputPlaceholder="Enter Mobile" defaultCountryiso="in" formControlName="phone">
+					</ion-intl-tel-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.phone">
+						<div class="error-message"
+							*ngIf="validations_form.get('phone').hasError(validation.type) && (validations_form.get('phone').dirty || validations_form.get('phone').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+
+				<ion-item>
+					<ion-label position="floating" color="primary">Email</ion-label>
+					<ion-input type="text" formControlName="email"></ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.email">
+						<div class="error-message"
+							*ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+
+				<ion-item *ngIf="!!showDistributioncenterInGuestLogin">
+					<ion-label position="floating" color="primary">Distribution Center</ion-label>
+					<ion-select formControlName="distributioncenter" cancelText="Cancel" okText="OK">
+						<ion-select-option *ngFor="let cnt of distributioncenters" [value]="cnt">{{cnt.companyName}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<div class="validation-errors" *ngIf="!!showDistributioncenterInGuestLogin">
+					<ng-container *ngFor="let validation of validation_messages.distributioncenter">
+						<div class="error-message"
+							*ngIf="validations_form.get('distributioncenter').hasError(validation.type) && (validations_form.get('distributioncenter').dirty || validations_form.get('distributioncenter').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+
+				<ion-button class="submit-btn tac" type="submit" [disabled]="!validations_form.valid">Continue
+				</ion-button>
+			</div>
+		</form>
+	</ng-container>
+</ion-content>

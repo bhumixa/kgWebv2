@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="onMobile">
+  <div>
+    <ion-row *ngIf="!onMobile">
+      <ion-col>
+        <ion-item>
+          <ion-input required type="text" class="tal" [(ngModel)]="Mobile"
+            placeholder="Please enter your mobile number"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!onMobile">
+      <ion-col>
+        <ion-item>
+          <ion-input required type="password" class="tal" [(ngModel)]="password"
+            placeholder="Please enter your password"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="onMobile">
+      <ion-col>
+        <ion-item lines="none">
+          <label>Please login here...</label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="tar">
+        <ion-button expand="full" (click)="loginViaFBaK()">Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>
+
+<ion-content *ngIf="!onMobile">
+  <div class="ion-padding">
+    <ion-row class="mar10">
+      <ion-col>
+        <img *ngIf="!companyLogo" class="logo" [src]="_companyService.defaultImage.defaultLogo" alt="" />
+        <!--<img *ngIf="companyLogo && !companyLogo.includes('img.mobioffice.io')" class="logo" [src]="companyLogo" /> -->
+        <img *ngIf="companyLogo" class="logo" [src]="companyLogo" alt=""/>
+      </ion-col>
+    </ion-row>
+    <ion-row class="login">
+      <!-- <ion-col>
+              <ion-list inset class="no-border bgTransparent">
+                <ion-item class="ionItem">
+                  <ion-label class="label">Login ID</ion-label>
+                  <ion-input style="border-bottom: 1px solid #26317e;margin-left: 30px;" type="text" name="Mobile" [(ngModel)]="Mobile" class="bgLightBlue border"></ion-input>
+                </ion-item>
+                <ion-item class="ionItem">
+                  <ion-label class="label">Password</ion-label>
+                  <ion-input style="border-bottom: 1px solid #26317e;margin-left: 25px;" type="password" name="password" [(ngModel)]="password" class="bgLightBlue border"></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col> -->
+      <ion-col size="4">
+        <ion-label class="label">Login ID</ion-label>
+      </ion-col>
+      <ion-col size="8">
+        <ion-input style="border-bottom: 1px solid #26317e;" type="text" name="Mobile" [(ngModel)]="Mobile"
+          class="bgLightBlue border tal"></ion-input>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label class="label">Password</ion-label>
+      </ion-col>
+      <ion-col size="8">
+        <ion-input style="border-bottom: 1px solid #26317e;" type="password" name="password" [(ngModel)]="password"
+          class="bgLightBlue border tal"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button class="login-button" (click)="loginViaFBaK()">Submit</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Don't have an account? <label class="signUp" (click)="signUp()">Sign Up</label></ion-col>
+    </ion-row>
+  </div>
+</ion-content>

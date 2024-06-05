@@ -1,0 +1,19 @@
+.item-inner {
+  padding: 0px !important;
+}
+@media screen and (max-width: 960px) {
+  .toHideInSmallScreen {
+    display: none;
+  }
+  .toShowInSmallScreen {
+    display: block;
+  }
+}
+
+.borderound {
+  border-radius: 0% !important;
+}
+
+.bg-content {
+  --ion-background-color: #f8f8f8 !important;
+}

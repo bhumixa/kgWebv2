@@ -1,0 +1,111 @@
+ion-grid {
+  margin-bottom: 10px;
+}
+
+.footer-grid {
+  min-height: 549px;
+  background-color: #ececec;
+}
+.clsMenuFooter {
+  cursor: pointer;
+}
+.logoFooter {
+  //max-width: 100px;
+  margin-left: 20px;
+}
+.ftext {
+  margin-top: 12px;
+  line-height: 150%;
+  color: #999999;
+  font-size: 12px;
+}
+.clsMainData {
+  color: #5d5757;
+  line-height: 1.4;
+  margin-left: 10px;
+}
+.clsFooterRow {
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-bottom: -15px;
+  background-color: #ececec;
+}
+.footerBorder {
+  border-top: 2px solid var(--ion-color-primary);
+  // margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.width_150 {
+  width: 150px;
+  text-align: center;
+  padding: 0;
+}
+
+.float_right {
+  float: right;
+}
+
+.popular {
+  padding: 10px 0;
+  > .title {
+    font-size: larger;
+    font-weight: 500;
+  }
+  > .subtitle {
+    padding: 10px;
+  }
+}
+
+.inline-box {
+  display: -webkit-box;
+}
+
+.pad5 {
+  padding: 5px 50px 5px 0;
+}
+
+.pad10 {
+  padding: 10px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.footer-logo {
+  margin-top: 80px;
+}
+.footer-bottom-logo {
+  margin-top: -45px;
+}
+
+.social-image {
+  width: 55px;
+  float: right;
+}
+
+.bottom-links{
+  border-top: 2px solid #BDBDBD;
+  margin-top: 50px;
+  //height:200px;
+}
+
+.link{
+  font-size: 1vw;
+  text-align: center;
+  margin: auto;
+  font-weight: bold;
+  margin-top: 40px;
+  color:#333333;
+}

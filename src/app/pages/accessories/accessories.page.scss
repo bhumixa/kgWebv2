@@ -1,0 +1,36 @@
+ion-content::part(background) {
+    background-color: #008fad;
+  }
+  
+
+.main_div{
+    display: flex;
+    flex-direction: row;
+    height: -webkit-fill-available;
+}
+.layoutPage{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 48px;
+    width: 100%;
+    margin-left: 17%;
+    margin-top: 25px;
+    margin-right: 0px;
+}
+.bg_parent{
+    // background: #008FAD;
+    height: auto;
+}
+.flexCol{
+    flex-direction: column;
+    display: flex;
+}
+
+.posFix{
+    position: fixed;
+}
+@media only screen and (max-width: 1600px) and (min-width: 1192px) {
+    .layoutPage{
+        margin-top: 0px;
+    }
+}

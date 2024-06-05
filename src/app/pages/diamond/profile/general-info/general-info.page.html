@@ -1,0 +1,83 @@
+<app-header showBackButton="true"></app-header>
+
+<ion-content class="ion-padding form-content">
+  <form [formGroup]="validations_form"  (ngSubmit)="onSubmit(validations_form.value)" class="frm">
+    <div  class="width"> 
+		<ion-item>
+		  <ion-label position="floating" color="primary">First Name</ion-label>
+		  <ion-input type="text" formControlName="name"  maxlength="20"></ion-input>
+		</ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.name">
+			<div class="error-message" *ngIf="validations_form.get('name').hasError(validation.type) && (validations_form.get('name').dirty || validations_form.get('name').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+
+		<ion-item>
+		  <ion-label position="floating" color="primary">Last name</ion-label>
+		  <ion-input type="text" formControlName="lastname"  maxlength="20"></ion-input>
+		</ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.lastname">
+			<div class="error-message" *ngIf="validations_form.get('lastname').hasError(validation.type) && (validations_form.get('lastname').dirty || validations_form.get('lastname').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+
+		<ion-item>
+		  <ion-label position="floating" color="primary">Email</ion-label>
+		  <ion-input type="text" formControlName="email"  maxlength="40"></ion-input>
+		</ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.email">
+			<div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+		
+		<ion-item>
+		  <ion-label position="floating" color="primary">Phone</ion-label>
+		  <ion-input type="text" formControlName="phone" ></ion-input>
+		</ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.phone">
+			<div class="error-message" *ngIf="validations_form.get('phone').hasError(validation.type) && (validations_form.get('phone').dirty || validations_form.get('phone').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+		
+		<ion-item>
+		  <ion-label position="floating" color="primary">Rapnet</ion-label>
+		  <ion-input type="text" formControlName="rapnet"  maxlength="25"></ion-input>
+		</ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.rapnet">
+			<div class="error-message" *ngIf="validations_form.get('rapnet').hasError(validation.type) && (validations_form.get('rapnet').dirty || validations_form.get('rapnet').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+
+		<ion-item>
+		   <ion-label position="floating" color="primary">Country</ion-label> 
+		   <ion-select formControlName="country" cancelText="Cancel" okText="OK">
+			 <ion-select-option *ngFor="let cnt of countries" [value]="cnt">{{cnt.name}}</ion-select-option>
+		   </ion-select>
+		 </ion-item>
+		<div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.country">
+			<div class="error-message" *ngIf="validations_form.get('country').hasError(validation.type) && (validations_form.get('country').dirty || validations_form.get('country').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div>
+
+		<ion-button class="submit-btn tac" type="submit" [disabled]="!validations_form.valid">Save</ion-button>
+	</div>
+  </form>
+</ion-content>

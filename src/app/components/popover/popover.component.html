@@ -1,0 +1,46 @@
+<ng-container>
+  <ion-grid *ngIf="!html && !sortBy">
+    <ion-row *ngFor="let dt of displayObj">
+      <ion-col>
+        {{ dt.key }}
+      </ion-col>
+      <ion-col>
+        {{ dt.value }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list *ngIf="!!sortBy">
+    <ion-item
+      button
+      *ngFor="let btn of sortBy"
+      lines="none"
+      [ngClass]="!!selectedBtn && selectedBtn == btn.id ? 'btnActiveClass' : ''"
+      (click)="sortBySelected(btn)"
+      >{{ btn.name }}</ion-item
+    >
+  </ion-list>
+  <div *ngIf="html" [innerHtml]="html"></div>
+</ng-container>
+
+<!-- <ion-grid *ngIf="isExcel">
+  <ion-content>
+    <ion-row>Export</ion-row>
+    <ion-row>
+      <ion-col class="cursor">
+        <span>
+          <ion-img src="assets/images/excel.png" alt="right_check"></ion-img>
+        </span>
+        <p>All 50 records on this page are selected</p>
+        <ion-button>Export</ion-button>
+      </ion-col>
+      <ion-col>
+        <span>
+          <ion-img src="assets/images/excel.png" alt="excel_img"></ion-img>
+        </span>
+        <p>Export all 895 stones via email</p>
+        <ion-label>abc@abc.abc</ion-label>
+        <ion-button>Send Now</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+</ion-grid> -->

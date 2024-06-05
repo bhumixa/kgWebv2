@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'Inclusion Filters' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="addFilters()"> Apply </ion-button> -->
+      <ion-button (click)="clear()"> {{'CLEAR' | translate }} </ion-button>
+      <ion-button (click)="closeModal()"> {{'CLOSE' | translate }} </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding teal-bg">
+  <ion-item *ngFor="let parameters of stoneParameter" class="paddingRemove teal-bg">
+    <ion-row class="width100">
+      <span class="container" *ngIf="parameters.nameGroup != 'Pd Cat' ">
+        <strong class="padding-top20 font-size"
+          [ngClass]="!!parameters.subParameters ? 'fixWidthSubParam' : 'fixWidth'">
+          {{parameters.nameGroup  | translate }}</strong>
+      </span>
+      <div *ngIf="!!parameters.subParameters && parameters.subParameters.length > 0">
+        <ion-item *ngFor="let item of parameters.subParameters" class="paddingRemove">
+          <ion-row class="width100">
+            <ion-col class="paddingMargin0">
+              <div class="container">
+                <!-- <span class="container"> -->
+                <strong class="padding-top15 fixWidthSubParam font-size"> {{ item.masterName | translate }}</strong>
+                <!-- </span> -->
+                <ion-item *ngFor="let element of item.parameterValues; let i=index" class="buttonSet" lines="none">
+                  <ion-row class="width100">
+                    <div (click)="selectedPDParameterValue(parameters,item,item.parameterValues,i)" [title]="element.name"
+                      [ngClass]="element.isSelected ? 'srchBoxSelected buttonWidth' : 'srchBox buttonWidth'">
+                      {{ (element.code ? element.code : element.name) | translate }}
+                    </div>
+                  </ion-row>
+                </ion-item>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </div>
+      <div *ngIf="!parameters.subParameters">
+        <div class="container">
+          <ion-item *ngFor="let element of parameters.parameterValues; let i=index" class="buttonSet paddingRemove"
+            lines="none">
+            <ion-row class="width100">
+              <div (click)="selectedPDParameterValue(parameters,element,parameters.parameterValues,i)" [title]="element.name"
+                [ngClass]="element.isSelected ? 'srchBoxSelected buttonWidth' : 'srchBox buttonWidth'">
+                {{ (element.code ? element.code : element.name) | translate }}
+              </div>
+            </ion-row>
+          </ion-item>
+        </div>
+      </div>
+    </ion-row>
+  </ion-item>
+</ion-content>

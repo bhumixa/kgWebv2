@@ -1,0 +1,39 @@
+.sc-ion-card-md-s img {
+  width: auto !important;
+  margin: auto !important;
+}
+ion-card {
+  margin: auto !important;
+}
+.mar10 {
+  margin-top: 10px !important;
+}
+.cartImg {
+  background: var(--ion-color-primary);
+  height: auto !important;
+}
+.disInline {
+  display: contents !important;
+}
+ion-card-title {
+  margin: 10px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--ion-color-primary);
+  padding-bottom: 12px;
+  float: right;
+}
+.title {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--ion-color-primary);
+}
+.mar25 {
+  margin-top: 25px !important;
+}
+
+@media screen and (max-width: 953) {
+}

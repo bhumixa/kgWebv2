@@ -1,0 +1,57 @@
+<app-header showBackButton="true"></app-header>
+<ion-content class="ion-padding">
+
+  <!-- Searchbar in a Toolbar -->
+
+  <ion-row>
+    <ion-col size="12" size-lg="6" offset-lg="3" size-md="12" size-sm="12">
+      <ion-row>
+        <ion-col size-sm="12" size-xs="12" class="marPad0" size-md="5">
+          <ion-searchbar #input showCancelButton="focus" [(ngModel)]="orderNO" placeholder="Order No">
+          </ion-searchbar>
+        </ion-col>
+        <ion-col size-sm="12" size-xs="12" class="marPad0" size-md="5">
+          <ion-searchbar #input showCancelButton="focus" [(ngModel)]="pincode" placeholder="Pincode">
+          </ion-searchbar>
+        </ion-col>
+        <ion-col size-sm="4" size-xs="4" class="marPad0" size-md="2">
+          <ion-button class="mTop10" (click)="search()">Go</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-card class="mar10" *ngIf="!error && !!loadOrderDetails">
+        <ion-card-header class="cardHeader bold fs16">
+          <ion-row>
+            <ion-col> Ordered {{ loadOrderDetails[0].tracking_data.shipment_track[0].pickup_date | timeAgo }} |
+              Order#{{ orderNo }} </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Status :
+            </ion-col>
+            <ion-col>
+              {{ loadOrderDetails[0].tracking_data.shipment_track[0].current_status }}
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content class="mar10">
+          <ion-row *ngFor="let track of loadOrderDetails[0].tracking_data.shipment_track_activities" class="marPad0">
+            <ion-col size="12" class="marPad0">
+              <b> {{ track.date | timeAgo:2 }} </b> {{ track.activity }} <b> {{ track.status }} </b>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+
+
+      </ion-card>
+      <ion-card class="mar10" *ngIf="!!error">
+        <ion-card-header class="cardHeader bold fs16">
+          <ion-row>
+            <ion-col> {{ error }} </ion-col>
+          </ion-row>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <app-footer></app-footer>
+</ion-content>

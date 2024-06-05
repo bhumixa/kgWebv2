@@ -1,0 +1,35 @@
+ion-icon {
+  display: flex;
+}
+ion-button {
+  color: black;
+  height: 47px;
+  padding-top: 2px;
+  --box-shadow: none;
+}
+.addressCardHight {
+  height: 60px;
+}
+.iconColor {
+  color: white;
+}
+.noDataMsg {
+  margin-top: 20px;
+}
+.color {
+  color: black;
+}
+.width {
+  max-width: 700px;
+  min-width: 300px;
+}
+.mar {
+  margin: 10px auto;
+}
+.addBtn {
+  margin: 15px 0px 10px 0px;
+  font-size: 25px;
+}
+.pageMinHt {
+  min-height: 40vh;
+}

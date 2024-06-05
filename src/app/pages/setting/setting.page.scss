@@ -1,0 +1,75 @@
+
+.padRow {
+  padding: 30px 0px;
+}
+.cardHeader {
+  // color: #26317e;
+  font-weight: bold;
+  font-size: 16px;
+  // padding-left: 28px;
+  // padding-top: 28px;
+  margin: 10px;
+  background: none;
+}
+.paddingVw {
+  padding: 5px 10vw;
+}
+
+.center {
+  height: 40px;
+    line-height: 141px;
+    text-align: center;
+}
+
+.redLabel{
+  font-size: 16px;
+  color: red;
+}
+
+.verifiedAccount{
+  width: 20px;
+}
+
+.required:after {
+  content:" *";
+  color: red;
+}
+
+.unVerified{
+  color: red;
+  font-size: 12px;
+}
+
+.profile-image{
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.profile-segment{
+  height: 40px;
+}
+
+.segment-button {
+  ion-label {
+      color: var(--ion-color-secondary);
+  }
+}
+
+.segment-button-checked {
+  ion-label {
+      color: var(--ion-color-primary) !important;
+  }
+}
+
+.fontSize{
+  font-size: 40px;
+}
+
+
+

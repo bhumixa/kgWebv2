@@ -1,0 +1,127 @@
+<ion-content class="form-content">
+	<!-- <app-loading></app-loading> -->
+	<form [formGroup]="validations_formAddAdress" (ngSubmit)="onSubmit(validations_formAddAdress.value)" class="frm contentDiv">
+		<div [ngClass]="mobileView ? '' : 'width'">
+			<div class="w100 tal">
+				<ion-label color="primary">{{"Which term describes your company"| translate}}</ion-label>
+			</div>
+			<div class="disWebkitInlineBox largeFilters">
+				<div *ngFor="let para of companyTypes" [ngClass]="para.selected ? 'srchBoxSelected' : 'srchBox'"
+					(click)="toggleSelection(companyTypes, para.name);"> {{ para.name | translate}}</div>
+			</div>
+			<ion-row class="smallFilters">
+				<ion-col size="4" *ngFor="let para of companyTypes" [ngClass]="para.selected ? 'srchBoxSelected' : 'srchBox'"
+					(click)="toggleSelection(companyTypes, para.name);"> {{ para.name | translate}}</ion-col>
+			</ion-row>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Your company name"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="name" maxlength="30"></ion-input>
+			</ion-item>
+
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.name">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('name').hasError(validation.type) && (validations_formAddAdress.get('name').dirty || validations_formAddAdress.get('name').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message | translate}}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Your company address"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="address" maxlength="30"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.address">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('address').hasError(validation.type) && (validations_formAddAdress.get('address').dirty || validations_formAddAdress.get('address').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message | translate}}
+					</div>
+				</ng-container>
+			</div>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Block No"| translate}}</ion-label>
+				<ion-input type="text" formControlName="block" maxlength="10"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.block">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('block').hasError(validation.type) && (validations_formAddAdress.get('block').dirty || validations_formAddAdress.get('block').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message| translate }}
+					</div>
+				</ng-container>
+			</div>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Street address"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="street" maxlength="20"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.street">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('street').hasError(validation.type) && (validations_formAddAdress.get('street').dirty || validations_formAddAdress.get('street').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message| translate }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Zip code / Postal code"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="zip" (ionBlur)="getAreaByZipCode()"  maxlength="10"></ion-input>
+
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.zip">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('zip').hasError(validation.type) && (validations_formAddAdress.get('zip').dirty || validations_formAddAdress.get('zip').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message| translate }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"City"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="city"  maxlength="20" pattern="[a-zA-Z]*"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.city">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('city').hasError(validation.type) && (validations_formAddAdress.get('city').dirty || validations_formAddAdress.get('city').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message | translate}}
+					</div>
+				</ng-container>
+			</div>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"State"| translate}}*</ion-label>
+				<ion-input type="text" formControlName="state"  maxlength="20" pattern="[a-zA-Z]*"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.state">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress.get('state').hasError(validation.type) && (validations_formAddAdress.get('state').dirty || validations_formAddAdress.get('state').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message| translate }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Country"| translate}}</ion-label>
+				<ion-select formControlName="country" cancelText="Cancel" okText="OK">
+					<ion-select-option *ngFor="let cnt of countries" [value]="cnt">{{cnt.name}}</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.country">
+					<div class="error-message"
+						*ngIf="validations_formAddAdress && validations_formAddAdress.get('country').hasError(validation.type) && (validations_formAddAdress.get('country').dirty || validations_formAddAdress.get('country').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message| translate }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-button [ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn submit-btn tac': 'submit-btn tac'" type="submit" [disabled]="!validations_formAddAdress.valid">{{"Save"| translate}}
+			</ion-button>
+		</div>
+
+	</form>
+</ion-content>

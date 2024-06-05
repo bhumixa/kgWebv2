@@ -1,0 +1,87 @@
+.marTop20 {
+    margin-top: 7px;
+}
+.native-input[disabled] {
+    opacity: 0.7 !important;
+}
+.marTop60 {
+    margin-top: 60px;
+}
+.padd {
+    padding: 20px 16vw;
+}
+ion-item {
+    border-bottom: none !important;
+}
+.input {
+    --padding-top: 7px !important;
+    --padding-end: 8px !important;
+    --padding-bottom: 7px !important;
+    border: none;
+}
+.padd10 {
+    padding: 5px 10px;
+}
+
+.width {
+    min-width: 300px;
+    max-width: 600px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.submit-btn {
+    margin-top: 40px;
+}
+
+.frm {
+    text-align: -webkit-center;
+}
+.srchBox {
+    border: 1px solid var(--ion-color-primary);
+    padding: 15px;
+    min-width: 60px;
+    cursor: pointer;
+    text-align: center;
+}
+.srchBoxSelected {
+    border: 1px solid var(--ion-color-primary);
+    border-left-color: white;
+    border-right-color: white;
+    padding: 15px;
+    min-width: 60px;
+    cursor: pointer;
+    background: var(--ion-color-primary);
+    color: white;
+    text-align: center;
+}
+
+.form-content{
+    height: 700px;
+}
+@media only screen and (max-width: 500px) {
+    .largeFilters {
+      display: none;
+      visibility: hidden;
+    }
+    .smallFilters {
+      display: flex;
+      visibility: visible;
+    }
+  }
+  @media only screen and (min-width: 501px) {
+    .smallFilters {
+      display: none;
+      visibility: hidden;
+    }
+    .largeFilters {
+      display: -webkit-inline-box;
+      visibility: visible;
+    }
+  }

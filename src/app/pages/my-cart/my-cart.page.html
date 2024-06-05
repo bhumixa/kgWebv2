@@ -1,0 +1,11 @@
+<app-header showBackButton="true" [pageTitle]="pageTitle"></app-header>
+
+<ion-content>
+  <app-cart
+    view="page"
+    [orderBook]="ob"
+    [parameters]="showParameters"
+    [refresh]="refresh"
+  ></app-cart>
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>

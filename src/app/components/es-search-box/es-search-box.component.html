@@ -1,0 +1,18 @@
+<ion-row *ngIf="searchType != 'diamond'">
+  <ion-col size="10" class="marPad0">
+    <ion-searchbar #input showCancelButton="focus" [(ngModel)]="_headerFooterService.query"
+      placeholder="What are you looking for">
+    </ion-searchbar>
+  </ion-col>
+  <ion-col size="2" class="marPad0">
+    <ion-button class="mTop10" (click)="_headerFooterService.search()">Go</ion-button>
+  </ion-col>
+</ion-row>
+
+<ion-row *ngIf="searchType == 'diamond'">
+  <ion-col size="12" class="marPad0" class="round-search-box">
+    <ion-searchbar #input showCancelButton="focus" (search)="_headerFooterService.search()" [(ngModel)]="_headerFooterService.query"
+      placeholder="Search">
+    </ion-searchbar>
+  </ion-col>
+</ion-row>

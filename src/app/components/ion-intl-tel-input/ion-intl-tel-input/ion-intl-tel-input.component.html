@@ -1,0 +1,44 @@
+<div class="ion-intl-tel-input-code tal">
+  <ion-select-option value="brown">
+    <!-- <span [ngClass]="'flag flag-' + (data?.iso2code || '')"></span> -->
+  </ion-select-option>
+  <ng-select
+    class="phoneNumber"
+    [(ngModel)]="country"
+    placeholder=""
+    (change)="onCodeChange($event)"
+  >
+    <ng-option *ngFor="let country of countries" [value]="country">
+      <span class="flag-icon flag-icon-{{ country.flagClass }}"></span>
+      <span class="hide-on-select">
+        {{ country.name }}
+      </span>
+      <span> {{ dialCodePrefix }} {{ country.dialCode }} </span>
+    </ng-option>
+  </ng-select>
+</div>
+
+<div class="ion-intl-tel-input-number">
+  <ion-input
+    #numberInput
+    [(ngModel)]="phoneNumber"
+    autocomplete="off"
+    [disabled]="disabled"
+    [attr.maxLength]="maxLength"
+    type="tel"
+    (ionBlur)="onIonNumberBlur()"
+    (ionChange)="onIonNumberChange($event)"
+    (ionFocus)="onIonNumberFocus()"
+    (ionInput)="onIonNumberInput($event)"
+    (keydown)="onNumberKeyDown($event)"
+    (ngModelChange)="onNumberChange()"
+    placeholder="{{
+      country
+        | countryPlaceholder
+          : inputPlaceholder
+          : separateDialCode
+          : fallbackPlaceholder
+    }}"
+  >
+  </ion-input>
+</div>

@@ -1,0 +1,66 @@
+<app-header *ngIf="!hideBackButton" showBackButton="true"></app-header>
+<app-header *ngIf="hideBackButton" showBackButton="false"></app-header>
+<ion-content class="ion-padding">
+  <h3 class="onPageTitle">
+    Customers
+    <ion-icon color="primary crudIcon" name="Add" (click)="addNew()"></ion-icon>
+  </h3>
+  <div class="noDataMsg mar10" *ngIf="((allCustomers && allCustomers.length == 0) || !allCustomers) && allCustomers != null">
+    Currently there are no customers!
+  </div>
+  <!-- skeleton -->
+  <ion-row *ngIf="allCustomers == null || allCustomers == undefined">
+    <ion-col size="12" size-lg="10" offset-lg="1" size-md="10" offset-md="1" size-sm="10" offset-sm="1">
+      <ion-card class="mar10 " *ngFor="let data of _configService.arrayOne(3)">
+        <ion-card-header class="cardHeader" [ngClass]="onMobile ? 'padd15' : ''">
+          <ion-row>
+            <ion-col size="12">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-row>
+            <ion-col>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <!-- end -->
+  <ion-row *ngIf="!!allCustomers && allCustomers.length > 0">
+    <ion-col size="12" size-lg="10" offset-lg="1" size-md="10" offset-md="1" size-sm="10" offset-sm="1">
+      <ion-card class="mar10 " *ngFor="let cust of allCustomers">
+        <ion-card-header class="cardHeader" [ngClass]="onMobile ? 'padd15' : ''">
+          <ion-row>
+            <ion-col size="12">
+              <ion-label>
+                <b>{{ cust.companyName }}</b>
+                <ion-icon color="primary crudIcon" name="trash" (click)="deleteConfirm(cust.id)"></ion-icon>
+                <ion-icon color="primary crudIcon" name="create" (click)="edit(cust)"></ion-icon>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row>
+            <ion-col *ngIf="cust.name">
+              <b>{{ cust.name }} </b><br />
+              <!-- {{ cust.email }} <br /> -->
+              {{ cust.username }} &nbsp;
+              <a (click)="goToManageAddressPage(cust)" class="cursor" *ngIf="cust.addressCount && cust.addressCount > 0"> ({{ cust.addressCount }} addresses) </a>
+              <a click)="goToAddressPage(cust)" class="cursor" *ngIf="cust.addressCount && cust.addressCount == 0"> No address added, add new </a>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."> </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+  <app-footer></app-footer>
+</ion-content>

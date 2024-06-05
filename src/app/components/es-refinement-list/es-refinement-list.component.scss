@@ -1,0 +1,49 @@
+.marginLeftRight {
+    margin: 0 20px 10px 0;
+}
+label, ion-label {
+    font-size: 14px !important;
+    color: rgb(115, 115, 115) !important;
+}
+ion-button {
+    font-size: 12px;
+}
+ion-item {
+    font-size: 12px;
+    --min-height: 20px;
+}
+.mLeft {
+    margin: 0 0 0 5px;
+}
+ion-checkbox {
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
+}
+.count {
+    padding: .1rem .4rem;
+    font-size: .8rem;
+    color: #3a4570;
+    background-color: #dfe2ee;
+    border-radius: 8px;
+}
+.currentFilter {
+    margin : 5px;    
+    color: white;
+    background-color: var(--ion-color-primary);
+    border-radius: 5px;
+    padding: 2px;
+}
+.currentFilterSpan {
+    // background-color: var(--ion-color-primary);
+    border-radius: 5px;
+    padding: 1px;
+    margin: 2px;
+}
+.marPad2 {
+    margin: 2px;
+    padding: 2px;
+}

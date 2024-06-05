@@ -1,0 +1,174 @@
+<ion-content class="form-content">
+  <div class="frm contentDiv">
+    <div [ngClass]="configService.onMobile ? '' : 'width'">
+      <ion-item *ngIf="salesPerson">
+        <ion-label position="floating" color="primary">{{
+          "Sales Person" | translate
+        }}</ion-label>
+        <ion-input
+          [disabled]="disabled"
+          type="text"
+          [(ngModel)]="salesPerson"
+        ></ion-input>
+      </ion-item>
+    </div>
+  </div>
+  <form
+    [formGroup]="validations_formUserAccount"
+    (ngSubmit)="onSubmit(validations_formUserAccount.value)"
+    class="frm contentDiv"
+  >
+    <div [ngClass]="mobileView ? '' : 'width'">
+      <!-- <ion-label color="primary"
+          >Would you like to have updates and offers on our website on your
+          Email?</ion-label
+        >
+        <ion-select formControlName="updates" cancelText="Cancel" okText="OK">
+          <ion-select-option value="Yes">Yes</ion-select-option>
+          <ion-select-option value="No">No</ion-select-option>
+        </ion-select>-->
+      <ion-item>
+        <!-- <ion-label
+          position="floating"
+          color="primary"
+          *ngIf="validations_formUserAccount.value.distributioncenter == ''"
+          >Select Distribution Center</ion-label
+        >
+        <ion-label
+          position="floating"
+          color="primary"
+          *ngIf="validations_formUserAccount.value.distributioncenter"
+          >{{
+            validations_formUserAccount.value.distributioncenter.companyName
+          }}</ion-label
+        > -->
+        <ion-label color="primary">{{
+          "Select Distribution Center" | translate
+        }}</ion-label>
+        <ion-select
+          formControlName="distributioncenter"
+          cancelText="Cancel"
+          okText="OK"
+          [compareWith]="compareFn"
+          [disabled]="disabled"
+        >
+          <ion-select-option
+            *ngFor="let cnt of distributioncenters"
+            [value]="cnt"
+            >{{ cnt.companyName }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container
+          *ngFor="let validation of validation_messages.distributioncenter"
+        >
+          <div
+            class="error-message"
+            *ngIf="
+              validations_formUserAccount &&
+              validations_formUserAccount
+                .get('distributioncenter')
+                .hasError(validation.type) &&
+              (validations_formUserAccount.get('distributioncenter').dirty ||
+                validations_formUserAccount.get('distributioncenter').touched)
+            "
+          >
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message | translate }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- <ion-item>
+		   <ion-label position="floating" color="primary">Select Sales Person</ion-label> 
+		   <ion-select formControlName="salesperson" cancelText="Cancel" okText="OK">
+			 <ion-select-option *ngFor="let sp of salespersons" [value]="sp" >{{sp.name}}</ion-select-option>
+		   </ion-select>
+		 </ion-item> -->
+      <!-- <div class="validation-errors">
+		  <ng-container *ngFor="let validation of validation_messages.salesperson">
+			<div class="error-message" *ngIf="validations_formUserAccount && validations_formUserAccount.get('salesperson').hasError(validation.type) && (validations_formUserAccount.get('salesperson').dirty || validations_formUserAccount.get('salesperson').touched)">
+			  <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+			</div>
+		  </ng-container>
+		</div> -->
+      <ion-item>
+        <ion-label position="floating" color="primary">{{
+          "User name" | translate
+        }}</ion-label>
+        <ion-input
+          [disabled]="disabled"
+          type="text"
+          formControlName="username"
+        ></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.username">
+          <div
+            class="error-message"
+            *ngIf="
+              validations_formUserAccount &&
+              validations_formUserAccount &&
+              validations_formUserAccount
+                .get('username')
+                .hasError(validation.type) &&
+              (validations_formUserAccount.get('username').dirty ||
+                validations_formUserAccount.get('username').touched)
+            "
+          >
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message | translate }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item>
+        <ion-label color="primary"
+          >{{
+            "Would you like to have updates and offers on our website on your Email"
+              | translate
+          }}?</ion-label
+        >
+        <ion-select formControlName="updates" cancelText="Cancel" okText="OK">
+          <ion-select-option value="Yes">{{
+            "Yes" | translate
+          }}</ion-select-option>
+          <ion-select-option value="No">{{
+            "No" | translate
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.updates">
+          <div
+            class="error-message"
+            *ngIf="
+              validations_formUserAccount &&
+              validations_formUserAccount
+                .get('updates')
+                .hasError(validation.type) &&
+              (validations_formUserAccount.get('updates').dirty ||
+                validations_formUserAccount.get('updates').touched)
+            "
+          >
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message | translate }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-button
+        [ngClass]="
+          _companyService.productListing == 'grid'
+            ? 'round-button v2Btn submit-btn tac'
+            : 'submit-btn tac'
+        "
+        type="submit"
+        [disabled]="
+          validations_formUserAccount && !validations_formUserAccount.valid
+        "
+        >{{ "Save" | translate }}</ion-button
+      >
+    </div>
+  </form>
+</ion-content>

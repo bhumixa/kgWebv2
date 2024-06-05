@@ -1,0 +1,46 @@
+<app-header
+  showBackButton="false"
+  title=""
+  *ngIf="!!showHeaderOnHomePage"
+  [pageName]="defaultpageName"
+  [searchPage]="searchPage"
+></app-header>
+<ion-content
+  class="ion-padding"
+  [scrollEvents]="true"
+  (ionScroll)="logScrolling($event)"
+>
+  <ion-fab
+    vertical="top"
+    horizontal="start"
+    slot="fixed"
+    *ngIf="!showHeaderOnHomePage"
+  >
+    <ion-fab-button (click)="openMenu()">
+      <ion-icon name="menu"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!collectionList">
+    <ion-card *ngFor="let i of configService.arrayOne(10)">
+      <ion-skeleton-text style="height: 200px"></ion-skeleton-text>
+    </ion-card>
+  </div>
+  <app-page-sections
+    *ngIf="!!collectionList"
+    [data]="collectionList.data"
+  ></app-page-sections>
+
+  <app-footer *ngIf="!hideFooter"></app-footer>
+</ion-content>
+<ion-button (click)="scrollContent()" class="top" [style.display]="display">
+  <ion-icon name="caret-up-outline"></ion-icon>
+</ion-button>

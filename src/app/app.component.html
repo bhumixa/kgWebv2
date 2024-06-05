@@ -1,29 +1,424 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi&#64;ionicframework.com</ion-note>
+  <ion-menu
+    contentId="my-content"
+    [ngClass]="showFullMenu ? 'sideMenu' : ''"
+    [side]="sideMenu"
+    menuId="menu"
+    [swipeGesture]="loggedInUser ? true : false"
+    id="menu-avatar"
+    type="overlay"
+  >
+    <ion-header class="largescreen">
+      <ion-toolbar>
+        <ion-title *ngIf="showImage">{{ appName }}</ion-title>
+        <ion-title *ngIf="!showImage">Aspeco</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+    <ion-header class="smallScreen">
+      <ion-toolbar [ngClass]="getToolbarClass()">
+        <ion-row>
+          <ion-col class="pl10">
+            <!-- <cl-image
+              public-id="/logo/{{ _companyService.refCompanyId }}_mobile"
+              format="png"
+              *ngIf="!!companyLogo && showImage"
+              secure="true"
+              (click)="goToHomePage()"
+              class="small-logo cursor"
+            >
+              <cl-transformation></cl-transformation>
+            </cl-image> -->
+            <img
+              *ngIf="!showImage"
+              (click)="goToHomePage()"
+              src="assets/images/Aspeco White.png"
+              class="small-login-logo cursor aspecoLogo"
+              alt=""
+            />
+          </ion-col>
+          <ion-col class="logoMainMenuRight">
+            <ion-icon
+              name="close"
+              class="cursor"
+              color="headerIconColor"
+              (click)="menuClose()"
+            ></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content overflow-scroll="false" class="smallScreen bg-search">
+      <ng-container *ngIf="sideMenuList">
+        <ng-container *ngFor="let listData of sideMenuList">
+          <ion-row *ngIf="listData.type == 'searchInput'" class="mt5 tac">
+            <!-- <app-es-search-box class="searchBarUpperRmWidth mAuto" placeholder="Search" [searchType]="searchType" size="12">
+            </app-es-search-box> -->
+            <ion-searchbar
+              #input
+              (search)="_headerFooterService.search()"
+              class="search-box-mobile"
+              [(ngModel)]="_headerFooterService.query"
+              placeholder="Search by ID/ Number"
+            >
+            </ion-searchbar>
+          </ion-row>
+
+          <ion-row class="tac">
+            <ion-col>
+              <ion-list
+                *ngIf="listData.type == 'listView'"
+                class="mt5 sidemenu-list"
+              >
+                <ng-container *ngFor="let list of listData.list">
+                  <ion-item
+                    *ngIf="list.shownotLoogedIn || loggedInUser"
+                    class="tac list-item"
+                    (click)="openPage(list)"
+                  >
+                    <ion-label class="font-css">{{ list.name }}</ion-label>
+                  </ion-item>
+                </ng-container>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="tac mt5 sidemenu-list jc_c align_item_c display_f"
+            *ngIf="listData.type == 'language'"
+          >
+            <ion-select
+              (ionChange)="
+                translateConfigService.setLanguage($event.target.value)
+              "
+              [(ngModel)]="defaultLang"
+            >
+              <ion-select-option
+                *ngFor="let lang of languages"
+                [value]="lang.code"
+              >
+                <img [src]="lang.flag" alt="{{ lang.name }}" /> {{ lang.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-row>
+        </ng-container>
+      </ng-container>
+
+      <!-- <ion-list>
+        <ion-item>
+          <ion-label>Pokémon Yellow</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Mega Man X</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>The Legend of Zelda</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pac-Man</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Super Mario World</ion-label>
+        </ion-item>
+      </ion-list> -->
+    </ion-content>
+    <ion-footer class="smallScreen whitebg">
+      <ion-row class="mt5 tac">
+        <ion-col>
+          <ion-list class="mt5 sidemenu-list">
+            <ion-item class="tac list-item">
+              <ion-label class="font-css" (click)="deleteAccount()"
+                >Delete Account
+              </ion-label>
             </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-footer>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
+    <ion-content overflow-scroll="false" class="largescreen">
+      <div
+        class="profile-bg"
+        *ngIf="!companyLogo"
+        [ngStyle]="{
+          'background-image':
+            'url(' + _companyService.defaultImage.defaultLogo + ')'
+        }"
+      ></div>
+      <!-- <div class="profile-bg" *ngIf="companyLogo" [ngStyle]="{ 'background-image': 'url('+ companyLogo +')' }"></div> -->
+      <div
+        class="profile-bg"
+        *ngIf="companyLogo && _companyService.productListing == 'list'"
+      >
+        <!-- <cl-image
+          public-id="/logo/{{ _companyService.refCompanyId }}"
+          format="png"
+          *ngIf="!!companyLogo && showImage"
+          secure="true"
+          (click)="goToHomePage()"
+          class="companyLogo logoMain"
+        >
+          <cl-transformation></cl-transformation>
+        </cl-image> -->
+        <img
+          *ngIf="!showImage"
+          src="assets/images/Aspeco White.png"
+          (click)="goToHomePage()"
+          class="small-login-logo cursor aspecoLogo"
+          alt=""
+        />
+      </div>
+      <div
+        class="profile-bg"
+        *ngIf="companyLogo && _companyService.productListing != 'list'"
+      >
+        <!-- <cl-image
+          public-id="/logo/{{ _companyService.refCompanyId }}_menu"
+          format="png"
+          *ngIf="!!companyLogo && showImage"
+          secure="true"
+          (click)="goToHomePage()"
+          class="companyLogo logoMain"
+        >
+          <cl-transformation></cl-transformation>
+        </cl-image> -->
+        <img
+          *ngIf="!showImage"
+          (click)="goToHomePage()"
+          src="assets/images/Aspeco (Black).png"
+          class="small-login-logo cursor aspecoLogo"
+          alt=""
+        />
+      </div>
+      <div class="menu-user" *ngIf="!loggedInUser">
+        <ion-fab vertical="center" horizontal="center" (click)="Login()">
+          <!-- <div class="profile-info"><img class="profile-image" src="assets/icon/user.png" /></div> -->
+          <ion-fab-button class="first-button">
+            <ion-icon name="log-in"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-label class="text-center"> Please Login </ion-label>
+      </div>
+      <div *ngIf="loggedInUser && !imageURL" class="profile-info uImage">
+        <img
+          class="profile-image mAuto"
+          alt="profile-image"
+          src="assets/icon/user.png"
+        />
+      </div>
+      <div *ngIf="loggedInUser && imageURL" class="profile-info uImage">
+        <img class="profile-image mAuto" [src]="imageURL" alt="profile-image" />
+        <!-- <img *ngIf="!imageURL.includes('img.mobioffice.io')" class="profile-image mAuto" [src]="imageURL" /> -->
+      </div>
 
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+      <!-- <hr /> -->
+      <ion-list [class.margin100]="!loggedInUser">
+        <ion-item class="cursor" lines="none" (click)="openHome()">
+          <ion-icon name="home" slot="start"></ion-icon>
+          <ion-label> {{ "Home" | translate }}</ion-label>
+        </ion-item>
+
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngFor="let dt of companyJson.homePageHeaderLinks"
+          (click)="openPage(dt)"
+        >
+          <ion-icon name="heart" slot="start" *ngIf="!dt.icon"></ion-icon>
+          <ion-icon [name]="dt.icon" slot="start" *ngIf="dt.icon"></ion-icon>
+          <ion-label> {{ dt.title | translate }} </ion-label>
+        </ion-item>
+
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && !isGuestUser && !hideMyNotifications"
+          (click)="openNotifications()"
+        >
+          <ion-icon name="notifications-outline" slot="start"></ion-icon>
+          <ion-label> My Notifications </ion-label>
+        </ion-item>
+
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && !isGuestUser && !!manageCustomers"
+          (click)="openMyCustomers()"
+        >
+          <ion-icon name="people" slot="start"></ion-icon>
+          <ion-label> My Customers </ion-label>
+        </ion-item>
+
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && !hideFavourites && !isGuestUser"
+          (click)="openFavorites()"
+        >
+          <ion-icon name="heart" slot="start"></ion-icon>
+          <ion-label> My Favorites </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && !isGuestUser && !hideMyOrders"
+          (click)="openOrders()"
+        >
+          <ion-icon name="basket" slot="start"></ion-icon>
+          <ion-label> My Orders </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="
+            showNewOrdersForAll ||
+            (loggedInUser && ShowNeworders && !isGuestUser && !isGuestUser)
+          "
+          (click)="newOrder()"
+        >
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          <ion-label> Quick Order</ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser"
+          (click)="openCart()"
+        >
+          <ion-icon name="cart" slot="start"></ion-icon>
+          <ion-label> {{ "My Cart" | translate }} </ion-label>
+        </ion-item>
+        <!-- <ion-item class="cursor" lines="none" *ngIf="loggedInUser" (click)="openLayouts()">
+          <ion-icon name="cart" slot="start"></ion-icon>
+          <ion-label> Layouts </ion-label>
+        </ion-item> -->
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="
+            loggedInUser && showActionButton && !isGuestUser && !hideSavedCart
+          "
+          (click)="openSavedCarts()"
+        >
+          <ion-icon name="cart" slot="start"></ion-icon>
+          <ion-label> Saved Cart </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="
+            loggedInUser &&
+            !DisableSavedSearches &&
+            !isGuestUser &&
+            !hideSavedSearches
+          "
+          (click)="openSavedSeraches()"
+        >
+          <ion-icon name="settings" slot="start"></ion-icon>
+          <ion-label> Saved Searches </ion-label>
+        </ion-item>
+        <!-- <ion-item class="cursor" *ngIf="userType == 'Customer' && loggedInUser && !isGuestUser" lines="none"
+          (click)="openMyAddress()">
+          <ion-icon name="mail" slot="start"></ion-icon>
+          <ion-label> My Addresses </ion-label>
+        </ion-item> -->
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && !isGuestUser"
+          (click)="setting()"
+        >
+          <ion-icon name="settings" slot="start"></ion-icon>
+          <ion-label> {{ "My Account" | translate }} </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && showSchemes && !isGuestUser"
+          (click)="goToSchemes()"
+        >
+          <ion-icon name="gift" slot="start"></ion-icon>
+          <ion-label> Schemes </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          *ngIf="loggedInUser && ShowDispatches && !isGuestUser"
+          (click)="goToDispatch()"
+        >
+          <ion-icon name="send" slot="start"></ion-icon>
+          <ion-label> Dispatches </ion-label>
+        </ion-item>
+        <!-- <ion-item lines="none">
+          <ion-icon name="chatboxes" slot="start"></ion-icon>
+          <ion-label> Chat / Support </ion-label>
+        </ion-item> -->
+        <ion-item
+          class="cursor"
+          lines="none"
+          (click)="SwitchSupplier()"
+          *ngIf="
+            loggedInUser &&
+            _configService.dealerClubMode &&
+            _companyService.multipleSupplierAvailable
+          "
+        >
+          <ion-icon name="log-out" slot="start"></ion-icon>
+          <ion-label> Change Supplier </ion-label>
+        </ion-item>
+        <ion-item
+          class="cursor"
+          lines="none"
+          (click)="logOut()"
+          *ngIf="loggedInUser"
+        >
+          <ion-icon name="log-out" slot="start"></ion-icon>
+          <ion-label> {{ "Logout" | translate }} </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="my-content"></ion-router-outlet>
+  <ion-fab
+    *ngIf="showDirectWAInquiry"
+    class="z50"
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <!-- <ion-fab-button> -->
+    <ion-col
+      class="marPad0 mAuto tar"
+      *ngIf="onMobile"
+      (click)="sendDirectInquiryViaPlugin()"
+    >
+      <img
+        src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_50/v1597051767/assets/WA_ktog8s.png"
+        alt="wa"
+      />
+    </ion-col>
+    <ion-col class="marPad0 mAuto tar" *ngIf="!onMobile">
+      <a href="{{ directWAInquiryURL }}" target="_blank">
+        <img
+          src="https://res.cloudinary.com/dealerclub/image/upload/c_scale,w_50/v1597051767/assets/WA_ktog8s.png"
+          alt="wa"
+        />
+      </a>
+    </ion-col>
+    <!-- </ion-fab-button> -->
+  </ion-fab>
+
+  <!-- <ion-menu
+    contentId="my-content"
+    [ngClass]="!onMobile && !mobileWeb ? 'ionMenuWidth' : ''"
+    class="z100"
+    menuId="cart"
+    type="overlay"
+    id="menu-avatar-cart"
+    class="my-custom-menu"
+    *ngIf="disableMenu"
+  >
+    <app-short-cart class="menuScroll" parameters="false"> </app-short-cart>
+  </ion-menu> -->
 </ion-app>

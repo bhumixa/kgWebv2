@@ -1,0 +1,110 @@
+<ion-content class="form-content">
+	<form [formGroup]="validations_formUserReferences" (ngSubmit)="onSubmit(validations_formUserReferences.value)"
+		class="frm contentDiv">
+		<div [ngClass]="mobileView ? '' : 'width'">
+			<h5>{{"Reference 1"|translate}}</h5>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Name of Person"|translate}}</ion-label>
+				<ion-input type="text" formControlName="name" maxlength="30"></ion-input>
+			</ion-item>
+			<!-- <div class="validation-errors"> -->
+			<!-- <ng-container *ngFor="let validation of validation_messages.name"> -->
+			<!-- <div class="error-message" *ngIf="validations_formUserReferences.get('name').hasError(validation.type) && (validations_formUserReferences.get('name').dirty || validations_formUserReferences.get('name').touched)"> -->
+			<!-- <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }} -->
+			<!-- </div> -->
+			<!-- </ng-container> -->
+			<!-- </div> -->
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Company Name"|translate}}</ion-label>
+				<ion-input type="text" formControlName="companyname" maxlength="30"></ion-input>
+			</ion-item>
+			<!-- <div class="validation-errors"> -->
+			<!-- <ng-container *ngFor="let validation of validation_messages.lastname"> -->
+			<!-- <div class="error-message" *ngIf="validations_formUserReferences.get('lastname').hasError(validation.type) && (validations_formUserReferences.get('lastname').dirty || validations_formUserReferences.get('lastname').touched)"> -->
+			<!-- <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }} -->
+			<!-- </div> -->
+			<!-- </ng-container> -->
+			<!-- </div> -->
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Email"|translate}}</ion-label>
+				<ion-input type="text" formControlName="email" maxlength="40"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.email">
+					<div class="error-message"
+						*ngIf="validations_formUserReferences.get('email').hasError(validation.type) && (validations_formUserReferences.get('email').dirty || validations_formUserReferences.get('email').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Phone"|translate}}</ion-label>
+				<ion-input type="text" formControlName="phone"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.phone">
+					<div class="error-message"
+						*ngIf="validations_formUserReferences.get('phone').hasError(validation.type) && (validations_formUserReferences.get('phone').dirty || validations_formUserReferences.get('phone').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+					</div>
+				</ng-container>
+			</div>
+			<Br>
+			<h5>{{"Reference 2"|translate}}</h5>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Name of Person"|translate}}</ion-label>
+				<ion-input type="text" formControlName="name2" maxlength="30"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Company Name"|translate}}</ion-label>
+				<ion-input type="text" formControlName="companyname2" maxlength="30"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Email"|translate}}</ion-label>
+				<ion-input type="text" formControlName="email2" maxlength="40"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.email2">
+					<div class="error-message"
+						*ngIf="validations_formUserReferences.get('email2').hasError(validation.type) && (validations_formUserReferences.get('email2').dirty || validations_formUserReferences.get('email2').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+					</div>
+				</ng-container>
+			</div>
+
+			<ion-item>
+				<ion-label position="floating" color="primary">{{"Phone"|translate}}</ion-label>
+				<ion-input type="text" formControlName="phone2"></ion-input>
+			</ion-item>
+			<div class="validation-errors">
+				<ng-container *ngFor="let validation of validation_messages.phone2">
+					<div class="error-message"
+						*ngIf="validations_formUserReferences.get('phone2').hasError(validation.type) && (validations_formUserReferences.get('phone2').dirty || validations_formUserReferences.get('phone2').touched)">
+						<ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+					</div>
+				</ng-container>
+			</div>
+
+			<Br>
+			<h5>{{"Upload References"|translate}}</h5>
+			<ion-item>
+				<ion-input id="file-input" type="file" formControlName="fileUploaded" accept="application/pdf,application/msword,text/plain,
+				application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="showVal($event)">
+				</ion-input>
+
+				<a *ngIf="!!profileData &&profileData.fileUploaded" [href]="profileData.fileUploaded.path"
+					target='_blank' download>{{profileData.fileUploaded.name}}</a>
+			</ion-item>
+
+			<ion-button
+				[ngClass]="_companyService.productListing == 'grid'? 'round-button v2Btn submit-btn tac': 'submit-btn tac'"
+				type="submit" [disabled]="!validations_formUserReferences.valid">{{"Save"|translate}}
+			</ion-button>
+		</div>
+
+	</form>
+</ion-content>

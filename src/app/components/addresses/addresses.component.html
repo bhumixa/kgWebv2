@@ -1,0 +1,10 @@
+<ion-grid *ngIf="displayCompany">  
+  <ion-row>
+    <ion-col size="12" class="largeFilters onPageTitle">
+      <h4> <b> {{"My Company" | translate}} </b> </h4>
+    </ion-col>
+  </ion-row>
+  <app-loading></app-loading>
+  <app-dia-company-info></app-dia-company-info>
+</ion-grid>
+
