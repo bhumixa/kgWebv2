@@ -42,13 +42,14 @@ export class CompanyService {
     base64: `data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA`,
     X1X: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
   };
-
+  private _storage: Storage | null = null;
   constructor(
     public storage: Storage,
     private router: Router,
     public http: HttpClient,
     public configService: ConfigServiceService
   ) {
+    this.init();
     this.setCompanyInfo();
     this.getHeaders();
     if (
@@ -59,6 +60,12 @@ export class CompanyService {
     ) {
       this.razorpayKey = this.companyObj.config.razorpay.public;
     }
+  }
+
+  async init() {
+    // If using, define drivers here: await this.storage.defineDriver(/*...*/);
+    const storage = await this.storage.create();
+    this._storage = storage;
   }
 
   async getHeaders() {
@@ -114,33 +121,27 @@ export class CompanyService {
       return false;
     } else {
       let redirect = '/';
-      try {
-        if (this.companyObj.config) {
-          const companyJson = this.companyObj.config;
-          if (companyJson.storeType === 'private') {
-            const loggedInUser = await this.storage.get('loggedInUser');
-            if (!loggedInUser) {
+      if (this.companyObj.config) {
+        try {
+          let companyJson = this.companyObj.config;
+          if (companyJson.storeType == 'private') {
+            if (!(await this.storage.get('loggedInUser'))) {
               redirect = '/login-with-sign-up';
             }
           } else if (
-            companyJson.storeType === 'direct' &&
-            window.location.href.toString().split(window.location.host)[1] ===
+            companyJson.storeType == 'direct' &&
+            window.location.href.toString().split(window.location.host)[1] ==
               '/'
           ) {
-            const loggedInUser = await this.storage.get('loggedInUser');
-            redirect = loggedInUser
-              ? companyJson.loggedIn
-              : companyJson.loggedOut;
-          } else {
-            const loggedInUser = await this.storage.get('loggedInUser');
-            redirect = loggedInUser
-              ? companyJson.loggedIn
-              : companyJson.loggedOut;
+            if (await this.storage.get('loggedInUser')) {
+              redirect = companyJson.loggedIn;
+            } else {
+              redirect = companyJson.loggedOut;
+            }
           }
+        } catch (e) {
+          alert(e);
         }
-      } catch (error) {
-        console.error('Error occurred:', error);
-        // Handle error appropriately, maybe redirect to an error page
       }
       return redirect;
     }

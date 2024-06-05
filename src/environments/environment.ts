@@ -51,6 +51,7 @@ export const environment = {
         'og:locale': 'en_IN',
       },
       cludinaryCloud: 'kgdiamonds',
+      s3bucket: {},
       metaTagDescription: 'KG Diamond',
       metaTagKeywords: 'KG Diamond',
       showDetails: {
